@@ -11,6 +11,8 @@
 <br>
 <br>
 <form style="text-align:center;">
+<fieldset>
+<legend>Enter your details</legend>
   Login:<br>
   <input type="text" name="login">
   <br>
@@ -22,6 +24,7 @@
 <br>
 <br>
 <button style="text-align:center;">Sign up for Hospital</button>
+</fieldset>
 </form>
 </body>
 </html>
