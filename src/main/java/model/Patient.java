@@ -2,13 +2,17 @@ package model;
 
 public class Patient {
 
-    private int patientId;
+    private long patientId;
     private String firstname;
     private String surname;
     private boolean isDischarged;
 
-    public int getPatientId() {
+    public long getPatientId() {
         return patientId;
+    }
+
+    public void setPatientId(long patientId) {
+        this.patientId = patientId;
     }
 
     public void setPatientId(int patientId) {
