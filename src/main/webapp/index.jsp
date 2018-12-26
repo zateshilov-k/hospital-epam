@@ -23,9 +23,7 @@
 <button style="text-align:center;">Sign in</button>
 <br>
 <br>
-<p>
-   <a href="c:<url value= "pageOfSignUp.jsp""><button style="text-align:center;">Sign Up</button></a>
-</p>
+ <button style="text-align:center;">Sign Up</button>
 </fieldset>
 </form>
 </body>

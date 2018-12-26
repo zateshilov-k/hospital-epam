@@ -15,7 +15,6 @@
   <input type="text" name="Input password">
 <br>
 <br>
-<br>
 <button style="text-align:center;">Register now!</button>
 </fieldset>
 </form>
