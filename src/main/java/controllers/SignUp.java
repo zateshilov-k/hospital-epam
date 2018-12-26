@@ -2,7 +2,6 @@ package controllers;
 
 import services.SignUpValidate;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +15,6 @@ public class SignUp extends HttpServlet {
     private String firstname;
     private String surname;
     private String email;
-    RequestDispatcher dispatcher;
 //    private DaoFactory daoFactory;
 //private static final Logger log = LoggerFactory.getLogger(Login.class);
 
@@ -43,14 +41,29 @@ public class SignUp extends HttpServlet {
         SignUpValidate signUpValidate = new SignUpValidate();
         boolean result = signUpValidate.doValidation(email, password, firstname, surname);
         if (!result) {
-            dispatcher = request.getRequestDispatcher("/");
-            dispatcher.forward(request, response);
+            //TODO добавить атрибуты, которые помогут странице понять роль HospitalPerson
+
+            request.getRequestDispatcher("/").forward(request, response);
             return;
 
         } else {
-            dispatcher = request.getRequestDispatcher("/");
-            dispatcher.forward(request, response);
+            request.getRequestDispatcher("/").forward(request, response);
             return;
         }
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.service(req, resp);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
     }
 }
