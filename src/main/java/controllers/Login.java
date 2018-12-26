@@ -27,7 +27,7 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doGet method");
+//        System.out.println("doGet method");
     }
 
     @Override
@@ -46,6 +46,7 @@ public class Login extends HttpServlet {
         // получаем параметр password
         password = request.getParameter("password");
         System.out.println(login + " " + password);
+//TODO захэшировать пароль
 
         LoginValidate loginValidate = new LoginValidate();
         boolean result = loginValidate.doValidation(login, password);
@@ -57,8 +58,9 @@ public class Login extends HttpServlet {
 //                if (user.getPassword().equals(password.hashCode())){
 
 //TODO добавить атрибуты, которые помогут странице понять роль HospitalPerson
-
+            //           request.setAttribute("role", user.getRole);
             request.getRequestDispatcher("/nextPage.jsp").forward(request, response);
+            //TODO записать в лог успешную регистрацию
             return;
 //                }
 //        }
@@ -66,6 +68,7 @@ public class Login extends HttpServlet {
         } else {
             request.setAttribute("loginError", ERROR_MESSAGE_EN);
             request.getRequestDispatcher("/").forward(request, response);
+            //TODO записать в лог неуспешную регистрацию (дата, время, логин, IP (String getRemoteAddr())
             return;
         }
     }

@@ -1,7 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center;" style="font-size:200"> Welcome to Hospital!</h1>
+<h1 style="text-align:center; font-size:28px" > Welcome to Hospital!</h1>
 <br>
 <br>
 <br>
@@ -31,6 +32,8 @@
   <c:if test="${!empty requestScope.loginError}">
     <p><span class="error">${requestScope.loginError}</span></p>
   </c:if>
+
+  <br/>${loginError}
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class SignUp extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doGet(request, response);
+//        super.doGet(request, response);
     }
 
     @Override
@@ -42,12 +42,14 @@ public class SignUp extends HttpServlet {
         boolean result = signUpValidate.doValidation(email, password, firstname, surname);
         if (!result) {
             //TODO добавить атрибуты, которые помогут странице понять роль HospitalPerson
-
+            //           request.setAttribute("role", user.getRole);
             request.getRequestDispatcher("/").forward(request, response);
+            //TODO записать в лог успешную регистрацию
             return;
 
         } else {
             request.getRequestDispatcher("/").forward(request, response);
+            //TODO записать в лог неуспешную регистрацию
             return;
         }
     }
