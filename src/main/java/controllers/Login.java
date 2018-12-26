@@ -31,6 +31,15 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        HttpSession session = request.getSession();
+//        Locale locale = (Locale) session.getAttribute("locale");
+//        if (locale == null) {
+//            locale = new Locale("en");
+//        }
+//        ResourceBundle bundle = ResourceBundle.getBundle("login", locale);
+
+
+
         System.out.println("doPost method");
         response.setContentType("text/html");
         // получаем параметр login
@@ -41,31 +50,34 @@ public class Login extends HttpServlet {
 
         LoginValidate loginValidate = new LoginValidate();
         boolean result = loginValidate.authenticate(login, password);
-        if (!result) {
+        System.out.println("result \t" + result);
+        if (result) {
 //            User user = daoFactory.getUserDao().readUserByLogin(login);
 //            if (user!=null) {
 //                // если хэшкод пароля совпадает, заполняем аттрибуты сессии
 //                if (user.getPassword().equals(password.hashCode())){
 
 
-            dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher = request.getRequestDispatcher("/main.jsp");
             dispatcher.forward(request, response);
             return;
 //                }
 //        }
 
-        } else
+        } else {
+//            request.setAttribute("Invalid login or password", bundle.getString("loginError"));
+//            request.getRequestDispatcher("/index.jsp").forward(request, response);
 
-        {
-            dispatcher = request.getRequestDispatcher("/main.jsp");
+//            response.getWriter().write("Invalid login or password");
+
+            dispatcher = request.getRequestDispatcher("/");
             dispatcher.forward(request, response);
             return;
         }
     }
 
-//    @Override
-//    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-//        System.out.println("service method");
-//        super.service(req, res);
-//    }
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        super.service(req, res);
+    }
 }
