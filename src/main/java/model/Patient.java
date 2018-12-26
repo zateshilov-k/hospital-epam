@@ -38,4 +38,5 @@ public class Patient {
     public void setDischarged(boolean discharged) {
         isDischarged = discharged;
     }
+
 }
