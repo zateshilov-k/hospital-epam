@@ -11,4 +11,5 @@ public interface PersonalDao {
     Patient readPatientByFirstName(String firstName);
 
     long updatePatient(Patient patient);
+
 }
