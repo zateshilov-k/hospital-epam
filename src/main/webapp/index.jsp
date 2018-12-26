@@ -10,9 +10,9 @@
 <br>
 <br>
 <br>
-<form style="text-align:center;">
+<form action = "/login" method="post" style="text-align:center;">
 <fieldset>
-<legend>Enter your details</legend>
+<legend></legend>
   Login:<br>
   <input type="text" name="login">
   <br>
@@ -23,7 +23,9 @@
 <button style="text-align:center;">Sign in</button>
 <br>
 <br>
-<button style="text-align:center;">Sign up for Hospital</button>
+<p>
+   <a href="c:<url value= "pageOfSignUp.jsp""><button style="text-align:center;">Sign Up</button></a>
+</p>
 </fieldset>
 </form>
 </body>
