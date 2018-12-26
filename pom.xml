@@ -53,7 +53,7 @@
                 <version>2.2</version>
                 <configuration>
                     <port>8888</port>
-                    <contextFile>${project.basedir}/mycontext/context.xml</contextFile>
+                    <contextFile>src/main/resources/tomcat.configs/context.xml</contextFile>
                 </configuration>
             </plugin>
             <plugin>
