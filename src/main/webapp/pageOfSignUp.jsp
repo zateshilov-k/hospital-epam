@@ -6,7 +6,7 @@
 <fieldset>
 <legend></legend>
   Fullname:<br>
-  <input type ="text" name= "fullname">
+  <input type ="text" name= "Input fullname">
   <br>
   Login:<br>
   <input type="text" name="Input login">
