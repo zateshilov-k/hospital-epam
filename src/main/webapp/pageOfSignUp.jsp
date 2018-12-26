@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body style="background-color:powdergreen;">
 <h1 style="text-align:center;" style="font-size:220">Registration</h1>
 <form action = "/" method="post" style="text-align:center;">
 <fieldset>
 <legend></legend>
-  Fullname:<br>
-  <input type ="text" name= "Input fullname">
+  Input Name:<br>
+  <input type ="text" name= "Name">
   <br>
-  Login:<br>
-  <input type="text" name="Input login">
+  Input Surname:<br>
+  <input type ="text" name= "Surname">
   <br>
-  Password:<br>
-  <input type="text" name="Input password">
+  Input Login:<br>
+  <input type="text" name= "login">
+  <br>
+  Input Password:<br>
+  <input type="text" name= "password">
 <br>
 <br>
 <button style="text-align:center;">Register now!</button>
