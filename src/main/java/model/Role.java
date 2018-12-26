@@ -1,5 +1,5 @@
 package model;
 
 public enum Role {
-    DOCTOR, NURSE
+    HEAD_DOCTOR, DOCTOR, NURSE
 }
