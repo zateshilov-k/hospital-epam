@@ -27,11 +27,9 @@
 </fieldset>
 </form>
         <div>
-        <script>
-            <c:if test="empty requestScope.loginError">
-                <p><span class="error">requestScope.loginError</span></p>
+            <c:if test="${!empty requestScope.loginError}">
+                <p><span class="error">${requestScope.loginError}</span></p>
             </c:if>
-         </script>
         </div>
 </body>
 </html>
