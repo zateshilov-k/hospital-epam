@@ -10,7 +10,7 @@
 <br>
 <br>
 <br>
-<form method="post" style="text-align:center;">
+<form action="/login" method="post" style="text-align:center;">
 <fieldset>
 <legend>Enter your details</legend>
   Login:<br>
