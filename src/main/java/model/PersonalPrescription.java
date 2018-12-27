@@ -1,24 +1,17 @@
 package model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class PersonalPrescription {
 
     private long personalId;
     private long prescriptionId;
-
-    public long getPersonalId() {
-        return personalId;
-    }
-
-    public void setPersonalId(long personalId) {
-        this.personalId = personalId;
-    }
-
-    public long getPrescriptionId() {
-        return prescriptionId;
-    }
-
-    public void setPrescriptionId(long prescriptionId) {
-        this.prescriptionId = prescriptionId;
-    }
 
 }
