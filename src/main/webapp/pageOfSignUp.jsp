@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-body {
-  background-image: url("paper.gif");
-}
-</style>
-</head>
+<body style="background-color:powderblue;">
 <h1 style="text-align:center;" style="font-size:220">Registration</h1>
 <form action = "Sigh Up" method="post" style="text-align:center;">
 <fieldset>

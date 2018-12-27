@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-body {
-  background-image: url("paper.gif");
-}
-</style>
-</head>
+<body style="background-color:powderblue;">
 <h1 style="text-align:center;" style="font-size:220">Have a good day,   UserName</h1>
 <p style="text-align:center;" >The select Pacient defines a hospital:</p>
 <form style="text-align:center;">
