@@ -14,7 +14,7 @@ import java.io.IOException;
 /*
 Обработка страницы авторизации
  */
-
+//TODO 1. бандлы и проперти и локаль   2. хэширование пароля 3. передача роли пользователя на фронт
 @WebServlet("/login")
 public class Login extends HttpServlet {
     private String password;
@@ -32,10 +32,12 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(true);
+        session.setMaxInactiveInterval(1800);
+
 //        Locale locale = (Locale) session.getAttribute("locale");
 //        if (locale == null) {
-//            locale = new Locale("en");
+//            locale = new Locale("ru");
 //        }
 //        ResourceBundle bundle = ResourceBundle.getBundle("login", locale);
 
@@ -61,6 +63,7 @@ public class Login extends HttpServlet {
             //           request.setAttribute("role", user.getRole);
             request.getRequestDispatcher("/nextPage.jsp").forward(request, response);
             //TODO записать в лог успешную регистрацию
+            String ip = request.getRemoteAddr();
             return;
 //                }
 //        }
