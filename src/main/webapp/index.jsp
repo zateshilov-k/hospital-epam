@@ -31,6 +31,9 @@
 <input type="submit" value="Go to my link location"
     onclick="window.location='/hospital-system/log';" />
 
+    <input type="submit" value="Go to my link location"
+        onclick="window.location='/hospital-system/Main';" />
+
   <c:if test="${!empty requestScope.loginError}">
     <p><span class="error">${requestScope.loginError}</span></p>
   </c:if>
