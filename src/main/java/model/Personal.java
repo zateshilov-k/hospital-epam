@@ -3,8 +3,8 @@ package model;
 public class Personal {
 
     private long personalId;
-    private String firstname;
-    private String surname;
+    private String firstName;
+    private String lastName;
     private Role role;
     private String email;
     private char[] password;
@@ -17,20 +17,20 @@ public class Personal {
         this.personalId = personalId;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Role getRole() {
@@ -56,4 +56,5 @@ public class Personal {
     public void setPassword(char[] password) {
         this.password = password;
     }
+
 }
