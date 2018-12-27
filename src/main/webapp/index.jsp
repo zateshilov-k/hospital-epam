@@ -11,7 +11,7 @@
 <br>
 <br>
 <br>
-<form action = "/login" method="post" style="text-align:center;">
+<form action = "/hospital-system/login" method="get" style="text-align:center;">
   <fieldset>
     <legend></legend>
     Login:<br>
@@ -24,10 +24,12 @@
     <button style="text-align:center;">Sign in</button>
     <br>
     <br>
-    <button style="text-align:center;">Sign Up</button>
   </fieldset>
 </form>
 <div>
+
+<input type="submit" value="Go to my link location"
+    onclick="window.location='/hospital-system/log';" />
 
   <c:if test="${!empty requestScope.loginError}">
     <p><span class="error">${requestScope.loginError}</span></p>
