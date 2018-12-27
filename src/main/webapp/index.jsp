@@ -4,7 +4,13 @@
 
 <!DOCTYPE html>
 <html>
-<body style="background-color:powderblue;">
+<head>
+<style>
+body {
+  background-image: url("paper.gif");
+}
+</style>
+</head>
 <h1 style="text-align:center;" style="font-size:28px"> Welcome to Hospital!</h1>
 <br>
 <br>
