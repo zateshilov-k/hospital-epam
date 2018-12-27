@@ -1,6 +1,4 @@
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 
 <!DOCTYPE html>
 <html>
@@ -27,7 +25,7 @@
 <button style="text-align:center;">Sign in</button>
 <br>
 <br>
- <button style="text-align:center;">Sign Up</button>
+ <button style="text-align:center;" onclick="href='/pageOfSignUp.jsp'">Sign Up</button>
 </fieldset>
 </form>
         <div>

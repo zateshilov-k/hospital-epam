@@ -5,11 +5,11 @@
 <form action = "Sigh Up" method="post" style="text-align:center;">
 <fieldset>
 <legend></legend>
-  Input Name:<br>
-  <input type ="text" name= "Name">
+  Input firstName:<br>
+  <input type ="text" name= "firstName">
   <br>
-  Input Surname:<br>
-  <input type ="text" name= "Surname">
+  Input lastName:<br>
+  <input type ="text" name= "lastName">
   <br>
   Input Login:<br>
   <input type="text" name= "login">
