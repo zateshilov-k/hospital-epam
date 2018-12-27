@@ -50,7 +50,8 @@ public class Login extends HttpServlet {
         LoginValidate loginValidate = new LoginValidate();
         boolean result = loginValidate.doValidation(login, password);
         System.out.println("result \t" + result);*/
-
+        request.setAttribute("loginError", ERROR_MESSAGE_EN);
+        request.setAttribute("default","MYYYYYYYYYYYYYY");
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());

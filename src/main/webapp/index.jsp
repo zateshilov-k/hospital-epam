@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center; font-size:28px" > Welcome to Hospital!</h1>
+<h1 style="text-align:center; font-size:28px" > Welcome to Hospital!, ${default}</h1>
 <br>
 <br>
 <br>
@@ -11,7 +11,7 @@
 <br>
 <br>
 <br>
-<form action = "/hospital-system/login" method="get" style="text-align:center;">
+<form action = "/login" method="post" style="text-align:center;">
   <fieldset>
     <legend></legend>
     Login:<br>
@@ -27,12 +27,6 @@
   </fieldset>
 </form>
 <div>
-
-<input type="submit" value="Go to my link location"
-    onclick="window.location='/hospital-system/log';" />
-
-    <input type="submit" value="Go to my link location"
-        onclick="window.location='/hospital-system/Main';" />
 
   <c:if test="${!empty requestScope.loginError}">
     <p><span class="error">${requestScope.loginError}</span></p>
