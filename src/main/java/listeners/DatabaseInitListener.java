@@ -1,6 +1,6 @@
 package listeners;
 
-import services.HashGenerator;
+import utils.HashGenerator;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContextEvent;
@@ -16,7 +16,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -229,7 +228,7 @@ public class DatabaseInitListener implements ServletContextListener {
             e.printStackTrace();
         }
         System.out.println("Database init ended");
-
+        servletContextEvent.getServletContext().setAttribute("dataSource",dataSource);
     }
 
 

@@ -1,6 +1,6 @@
 package listeners;
 
-import services.HashGenerator;
+import utils.HashGenerator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

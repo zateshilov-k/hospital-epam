@@ -1,4 +1,4 @@
-package services;
+package utils;
 
 public class SignUpValidate {
     public boolean doValidation(String login, String password, String firstname, String surname) {

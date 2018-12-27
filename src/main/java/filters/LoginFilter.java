@@ -9,7 +9,7 @@ import java.io.IOException;
 /*
 Проверка - авторизован ли пользователь
  */
-@WebFilter(urlPatterns = {"/index.jsp", "/WEB-INF/main.jsp"})
+
 public class LoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

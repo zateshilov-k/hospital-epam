@@ -1,6 +1,6 @@
 package controllers;
 
-import services.SignUpValidate;
+import utils.SignUpValidate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +20,7 @@ public class SignUp extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("SignUp");
 //        super.doGet(request, response);
     }
 

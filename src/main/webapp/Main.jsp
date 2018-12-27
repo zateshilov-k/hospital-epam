@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center;" style="font-size:220">Have a good day, $UserName</h1>
+<h1 style="text-align:center; font-size:28px" >Have a good day, <%= request.getParameter("name") %> </h1>
 <p style="text-align:center;" >The select Pacient defines a hospital:</p>
 <form style="text-align:center;">
   <select name="Pacient">

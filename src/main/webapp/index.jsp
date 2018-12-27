@@ -11,7 +11,7 @@
 <br>
 <br>
 <br>
-<form action = "/hospital-system/login" method="post" style="text-align:center;">
+<form action = "login" method="post" style="text-align:center;">
   <fieldset>
     <legend></legend>
     Login:<br>
@@ -21,7 +21,9 @@
     <input type="text" name="password">
     <br>
     <br>
-    <button style="text-align:center;">Sign in</button>
+    <button style="text-align:center;" type="submit">
+      Sign in
+    </button>
     <br>
     <br>
     <button style="text-align:center;">Sign Up</button>
