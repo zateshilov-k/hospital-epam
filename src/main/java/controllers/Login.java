@@ -1,5 +1,7 @@
 package controllers;
 
+import dao.h2.H2PersonalDao;
+import model.Personal;
 import services.LoginValidate;
 
 import javax.servlet.RequestDispatcher;
@@ -20,6 +22,9 @@ public class Login extends HttpServlet {
     private String password;
     private String login;
     RequestDispatcher dispatcher;
+
+//    PersonalService;
+
 //    private DaoFactory daoFactory;
 //private static final Logger log = LoggerFactory.getLogger(Login.class);
 
@@ -37,6 +42,13 @@ public class Login extends HttpServlet {
 //            locale = new Locale("en");
 //        }
 //        ResourceBundle bundle = ResourceBundle.getBundle("login", locale);
+
+
+        //Personal personal = new H2PersonalDao().readPersonalByEmail(l)
+
+
+//        personalService.identify(personal);
+
 
 
 
