@@ -13,11 +13,4 @@ public class Personal {
     private String lastName;
     private Role role;
 
-    protected boolean canEqual(Object other) {
-        return other instanceof Personal;
-    }
-
-
-
-
 }
