@@ -1,7 +1,10 @@
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center; font-size:28px" >Have a good day, <%= request.getParameter("name") %> </h1>
+<h1 style="text-align:center; font-size:28px" >Have a good day, ${name} ${surname} </h1>
 <p style="text-align:center;" >The select Pacient defines a hospital:</p>
 <form style="text-align:center;">
   <select name="Pacient">

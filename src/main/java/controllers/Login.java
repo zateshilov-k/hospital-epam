@@ -2,6 +2,7 @@ package controllers;
 
 import model.Personal;
 import services.PersonalService;
+import utils.HashGenerator;
 import utils.LoginValidate;
 
 import javax.servlet.ServletContext;
@@ -20,38 +21,28 @@ import java.util.Optional;
 /*
 Обработка страницы авторизации
  */
-//TODO 1. бандлы и проперти и локаль   2. хэширование пароля 3. передача роли пользователя на фронт
 @WebServlet("/login")
 public class Login extends HttpServlet {
 
     private final String ERROR_MESSAGE_EN = "Invalid login or password";
     private final String ERROR_MESSAGE_RU = "Неверный логин или пароль";
     DataSource dataSource;
-
+    HashGenerator hashGenerator;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("doGet method");
         System.out.println("hello get");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.setMaxInactiveInterval(1800);
-        System.out.println("hello post");
+        HttpSession session = request.getSession();
         response.setContentType("text/html");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
-        System.out.println(login + " " + password);
-        Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login, password,dataSource);
+        Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
+                password,dataSource,hashGenerator);
 
-        /*request.getRequestDispatcher("/hospital-system/").forward(request, response);
-
-        LoginValidate loginValidate = new LoginValidate();
-        boolean result = loginValidate.doValidation(login, password);
-        System.out.println("result \t" + result);*/
         request.setAttribute("loginError", ERROR_MESSAGE_EN);
-        request.setAttribute("default","MYYYYYYYYYYYYYY");
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());
@@ -76,6 +67,7 @@ public class Login extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         dataSource = (DataSource) context.getAttribute("dataSource");
+        hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
     }
 
     @Override

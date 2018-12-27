@@ -59,6 +59,7 @@
                 <version>2.2</version>
                 <configuration>
                     <port>8888</port>
+                    <path>/</path>
                     <contextFile>src/main/resources/tomcat.configs/context.xml</contextFile>
                 </configuration>
             </plugin>

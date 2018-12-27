@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center; font-size:28px" > Welcome to Hospital!, ${default}</h1>
+<h1 style="text-align:center; font-size:28px" > Welcome to Hospital!</h1>
 <br>
 <br>
 <br>
