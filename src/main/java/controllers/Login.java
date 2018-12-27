@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /*
 Обработка страницы авторизации
  */
@@ -35,14 +38,14 @@ public class Login extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(1800);
 
-//        Locale locale = (Locale) session.getAttribute("locale");
-//        if (locale == null) {
-//            locale = new Locale("ru");
-//        }
-//        ResourceBundle bundle = ResourceBundle.getBundle("login", locale);
-
+        Locale locale = (Locale) session.getAttribute("locale");
+        System.out.println(locale);
+        if (locale == null) {
+            locale = new Locale("ru");
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
+        response.setContentType("text/html;charset=utf-8");
         System.out.println("doPost method");
-        response.setContentType("text/html");
         // получаем параметр login
         login = request.getParameter("login").trim();
         // получаем параметр password
@@ -69,7 +72,8 @@ public class Login extends HttpServlet {
 //        }
 
         } else {
-            request.setAttribute("loginError", ERROR_MESSAGE_EN);
+//            request.setAttribute("loginError", ERROR_MESSAGE_EN);
+            request.setAttribute("loginError", bundle.getString("loginError"));
             request.getRequestDispatcher("/").forward(request, response);
             //TODO записать в лог неуспешную регистрацию (дата, время, логин, IP (String getRemoteAddr())
             return;
