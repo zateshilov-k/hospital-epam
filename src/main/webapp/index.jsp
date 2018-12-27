@@ -1,7 +1,11 @@
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center;" style="font-size:200"> Welcome to Hospital!</h1>
+<h1 style="text-align:center;" style="font-size:28px"> Welcome to Hospital!</h1>
 <br>
 <br>
 <br>
