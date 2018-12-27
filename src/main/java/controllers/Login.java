@@ -28,12 +28,14 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        System.out.println("doGet method");
+        System.out.println("hello get");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(1800);
+        System.out.println("hello post");
 
 //        Locale locale = (Locale) session.getAttribute("locale");
 //        if (locale == null) {
@@ -41,7 +43,6 @@ public class Login extends HttpServlet {
 //        }
 //        ResourceBundle bundle = ResourceBundle.getBundle("login", locale);
 
-        System.out.println("doPost method");
         response.setContentType("text/html");
         // получаем параметр login
         login = request.getParameter("login").trim();

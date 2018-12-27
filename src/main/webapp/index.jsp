@@ -11,7 +11,7 @@
 <br>
 <br>
 <br>
-<form action = "/login" method="post" style="text-align:center;">
+<form action = "/hospital-system/login" method="post" style="text-align:center;">
   <fieldset>
     <legend></legend>
     Login:<br>
