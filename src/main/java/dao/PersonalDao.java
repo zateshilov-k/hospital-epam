@@ -1,15 +1,13 @@
 package dao;
 
-import model.Patient;
+import model.Personal;
 
 public interface PersonalDao {
 
-    long createPatient(Patient patient);
+    long createPersonal(Personal personal);
 
-    Patient readPatientById(long patientId);
+    Personal readPersonalByEmail(String email);
 
-    Patient readPatientByFirstName(String firstName);
-
-    long updatePatient(Patient patient);
+    long updatePersonal(Personal personal);
 
 }
