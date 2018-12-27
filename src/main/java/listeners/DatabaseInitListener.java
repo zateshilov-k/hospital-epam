@@ -1,5 +1,7 @@
 package listeners;
 
+import services.HashGenerator;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -72,16 +74,17 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private static void addMedPersonal(Statement statement, int idMedPersonal, Random random,
-                                       String randomRole) throws SQLException {
+                                       String randomRole, HashGenerator hashGenerator) throws SQLException {
         statement.addBatch("INSERT INTO Med_personal " +
                 "(idMed_personal,name,surname,role,login,password) VALUES" +
                 "(" + (idMedPersonal) + "," +
                 "\'" + getRandomName(random) + "\'," +
                 "\'" + getRandomSurname(random) + "\'," +
                 "\'" + randomRole + "\'," +
-                "\'" + "login1@epam.com" + "\'," +
-                "\'" + "password1" + "\'" +
+                "\'" + "login" + idMedPersonal + "@epam.com" + "\'," +
+                "\'" + hashGenerator.getHash("password1") + "\'" +
                 ");");
+        //System.out.println(hashGenerator.getHash("password1"));
     }
 
     private static void addPatients(Statement statement, int idPatient, Random random,
@@ -131,10 +134,11 @@ public class DatabaseInitListener implements ServletContextListener {
                 (Boolean.valueOf(isDone).toString()).toUpperCase() +
                 ");");
     }
+
     private void addMedPersonalPrescription(Statement statement, int id, int doctorId, int prescriptionId, String type) throws SQLException {
         statement.addBatch("INSERT INTO Med_personal_Prescription " +
                 "(idMed_personal_Prescription,Type,Doctor_idDoctor,Prescription_idPrescription) VALUES" +
-                "(" +  id + "," +
+                "(" + id + "," +
                 "\'" + type + "\'," +
                 (doctorId) + "," +
                 prescriptionId +
@@ -143,6 +147,7 @@ public class DatabaseInitListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        HashGenerator hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
         System.out.println("Database init started");
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();) {
@@ -161,24 +166,25 @@ public class DatabaseInitListener implements ServletContextListener {
             Random random = new Random();
             for (int medPersonalId = 1; medPersonalId <= numberOfMedPersonal; ++medPersonalId) {
                 String randomRole = getRandomRole(random);
-                addMedPersonal(statement, medPersonalId, random, randomRole);
+                addMedPersonal(statement, medPersonalId, random, randomRole, hashGenerator);
+
                 for (int patientId = 1; patientId <= numberOfPatients; ++patientId) {
                     String isDischarged = (random.nextBoolean() + "").toUpperCase();
                     int currentPatientId =
-                                    patientId +
+                            patientId +
                                     (medPersonalId - 1) * numberOfPatients;
                     addPatients(statement, currentPatientId, random, isDischarged);
 
                     for (int diagnosisId = 1; diagnosisId <= numberOfDiagnosis; ++diagnosisId) {
                         int currentDiagnosisId =
-                                        diagnosisId +
+                                diagnosisId +
                                         (patientId - 1) * numberOfDiagnosis +
                                         (medPersonalId - 1) * numberOfDiagnosis * numberOfPatients;
                         addDiagnosis(statement, currentDiagnosisId, medPersonalId, currentPatientId, random);
 
                         for (int prescriptionId = 1; prescriptionId <= numberOfPrescriptions; ++prescriptionId) {
                             int currentPrescriptionId =
-                                            prescriptionId +
+                                    prescriptionId +
                                             (diagnosisId - 1) * numberOfPrescriptions +
                                             (patientId - 1) * numberOfDiagnosis * numberOfPrescriptions +
                                             (medPersonalId - 1) * numberOfPatients * numberOfDiagnosis * numberOfPrescriptions;
@@ -189,16 +195,16 @@ public class DatabaseInitListener implements ServletContextListener {
                             for (int medPersonalPrescriptionId = 1; medPersonalPrescriptionId <= 2;
                                  ++medPersonalPrescriptionId) {
                                 int currentMedPersonalPrescriptionId = medPersonalPrescriptionId +
-                                        (prescriptionId-1)*2 +
-                                        (diagnosisId-1)*numberOfPrescriptions*2 +
+                                        (prescriptionId - 1) * 2 +
+                                        (diagnosisId - 1) * numberOfPrescriptions * 2 +
                                         (patientId - 1) * numberOfDiagnosis * numberOfPrescriptions * 2 +
                                         (medPersonalId - 1) * numberOfPatients * numberOfDiagnosis * numberOfPrescriptions * 2;
                                 if (medPersonalPrescriptionId == 1) {
-                                    addMedPersonalPrescription(statement,currentMedPersonalPrescriptionId,medPersonalId,
-                                            currentPrescriptionId,"Назначено");
+                                    addMedPersonalPrescription(statement, currentMedPersonalPrescriptionId, medPersonalId,
+                                            currentPrescriptionId, "Назначено");
                                 } else if (isPrescriptionDone) {
-                                    addMedPersonalPrescription(statement,currentMedPersonalPrescriptionId,medPersonalId,
-                                            currentPrescriptionId,"Выполнено");
+                                    addMedPersonalPrescription(statement, currentMedPersonalPrescriptionId, medPersonalId,
+                                            currentPrescriptionId, "Выполнено");
                                 }
                             }
                         }
@@ -207,7 +213,6 @@ public class DatabaseInitListener implements ServletContextListener {
             }
 
             int[] ints = statement.executeBatch();
-            System.out.println(Arrays.toString(ints));
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -226,7 +231,6 @@ public class DatabaseInitListener implements ServletContextListener {
         System.out.println("Database init ended");
 
     }
-
 
 
     @Override
