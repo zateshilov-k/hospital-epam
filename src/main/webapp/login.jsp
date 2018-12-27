@@ -11,7 +11,8 @@
     <title>Login</title>
 </head>
 <body>
-<form action="/signup" method="post" >
+<a>dsfsdf</a>
+<form action="/hospital-system/signup" method="get" >
     <br>User Login: <input type="text" id="login" name="login"/>
     <br>User Password: <input type="text" id="password" name="password"/></form>
 <br><input name="enter" type="submit" value="OK" />
