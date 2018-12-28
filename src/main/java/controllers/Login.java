@@ -46,7 +46,7 @@ public class Login extends HttpServlet {
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());
-            request.getRequestDispatcher("/Main.jsp").forward(request, response);
+            request.getRequestDispatcher("/main.jsp").forward(request, response);
             String ip = request.getRemoteAddr();
             return;
         }
