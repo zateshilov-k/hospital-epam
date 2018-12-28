@@ -11,7 +11,7 @@ import java.util.Optional;
 public class PersonalService {
 
     public Optional<Personal> authenticatePersonal(String login, String password, DataSource dataSource
-    , HashGenerator hashGenerator) {
+            , HashGenerator hashGenerator) {
         LoginValidate loginValidate = new LoginValidate();
         boolean isValid = loginValidate.doValidation(login, password);
         if (isValid) {
@@ -20,6 +20,9 @@ public class PersonalService {
                 if (!personal.get().getPassword().equals(hashGenerator.getHash(password))) {
                     return Optional.empty();
                 }
+//                System.out.println("Password \t" + password + "\tHashcode - " + hashGenerator.getHash(password));
+//                System.out.println("Password in DB - "+personal.get().getPassword());
+
             }
             return personal;
         } else {
