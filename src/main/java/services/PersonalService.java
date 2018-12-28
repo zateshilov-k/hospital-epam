@@ -20,9 +20,6 @@ public class PersonalService {
                 if (!personal.get().getPassword().equals(hashGenerator.getHash(password))) {
                     return Optional.empty();
                 }
-//                System.out.println("Password \t" + password + "\tHashcode - " + hashGenerator.getHash(password));
-//                System.out.println("Password in DB - "+personal.get().getPassword());
-
             }
             return personal;
         } else {
