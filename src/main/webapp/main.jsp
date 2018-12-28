@@ -1,44 +1,61 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
-<body style="background-color:powderblue;">
 <head>
 <style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+   .button1 {
+    position: absolute; /* Относительное позиционирование */
+    left: 500px;
+    top: 230px;
+    line-height: 300px;
+   }
+   .button2 {
+    position: absolute; /* Относительное позиционирование */
+    left: 500px;
+    top: 280px;
+    line-height: 300px;
+   }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+table, th, td {
+  border: 2px solid white;
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+}
+th, td {
+  padding: 15px;
 }
 </style>
 </head>
-<body>
+<body style="background-color:powderblue;">
 
-<h1 style="text-align:center;" style="font-size:220">Welcome, Username</h1>
+<h1 style="text-align:center;" style="font-size:220">Welcome,UserName</h1>
+<h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
 
-<table>
-  <script>
-	var pacientTable = document.createElement('table'),
-    tr = table.insertRow();
-    for (i = 1; i < lastElementBD; i++) {
-      String str = "1, Vasya Smirnov, bolen";
-      String[] words = str.split("\\,"); // Разбиение строки на слова с помощью разграничителя (запятая)
-      for(String subStr:words) {
-         System.out.println(subStr);
-      }
-       tr.insertCell();
-    }
-  </script>
+<table style="width:75%">
+  <tr>
+    <th>Id</th>
+    <th>firstName and lastName</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+  </tr>
+  <tr>
+    <td>John</td>
+    <td>Doe</td>
+  </tr>
 </table>
 
+<br><br><br><br>
+  <div class="button1">
+   <button type="button1">New Pacient</button>
+   </div>
+   <div class="button2">
+    <button type="button2">Change data</button>
+   </div>
 </body>
 </html>
