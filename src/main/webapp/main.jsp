@@ -16,7 +16,6 @@
 
 table, th, td {
   border: 2px solid white;
-
 }
 th, td {
   padding: 13px;
@@ -25,11 +24,9 @@ th, td {
 </head>
 <body style="background-color:powderblue;">
 
-<h1 style="text-align:center;" style="font-size:220">Welcome,UserName</h1>
-
+<h1 style="text-align:center;" style="font-size:220">Welcome, ${name} ${surname}</h1>
 
 <h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
-
 
 <br>
   <div class="button1">
@@ -38,8 +35,6 @@ th, td {
    <div class="button2">
     <button type="button2">Change data</button>
    </div>
-
-
    <br><br>
 <table class="table" style="width:100%">
   <tr>
@@ -48,52 +43,21 @@ th, td {
   </tr>
 
   <tr>
-    <td>Eve</td>
+    <td>${personalId}</td>
       <td>
-       <a href="#" style="position: absolute";>Sasha Alexandrovich</a>
+       <a href="/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
     </td>
   </tr>
   <tr>
-    <td>John</td>
+    <td>${personalId}</td>
     <td>
-
-    <a href="#" style="position: absolute";>Jill Alexandrovich</a>
-
+    <a href="/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
     </td>
   </tr>
     <tr>
-    <td>John</td>
+    <td>${personalId}</td>
       <td>
-
-    <a href="#" style="position: absolute";>Jimmy Alexandrovich</a>
-
-    </td>
-  </tr>
-    <tr>
-    <td>John</td>
-    <td>
-
-    <a href="#" style="position: absolute";>Mike Alexandrovich</a>
-
-    </td>
-  </tr>
-    <tr>
-    <td>John</td>
-    <td>
-
-    <a href="#" style="position: absolute";>Oleg Alexandrovich</a>
-
-    </td>
-  </tr>
-    <tr>
-    <td>John</td>
-    <td>
-
-    <a href="#" style="position: absolute";>Vasya Alexandrovich</a>
-
-    </td>
-  </tr>
-
+    <a href="'/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
 </table>
 </body>
 </html>
