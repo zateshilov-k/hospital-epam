@@ -12,11 +12,11 @@ import java.util.Optional;
 public class H2PersonalDao implements PersonalDao {
 
     private static final String CREATE_PERSONAL_SQL =
-            "INSERT INTO Personals (personalId, email, password, firstName, lastName, role) VALUES (?, ?, ?, ?, ?, ?)";
+            "INSERT INTO Personals (personalId, login, password, firstName, lastName, role) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SELECT_PERSONAL_BY_EMAIL_SQL =
             "SELECT idMed_personal, name, surname, role, login, password FROM Med_personal WHERE login = ?;";
     private static final String UPDATE_PERSONAL_SQL =
-            "UPDATE Personals SET email = ?, password = ?, firstName = ?, lastName = ?, role = ? WHERE personalId = ?";
+            "UPDATE Personals SET login = ?, password = ?, firstName = ?, lastName = ?, role = ? WHERE personalId = ?";
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
 
@@ -30,7 +30,7 @@ public class H2PersonalDao implements PersonalDao {
              PreparedStatement statement = connection.prepareStatement(CREATE_PERSONAL_SQL,
                      Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, personal.getPersonalId());
-            statement.setString(2, personal.getEmail());
+            statement.setString(2, personal.getLogin());
             statement.setString(3, String.valueOf(personal.getPassword()));
             statement.setString(4, personal.getFirstName());
             statement.setString(5, personal.getLastName());
@@ -54,7 +54,7 @@ public class H2PersonalDao implements PersonalDao {
                 Personal personal = new Personal();
                 if (resultSet.next()) {
                     personal.setPersonalId(resultSet.getInt("idMed_personal"));
-                    personal.setEmail(login);
+                    personal.setLogin(login);
                     personal.setPassword(resultSet.getString("password"));
                     personal.setFirstName(resultSet.getString("name"));
                     personal.setLastName(resultSet.getString("surname"));
@@ -75,7 +75,7 @@ public class H2PersonalDao implements PersonalDao {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_PERSONAL_SQL)) {
             statement.setLong(1, personal.getPersonalId());
-            statement.setString(1, personal.getEmail());
+            statement.setString(1, personal.getLogin());
             statement.setString(2, personal.getPassword().toString());
             statement.setString(3, personal.getFirstName());
             statement.setString(4, personal.getLastName());
