@@ -72,7 +72,6 @@ public class Login extends HttpServlet {
 //        }
 
         } else {
-//            request.setAttribute("loginError", ERROR_MESSAGE_EN);
             request.setAttribute("loginError", bundle.getString("loginError"));
             request.getRequestDispatcher("/").forward(request, response);
             //TODO записать в лог неуспешную регистрацию (дата, время, логин, IP (String getRemoteAddr())
