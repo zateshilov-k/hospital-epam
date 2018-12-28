@@ -45,7 +45,7 @@ public class H2PersonalDao implements PersonalDao {
         return 0;
     }
 
-    public Optional<Personal> readPersonalByEmail(String login) {
+    public Optional<Personal> readPersonalByLogin(String login) {
         try (Connection connection = this.dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(SELECT_PERSONAL_BY_LOGIN_SQL)) {
             statement.setString(1, login);
