@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 /*
 Обработка страницы авторизации
@@ -35,8 +37,16 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        response.setContentType("text/html");
+        HttpSession session = request.getSession(true);
+        session.setMaxInactiveInterval(1800);
+        Locale locale = (Locale) session.getAttribute("locale");
+        System.out.println(locale);
+        if (locale == null) {
+            locale = new Locale("ru");
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
+        response.setContentType("text/html;charset=utf-8");
+        System.out.println("doPost method");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
