@@ -4,6 +4,7 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Personal {
 
     private long personalId;

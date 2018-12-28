@@ -1,5 +1,6 @@
 package listeners;
 
+import model.*;
 import utils.HashGenerator;
 
 import javax.annotation.Resource;
@@ -16,15 +17,20 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @WebListener
 public class DatabaseInitListener implements ServletContextListener {
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
+    private Random random = new Random();
+    private HashGenerator hashGenerator;
 
-    private static void printTable(Statement statement, String table) throws SQLException {
+    private void printTable(Statement statement, String table) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table + ";");
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -36,24 +42,24 @@ public class DatabaseInitListener implements ServletContextListener {
         }
     }
 
-    private static String getRandomName(Random random) {
+    private String getRandomFirstName() {
         String[] baseNames = {"Александр", "Артем", "Максим", "Михаил", "Иван", "Даниил", "Дмитрий", "Матвей",
                 "Андрей", "Кирилл"};
         return baseNames[random.nextInt(baseNames.length)];
     }
 
-    private static String getRandomSurname(Random random) {
+    private String getRandomLastName() {
         String[] baseSurnames = {"Смирнов", "Иванов", "Кузнецов", "Соколов", "Попов", "Лебедев", "Козлов", "Новиков",
                 "Морозов", "Петров", "Волков"};
         return baseSurnames[random.nextInt(baseSurnames.length)];
     }
 
-    private static String getRandomRole(Random random) {
+    private String getRandomRole() {
         String[] baseRoles = {"Доктор", "Медбрат"};
         return baseRoles[random.nextInt(baseRoles.length)];
     }
 
-    private static String getRandomDisease(Random random) {
+    private String getRandomDisease() {
         String[] baseDiseases = {"Аднексит", "Аллергия", "Ангина", "Анемия", "Артериальная гипертензия",
                 "Артериальная гипотония", "Артрит", "Артроз", "Атеросклероз", "Бессонница", "Боль", "Бронхиальная " +
                 "астма", "Бронхит", "Трахеит", "Мастит", "Лактостаз", "Мастопатия", "Метеоризм", "Миалгия", "Мигрень"
@@ -62,28 +68,28 @@ public class DatabaseInitListener implements ServletContextListener {
         return baseDiseases[random.nextInt(baseDiseases.length)];
     }
 
-    private static String getRandomPrescription(Random random) {
+    private String getRandomPrescriptionString() {
         String[] basePrescriptions = {"Операция", "Процедура", "Лекарство"};
         return basePrescriptions[random.nextInt(basePrescriptions.length)];
     }
 
-    private static void addMedPersonal(Statement statement, int personalId, Random random, String randomRole,
-                                       HashGenerator hashGenerator) throws SQLException {
+    private void addMedPersonal(Statement statement, int personalId, Random random, String randomRole,
+                                HashGenerator hashGenerator) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
-                + "(" + (personalId) + "," + "\'" + getRandomName(random) + "\'," + "\'" + getRandomSurname(random)
+                + "(" + (personalId) + "," + "\'" + getRandomFirstName() + "\'," + "\'" + getRandomLastName()
                 + "\'," + "\'" + randomRole + "\'," + "\'" + "login"
                 + personalId + "@epam.com" + "\'," + "\'"
                 + hashGenerator.getHash("password1") + "\'" + ");");
         //System.out.println(hashGenerator.getHash("password1"));
     }
 
-    private static void addPatients(Statement statement, int patientId, Random random, String isDischarged) throws SQLException {
+    private void addPatients(Statement statement, int patientId, Random random, String isDischarged) throws SQLException {
         statement.addBatch("INSERT INTO patient " + "(patient_id, first_name, last_name, is_discharged) VALUES"
-                + "(" + (patientId) + "," + "\'" + getRandomName(random) + "\'," + "\'" + getRandomSurname(random)
+                + "(" + (patientId) + "," + "\'" + getRandomFirstName() + "\'," + "\'" + getRandomLastName()
                 + "\'," + isDischarged + ");");
     }
 
-    private static String getRandomDate(Random random) {
+    private String getRandomDate() {
         Instant now = Instant.now();
         LocalDateTime dt = LocalDateTime.ofInstant(now, ZoneOffset.UTC);
         dt.plusDays(random.nextInt(30));
@@ -92,20 +98,29 @@ public class DatabaseInitListener implements ServletContextListener {
         return dt.format(df);
     }
 
-    private static void addDiagnosis(Statement statement, int diagnosisId, int personalId, int patientId,
-                                     Random random) throws SQLException {
+    private LocalDateTime getRandomDate2() {
+        Instant now = Instant.now();
+        LocalDateTime dt = LocalDateTime.ofInstant(now, ZoneOffset.UTC);
+        dt = dt.plusDays(random.nextInt(30));
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
-                "VALUES" + "(" + (diagnosisId) + "," + "\'" + getRandomDisease(random) + "\',"
-                + (personalId) + "," + (patientId) + "," + "\'" + getRandomDate(random) + "\'," + "FALSE" + ");");
+        return dt;
     }
 
-    private static void addPrescription(Statement statement, int currentPrescriptionId, int currentPatientId,
-                                        int currentDiagnosisId, boolean isDone, Random random) throws SQLException {
+    private void addDiagnosis(Statement statement, int diagnosisId, int personalId, int patientId,
+                              Random random) throws SQLException {
+
+        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
+                "VALUES" + "(" + (diagnosisId) + "," + "\'" + getRandomDisease() + "\',"
+                + (personalId) + "," + (patientId) + "," + "\'" + getRandomDate() + "\'," + "FALSE" + ");");
+    }
+
+    private void addPrescription(Statement statement, int currentPrescriptionId, int currentPatientId,
+                                 int currentDiagnosisId, boolean isDone, Random random) throws SQLException {
         statement.addBatch("INSERT INTO prescription " + "(prescription_id, description, patient_id, time, diagnosis_id," +
                 "type, is_done) VALUES" + "(" + (currentPrescriptionId) + "," + "\'" + "prescription descr"
-                + currentPrescriptionId + "\'," + (currentPatientId) + "," + "\'" + (getRandomDate(random))
-                + "\'," + currentDiagnosisId + "," + "\'" + getRandomPrescription(random) + "\',"
+                + currentPrescriptionId + "\'," + (currentPatientId) + "," + "\'" + (getRandomDate())
+                + "\'," + currentDiagnosisId + "," + "\'" + getRandomPrescriptionString() + "\',"
                 + (Boolean.valueOf(isDone).toString()).toUpperCase() + ");");
     }
 
@@ -117,6 +132,157 @@ public class DatabaseInitListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
+        final int numberOfPersonal = 2;
+        final int numberOfPatients = 2;
+        final int numberOfDiagnosisPerPatient = 1;
+        final int numberOfPrescriptionsPerDiagnosis = 2;
+
+        List<Personal> personals = IntStream.range(1, numberOfPersonal)
+                .mapToObj((i) -> getRandomPersonal(i, false))
+                .collect(Collectors.toList());
+        personals.add(getRandomPersonal(personals.size(), true));
+
+        List<Patient> patients = IntStream.range(1, numberOfPatients)
+                .mapToObj((i) -> getRandomPatient(i))
+                .collect(Collectors.toList());
+        List<Diagnosis> diagnoses = new ArrayList<>();
+        int diagnosisId = 0;
+        patients.forEach(patient -> {
+            for (int i = 0; i < numberOfDiagnosisPerPatient; i++) {
+                Personal doctor = IntStream
+                        .generate(() -> random.nextInt(personals.size()))
+                        .mapToObj(j -> personals.get(j))
+                        .filter((p) -> p.getRole() == Role.ДОКТОР)
+                        .findAny().get();
+                diagnoses.add(getRandomDiagonsis(diagnoses.size() + 1, patient, doctor));
+            }
+        });
+
+        List<Prescription> prescriptions = new ArrayList<>();
+        diagnoses.forEach(diagnosis -> {
+            for (int i = 0; i < numberOfPrescriptionsPerDiagnosis; i++) {
+                Prescription firstPrescription = getRandomPrescription(prescriptions.size() + 1, diagnosis);
+                prescriptions.add(firstPrescription);
+            }
+        });
+
+        List<PersonalPrescription> personalPrescriptions = new ArrayList<>();
+        prescriptions.forEach(prescription -> {
+            if (prescription.isDone()) {
+                Personal executor;
+                switch (prescription.getType()) {
+                    case ОПЕРАЦИЯ:
+                        executor = IntStream
+                                .generate(() -> random.nextInt(personals.size()))
+                                .mapToObj(j -> personals.get(j))
+                                .filter((p) -> p.getRole() == Role.ДОКТОР)
+                                .findAny().get();
+                        break;
+                    case ЛЕКАРСТВО:
+                    case ПРОЦЕДУРА:
+                        executor = IntStream
+                                .generate(() -> random.nextInt(personals.size()))
+                                .mapToObj(j -> personals.get(j))
+                                .findAny().get();
+                        break;
+                    default: {
+                        throw new IllegalArgumentException("Wrongn PersonalPrescriptionType");
+                    }
+                }
+                personalPrescriptions.add(new PersonalPrescription(
+                                personalPrescriptions.size() + 1,
+                                PersonalPrescriptionType.ВЫПОЛНИЛ,
+                                executor,
+                                prescription
+                        )
+                );
+            }
+            personalPrescriptions.add(new PersonalPrescription(
+                    personalPrescriptions.size() + 1,
+                    PersonalPrescriptionType.НАЗНАЧИЛ,
+                    prescription.getDiagnosis().getPersonal(),
+                    prescription
+            ));
+        });
+        personals.forEach(System.out::println);
+        patients.forEach(System.out::println);
+        diagnoses.forEach(System.out::println);
+        prescriptions.forEach(System.out::println);
+        personalPrescriptions.forEach(System.out::println);
+    }
+
+    private PersonalPrescriptionType getRandomPersonalPrescriptionType() {
+        PersonalPrescriptionType[] personalPrescriptionTypes = PersonalPrescriptionType.values();
+        return personalPrescriptionTypes[random.nextInt(personalPrescriptionTypes.length)];
+    }
+
+    private Prescription getRandomPrescription(int id, Diagnosis diagnosis) {
+        return new Prescription(
+                id,
+                getRandomPrescriptionString(),
+                diagnosis.getPatient(),
+                diagnosis,
+                random.nextBoolean(),
+                getRandomDateAfter(diagnosis.getTime()),
+                getRandomPrecriptionType()
+        );
+    }
+
+    private PrescriptionType getRandomPrecriptionType() {
+        PrescriptionType[] prescriptionTypes = PrescriptionType.values();
+        return prescriptionTypes[random.nextInt(prescriptionTypes.length)];
+    }
+
+    private LocalDateTime getRandomDateAfter(LocalDateTime time) {
+        time = time.plusDays(random.nextInt(30));
+        return time;
+    }
+
+    private Diagnosis getRandomDiagonsis(int id, Patient patient, Personal doctor) {
+        return new Diagnosis(
+                id,
+                getRandomDisease(),
+                doctor,
+                patient,
+                false,
+                getRandomDate2()
+        );
+    }
+
+    private Patient getRandomPatient(int id) {
+        return new Patient(
+                id,
+                getRandomFirstName(),
+                getRandomLastName(),
+                false
+        );
+    }
+
+    private Personal getRandomPersonal(int id, boolean isDoctor) {
+        Role role;
+        if (isDoctor) {
+            role = Role.ДОКТОР;
+        } else {
+            role = Role.valueOf(getRandomRole().toUpperCase());
+        }
+        return new Personal(
+                id,
+                "login" + id + "epam.com",
+                hashGenerator.getHash("password" + id),
+                getRandomFirstName(),
+                getRandomLastName(),
+                role
+        );
+    }
+
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+    }
+
+    public void temp(ServletContextEvent servletContextEvent) {
         HashGenerator hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute(
                 "hashGenerator");
         System.out.println("Database init started");
@@ -133,7 +299,7 @@ public class DatabaseInitListener implements ServletContextListener {
             final int numberOfPrescriptions = 2;
             Random random = new Random();
             for (int medPersonalId = 1; medPersonalId <= numberOfMedPersonal; ++medPersonalId) {
-                String randomRole = getRandomRole(random);
+                String randomRole = getRandomRole();
                 addMedPersonal(statement, medPersonalId, random, randomRole, hashGenerator);
 
                 for (int patientId = 1; patientId <= numberOfPatients; ++patientId) {
@@ -192,12 +358,6 @@ public class DatabaseInitListener implements ServletContextListener {
         }
         System.out.println("Database init ended");
         servletContextEvent.getServletContext().setAttribute("dataSource", dataSource);
-    }
-
-
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
     }
-
 }
