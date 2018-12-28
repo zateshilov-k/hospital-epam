@@ -36,13 +36,13 @@ public class DatabaseInitListener implements ServletContextListener {
         }
     }
 
-    private static String getRandomName(Random random) {
+    private static String getRandomFirstName(Random random) {
         String[] baseNames = {"Александр", "Артем", "Максим", "Михаил", "Иван", "Даниил", "Дмитрий", "Матвей",
                 "Андрей", "Кирилл"};
         return baseNames[random.nextInt(baseNames.length)];
     }
 
-    private static String getRandomSurname(Random random) {
+    private static String getRandomLastName(Random random) {
         String[] baseSurnames = {"Смирнов", "Иванов", "Кузнецов", "Соколов", "Попов", "Лебедев", "Козлов", "Новиков",
                 "Морозов", "Петров", "Волков"};
         return baseSurnames[random.nextInt(baseSurnames.length)];
@@ -67,19 +67,19 @@ public class DatabaseInitListener implements ServletContextListener {
         return basePrescriptions[random.nextInt(basePrescriptions.length)];
     }
 
-    private static void addMedPersonal(Statement statement, int personalId, Random random, String randomRole,
-                                       HashGenerator hashGenerator) throws SQLException {
+    private static void addMedicalPersonal(Statement statement, int personalId, Random random, String randomRole,
+                                           HashGenerator hashGenerator) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
-                + "(" + (personalId) + "," + "\'" + getRandomName(random) + "\'," + "\'" + getRandomSurname(random)
+                + "(" + (personalId) + "," + "\'" + getRandomFirstName(random) + "\'," + "\'" + getRandomLastName(random)
                 + "\'," + "\'" + randomRole + "\'," + "\'" + "login"
                 + personalId + "@epam.com" + "\'," + "\'"
                 + hashGenerator.getHash("password1") + "\'" + ");");
         //System.out.println(hashGenerator.getHash("password1"));
     }
 
-    private static void addPatients(Statement statement, int patientId, Random random, String isDischarged) throws SQLException {
+    private static void addPatient(Statement statement, int patientId, Random random, String isDischarged) throws SQLException {
         statement.addBatch("INSERT INTO patient " + "(patient_id, first_name, last_name, is_discharged) VALUES"
-                + "(" + (patientId) + "," + "\'" + getRandomName(random) + "\'," + "\'" + getRandomSurname(random)
+                + "(" + (patientId) + "," + "\'" + getRandomFirstName(random) + "\'," + "\'" + getRandomLastName(random)
                 + "\'," + isDischarged + ");");
     }
 
@@ -134,12 +134,12 @@ public class DatabaseInitListener implements ServletContextListener {
             Random random = new Random();
             for (int medPersonalId = 1; medPersonalId <= numberOfMedPersonal; ++medPersonalId) {
                 String randomRole = getRandomRole(random);
-                addMedPersonal(statement, medPersonalId, random, randomRole, hashGenerator);
+                addMedicalPersonal(statement, medPersonalId, random, randomRole, hashGenerator);
 
                 for (int patientId = 1; patientId <= numberOfPatients; ++patientId) {
                     String isDischarged = (random.nextBoolean() + "").toUpperCase();
                     int currentPatientId = patientId + (medPersonalId - 1) * numberOfPatients;
-                    addPatients(statement, currentPatientId, random, isDischarged);
+                    addPatient(statement, currentPatientId, random, isDischarged);
 
                     for (int diagnosisId = 1; diagnosisId <= numberOfDiagnosis; ++diagnosisId) {
                         int currentDiagnosisId =
