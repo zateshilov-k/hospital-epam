@@ -23,7 +23,7 @@ tr:nth-child(even) {
 </head>
 <body>
 
-<h1 style="text-align:center;" style="font-size:220">Welcome, Username</h1>
+<h1 style="text-align:center;" style="font-size:220">Welcome, ${name} ${surname}</h1>
 
 <table>
   <script>

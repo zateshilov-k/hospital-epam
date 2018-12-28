@@ -25,14 +25,12 @@ import java.util.ResourceBundle;
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {
-
-//    private final String ERROR_MESSAGE_EN = "Invalid login or password";
-//    private final String ERROR_MESSAGE_RU = "Неверный логин или пароль";
     DataSource dataSource;
     HashGenerator hashGenerator;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("hello get");
+        doPost(request, response);
     }
 
     @Override
@@ -40,18 +38,20 @@ public class Login extends HttpServlet {
         System.out.println("doPost method");
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(1800);
+        //TODO Локаль из сессии приходит как null
         Locale locale = (Locale) session.getAttribute("locale");
-        System.out.println(locale);
+        System.out.println("Locale\t" + locale);
         if (locale == null) {
             locale = new Locale("ru");
         }
+        System.out.println("Locale\t" + locale);
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
         System.out.println(login + " " + password);
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
-                password,dataSource,hashGenerator);
+                password, dataSource, hashGenerator);
 
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
@@ -60,9 +60,10 @@ public class Login extends HttpServlet {
             request.getRequestDispatcher("/main.jsp").forward(request, response);
             String ip = request.getRemoteAddr();
             return;
-        }
-        else {
-            request.setAttribute("loginError", bundle.getString("loginError"));
+        } else {
+            String str = bundle.getString("loginError");
+            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
+            request.setAttribute("loginError", str);
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
