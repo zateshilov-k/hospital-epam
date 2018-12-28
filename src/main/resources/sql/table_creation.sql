@@ -1,79 +1,79 @@
-CREATE TABLE IF NOT EXISTS `Med_personal` (
-  `personalId` INT NOT NULL AUTO_INCREMENT,
-  `firstName` VARCHAR(255) NOT NULL,
-  `lastName` VARCHAR(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `medical_personal` (
+  `personal_id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
   `role` VARCHAR(45) NOT NULL,
   `login` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`personalId`))
+  PRIMARY KEY (`personal_id`))
 ;
 
 
-CREATE TABLE IF NOT EXISTS `Patient` (
-  `patientId` INT NOT NULL AUTO_INCREMENT,
-  `firstName` VARCHAR(255) NOT NULL,
-  `lastName` VARCHAR(255) NOT NULL,
-  `isDischarged` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`patientId`))
+CREATE TABLE IF NOT EXISTS `patient` (
+  `patient_id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `is_discharged` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`patient_id`))
 ;
 
 
-CREATE TABLE IF NOT EXISTS `Diagnosis` (
-  `diagnosisId` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `diagnosis` (
+  `diagnosis_id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(1024) NULL,
-  `personalId` INT NOT NULL,
-  `patientId` INT NOT NULL,
+  `personal_id` INT NOT NULL,
+  `patient_id` INT NOT NULL,
   `time` DATETIME NULL,
-  `isHealthy` TINYINT(1) NULL,
-  PRIMARY KEY (`diagnosisId`),
-  CONSTRAINT `fk_Diagnosis_Personal`
-    FOREIGN KEY (`personalId`)
-    REFERENCES `Med_personal` (`personalId`)
+  `is_healthy` TINYINT(1) NULL,
+  PRIMARY KEY (`diagnosis_id`),
+  CONSTRAINT `diagnosis_personal_constraint`
+    FOREIGN KEY (`personal_id`)
+    REFERENCES `medical_personal` (`personal_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Diagnosis_Patient`
-    FOREIGN KEY (`patientId`)
-    REFERENCES `Patient` (`patientId`)
+  CONSTRAINT `diagnosis_patient_constraint`
+    FOREIGN KEY (`patient_id`)
+    REFERENCES `patient` (`patient_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;
 
-CREATE TABLE IF NOT EXISTS `Prescription` (
-  `prescriptionId` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `prescription` (
+  `prescription_id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(255) NULL,
-  `patientId` INT NOT NULL,
+  `patient_id` INT NOT NULL,
   `time` DATETIME NULL,
-  `diagnosisId` INT NOT NULL,
+  `diagnosis_id` INT NOT NULL,
   `type` VARCHAR(45) NULL,
-  `isDone` TINYINT(1) NULL,
-  PRIMARY KEY (`prescriptionId`),
-  CONSTRAINT `fk_Prescription_Patient1`
-    FOREIGN KEY (`patientId`)
-    REFERENCES `Patient` (`patientId`)
+  `is_done` TINYINT(1) NULL,
+  PRIMARY KEY (`prescription_id`),
+  CONSTRAINT `prescription_patient_constraint`
+    FOREIGN KEY (`patient_id`)
+    REFERENCES `patient` (`patient_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Prescription_Diagnosis1`
-    FOREIGN KEY (`diagnosisId`)
-    REFERENCES `Diagnosis` (`diagnosisId`)
+  CONSTRAINT `prescription_diagnosis_constraint`
+    FOREIGN KEY (`diagnosis_id`)
+    REFERENCES `diagnosis` (`diagnosis_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;
 
 
-CREATE TABLE IF NOT EXISTS `Med_personal_Prescription` (
-  `personalPrescriptionId` INT NOT NULL AUTO_INCREMENT,
-  `Type` VARCHAR(255) NULL,
-  `personalId` INT NOT NULL,
-  `prescriptionId` INT NOT NULL,
-  PRIMARY KEY (`personalPrescriptionId`),
-  CONSTRAINT `fk_Doctor_Prescription_Doctor1`
-    FOREIGN KEY (`personalId`)
-    REFERENCES `Med_personal` (`personalId`)
+CREATE TABLE IF NOT EXISTS `medical_personal_prescription` (
+  `personal_prescription_id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(255) NULL,
+  `personal_id` INT NOT NULL,
+  `prescription_id` INT NOT NULL,
+  PRIMARY KEY (`personal_prescription_id`),
+  CONSTRAINT `medical_personal_constraint`
+    FOREIGN KEY (`personal_id`)
+    REFERENCES `medical_personal` (`personal_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Doctor_Prescription_Prescription1`
-    FOREIGN KEY (`prescriptionId`)
-    REFERENCES `Prescription` (`prescriptionId`)
+  CONSTRAINT `prescription_personal_constraint`
+    FOREIGN KEY (`prescription_id`)
+    REFERENCES `prescription` (`prescription_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ;

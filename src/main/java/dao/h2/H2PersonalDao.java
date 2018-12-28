@@ -13,8 +13,8 @@ public class H2PersonalDao implements PersonalDao {
 
     private static final String CREATE_PERSONAL_SQL = "INSERT INTO Personals (personalId, login, password, firstName," +
             " lastName, role) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_PERSONAL_BY_LOGIN_SQL = "SELECT personalId, firstName, lastName, role, login, " +
-            "password FROM Med_personal WHERE login = ?;";
+    private static final String SELECT_PERSONAL_BY_LOGIN_SQL = "SELECT personal_id, first_name, last_name, role, login, " +
+            "password FROM medical_personal WHERE login = ?;";
     private static final String UPDATE_PERSONAL_SQL = "UPDATE Personals SET login = ?, password = ?, firstName = ?, " +
             "lastName = ?, role = ? WHERE personalId = ?";
     @Resource(name = "jdbc/hospital-h2-db")
@@ -52,11 +52,11 @@ public class H2PersonalDao implements PersonalDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 Personal personal = new Personal();
                 if (resultSet.next()) {
-                    personal.setPersonalId(resultSet.getInt("personalId"));
+                    personal.setPersonalId(resultSet.getInt("personal_id"));
                     personal.setLogin(login);
                     personal.setPassword(resultSet.getString("password"));
-                    personal.setFirstName(resultSet.getString("firstName"));
-                    personal.setLastName(resultSet.getString("lastName"));
+                    personal.setFirstName(resultSet.getString("first_name"));
+                    personal.setLastName(resultSet.getString("last_name"));
                     personal.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
                     return Optional.of(personal);
                 } else {

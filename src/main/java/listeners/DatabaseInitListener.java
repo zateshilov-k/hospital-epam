@@ -63,13 +63,13 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private static String getRandomPrescription(Random random) {
-        String[] basePescriptions = {"Операция", "Процедура", "Лекарство"};
-        return basePescriptions[random.nextInt(basePescriptions.length)];
+        String[] basePrescriptions = {"Операция", "Процедура", "Лекарство"};
+        return basePrescriptions[random.nextInt(basePrescriptions.length)];
     }
 
     private static void addMedPersonal(Statement statement, int personalId, Random random, String randomRole,
                                        HashGenerator hashGenerator) throws SQLException {
-        statement.addBatch("INSERT INTO Med_personal " + "(personalId,firstName,lastName,role,login,password) VALUES"
+        statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
                 + "(" + (personalId) + "," + "\'" + getRandomName(random) + "\'," + "\'" + getRandomSurname(random)
                 + "\'," + "\'" + randomRole + "\'," + "\'" + "login"
                 + personalId + "@epam.com" + "\'," + "\'"
@@ -78,7 +78,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private static void addPatients(Statement statement, int patientId, Random random, String isDischarged) throws SQLException {
-        statement.addBatch("INSERT INTO Patient " + "(patientId,firstName,lastName,isDischarged) VALUES"
+        statement.addBatch("INSERT INTO patient " + "(patient_id, first_name, last_name, is_discharged) VALUES"
                 + "(" + (patientId) + "," + "\'" + getRandomName(random) + "\'," + "\'" + getRandomSurname(random)
                 + "\'," + isDischarged + ");");
     }
@@ -95,15 +95,15 @@ public class DatabaseInitListener implements ServletContextListener {
     private static void addDiagnosis(Statement statement, int diagnosisId, int personalId, int patientId,
                                      Random random) throws SQLException {
 
-        statement.addBatch("INSERT INTO Diagnosis " + "(diagnosisId,description,personalId,patientId,time,isHealthy) " +
+        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
                 "VALUES" + "(" + (diagnosisId) + "," + "\'" + getRandomDisease(random) + "\',"
                 + (personalId) + "," + (patientId) + "," + "\'" + getRandomDate(random) + "\'," + "FALSE" + ");");
     }
 
     private static void addPrescription(Statement statement, int currentPrescriptionId, int currentPatientId,
                                         int currentDiagnosisId, boolean isDone, Random random) throws SQLException {
-        statement.addBatch("INSERT INTO Prescription " + "(prescriptionId,description,patientId,time,diagnosisId," +
-                "type,isDone) VALUES" + "(" + (currentPrescriptionId) + "," + "\'" + "Prescription descr"
+        statement.addBatch("INSERT INTO prescription " + "(prescription_id, description, patient_id, time, diagnosis_id," +
+                "type, is_done) VALUES" + "(" + (currentPrescriptionId) + "," + "\'" + "prescription descr"
                 + currentPrescriptionId + "\'," + (currentPatientId) + "," + "\'" + (getRandomDate(random))
                 + "\'," + currentDiagnosisId + "," + "\'" + getRandomPrescription(random) + "\',"
                 + (Boolean.valueOf(isDone).toString()).toUpperCase() + ");");
@@ -111,8 +111,8 @@ public class DatabaseInitListener implements ServletContextListener {
 
     private void addPersonalPrescription(Statement statement, int id, int personalId, int prescriptionId,
                                          String type) throws SQLException {
-        statement.addBatch("INSERT INTO Med_personal_Prescription " + "(personalPrescriptionId,Type,personalId," +
-                "prescriptionId) VALUES" + "(" + id + "," + "\'" + type + "\'," + (personalId) + "," + prescriptionId + ");");
+        statement.addBatch("INSERT INTO medical_personal_prescription " + "(personal_prescription_id, type, personal_id," +
+                "prescription_id) VALUES" + "(" + id + "," + "\'" + type + "\'," + (personalId) + "," + prescriptionId + ");");
     }
 
     @Override
@@ -182,11 +182,11 @@ public class DatabaseInitListener implements ServletContextListener {
             e.printStackTrace();
         }
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
-            printTable(statement, "Med_personal");
-            printTable(statement, "Patient");
-            printTable(statement, "Diagnosis");
-            printTable(statement, "Prescription");
-            printTable(statement, "Med_personal_Prescription");
+            printTable(statement, "medical_personal");
+            printTable(statement, "patient");
+            printTable(statement, "diagnosis");
+            printTable(statement, "prescription");
+            printTable(statement, "medical_personal_prescription");
         } catch (SQLException e) {
             e.printStackTrace();
         }
