@@ -19,14 +19,18 @@ table, th, td {
 
 }
 th, td {
-  padding: 15px;
+  padding: 13px;
 }
 </style>
 </head>
 <body style="background-color:powderblue;">
 
 <h1 style="text-align:center;" style="font-size:220">Welcome,UserName</h1>
+
+
 <h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
+
+
 <br>
   <div class="button1">
    <button type="button1">New Pacient</button>
@@ -34,40 +38,60 @@ th, td {
    <div class="button2">
     <button type="button2">Change data</button>
    </div>
+
+
    <br><br>
-<table style="width:90%">
+<table class="table" style="width:100%">
   <tr>
     <th>Id</th>
     <th>firstName and lastName</th>
   </tr>
-  <tr>
-    <td>Jill</td>
-    <td>Smith</td>
 
-  </tr>
   <tr>
     <td>Eve</td>
-    <td>Jackson</td>
+      <td>
+       <a href="#" style="position: absolute";>Sasha Alexandrovich</a>
+    </td>
   </tr>
   <tr>
     <td>John</td>
-    <td>Doe</td>
+    <td>
+
+    <a href="#" style="position: absolute";>Jill Alexandrovich</a>
+
+    </td>
   </tr>
     <tr>
     <td>John</td>
-    <td>Doe</td>
+      <td>
+
+    <a href="#" style="position: absolute";>Jimmy Alexandrovich</a>
+
+    </td>
   </tr>
     <tr>
     <td>John</td>
-    <td>Doe</td>
+    <td>
+
+    <a href="#" style="position: absolute";>Mike Alexandrovich</a>
+
+    </td>
   </tr>
     <tr>
     <td>John</td>
-    <td>Doe</td>
+    <td>
+
+    <a href="#" style="position: absolute";>Oleg Alexandrovich</a>
+
+    </td>
   </tr>
     <tr>
     <td>John</td>
-    <td>Doe</td>
+    <td>
+
+    <a href="#" style="position: absolute";>Vasya Alexandrovich</a>
+
+    </td>
   </tr>
 
 </table>
