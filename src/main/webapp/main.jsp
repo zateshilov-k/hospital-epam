@@ -5,15 +5,13 @@
 <style>
    .button1 {
     position: absolute; /* Относительное позиционирование */
-    left: 500px;
-    top: 230px;
+    left: 300px;
+    top: 16px;
     line-height: 300px;
    }
    .button2 {
+    left: 200px;
     position: absolute; /* Относительное позиционирование */
-    left: 500px;
-    top: 280px;
-    line-height: 300px;
    }
 
 table, th, td {
@@ -29,8 +27,15 @@ th, td {
 
 <h1 style="text-align:center;" style="font-size:220">Welcome,UserName</h1>
 <h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
-
-<table style="width:75%">
+<br>
+  <div class="button1">
+   <button type="button1">New Pacient</button>
+   </div>
+   <div class="button2">
+    <button type="button2">Change data</button>
+   </div>
+   <br><br>
+<table style="width:90%">
   <tr>
     <th>Id</th>
     <th>firstName and lastName</th>
@@ -48,14 +53,23 @@ th, td {
     <td>John</td>
     <td>Doe</td>
   </tr>
-</table>
+    <tr>
+    <td>John</td>
+    <td>Doe</td>
+  </tr>
+    <tr>
+    <td>John</td>
+    <td>Doe</td>
+  </tr>
+    <tr>
+    <td>John</td>
+    <td>Doe</td>
+  </tr>
+    <tr>
+    <td>John</td>
+    <td>Doe</td>
+  </tr>
 
-<br><br><br><br>
-  <div class="button1">
-   <button type="button1">New Pacient</button>
-   </div>
-   <div class="button2">
-    <button type="button2">Change data</button>
-   </div>
+</table>
 </body>
 </html>
