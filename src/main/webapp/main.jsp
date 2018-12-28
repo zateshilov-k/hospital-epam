@@ -59,5 +59,6 @@ th, td {
       <td>
     <a href="'/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
 </table>
+<br>
 </body>
 </html>
