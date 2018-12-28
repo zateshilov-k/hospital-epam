@@ -25,6 +25,7 @@ tr:nth-child(even) {
 
 <h1 style="text-align:center;" style="font-size:220">Welcome, Username</h1>
 
+
 <table>
   <script>
 	var pacientTable = document.createElement('table'),
