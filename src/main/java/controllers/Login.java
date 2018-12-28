@@ -35,29 +35,24 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doPost method");
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(1800);
-        //TODO Локаль из сессии приходит как null
         Locale locale = (Locale) session.getAttribute("locale");
-        System.out.println("Locale\t" + locale);
         if (locale == null) {
             locale = new Locale("ru");
         }
-        System.out.println("Locale\t" + locale);
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
-        System.out.println(login + " " + password);
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, dataSource, hashGenerator);
-
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());
             request.setAttribute("role", currentUser.get().getRole());
             request.getRequestDispatcher("/main.jsp").forward(request, response);
+            //TODO add logging
             String ip = request.getRemoteAddr();
             return;
         } else {
