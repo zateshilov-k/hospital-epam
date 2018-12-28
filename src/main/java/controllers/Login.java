@@ -28,29 +28,31 @@ public class Login extends HttpServlet {
     private final String ERROR_MESSAGE_RU = "Неверный логин или пароль";
     DataSource dataSource;
     HashGenerator hashGenerator;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
         System.out.println("hello get");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+            IOException {
         HttpSession session = request.getSession();
         response.setContentType("text/html");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
-        Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
-                password,dataSource,hashGenerator);
+        Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login, password, dataSource,
+                hashGenerator);
 
         request.setAttribute("loginError", ERROR_MESSAGE_EN);
         if (currentUser.isPresent()) {
-            request.setAttribute("name", currentUser.get().getFirstName());
-            request.setAttribute("surname", currentUser.get().getLastName());
+            request.setAttribute("firstName", currentUser.get().getFirstName());
+            request.setAttribute("lastName", currentUser.get().getLastName());
             request.getRequestDispatcher("/main.jsp").forward(request, response);
             String ip = request.getRemoteAddr();
             return;
-        }
-        else {
+        } else {
             request.setAttribute("loginError", ERROR_MESSAGE_EN);
             request.getRequestDispatcher("/").forward(request, response);
             return;

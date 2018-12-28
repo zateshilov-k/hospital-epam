@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashGenerator {
-    private static final String ALGORITHM  = "MD5";
+    private static final String ALGORITHM = "MD5";
     private MessageDigest digest;
 
     public HashGenerator() throws NoSuchAlgorithmException {
