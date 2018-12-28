@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
@@ -18,7 +19,7 @@
   <input type="text" name= "password">
 <br>
 <br>
-<button style="text-align:center;">Register now!</button>
+<button style="text-align:center;" onclick="href='/Main.jsp'">Sign Up</button>
 </fieldset>
 </form>
 </html>
