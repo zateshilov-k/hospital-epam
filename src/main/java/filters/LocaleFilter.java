@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 
-@WebFilter("/*")
+
 public class LocaleFilter implements Filter {
 
 
