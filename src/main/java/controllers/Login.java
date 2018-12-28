@@ -26,17 +26,18 @@ import java.util.ResourceBundle;
 @WebServlet("/login")
 public class Login extends HttpServlet {
 
-    private final String ERROR_MESSAGE_EN = "Invalid login or password";
-    private final String ERROR_MESSAGE_RU = "Неверный логин или пароль";
+//    private final String ERROR_MESSAGE_EN = "Invalid login or password";
+//    private final String ERROR_MESSAGE_RU = "Неверный логин или пароль";
     DataSource dataSource;
     HashGenerator hashGenerator;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("hello get");
+//        System.out.println("hello get");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("doPost method");
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(1800);
         Locale locale = (Locale) session.getAttribute("locale");
@@ -46,13 +47,12 @@ public class Login extends HttpServlet {
         }
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
-        System.out.println("doPost method");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
+        System.out.println(login + " " + password);
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password,dataSource,hashGenerator);
 
-        request.setAttribute("loginError", ERROR_MESSAGE_EN);
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());
@@ -61,7 +61,7 @@ public class Login extends HttpServlet {
             return;
         }
         else {
-            request.setAttribute("loginError", ERROR_MESSAGE_EN);
+            request.setAttribute("loginError", bundle.getString("loginError"));
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
