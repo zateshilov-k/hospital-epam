@@ -11,8 +11,6 @@ public class Diagnosis {
 
     private long diagnosisId;
     private String description;
-
-
     private Personal personal;
     private Patient patient;
     private Date time;
