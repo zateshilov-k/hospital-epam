@@ -9,7 +9,7 @@ import java.io.IOException;
 /*
 Проверка - авторизован ли пользователь
  */
-
+@WebFilter(urlPatterns = {"/index.jsp", "/WEB-INF/main.jsp"})
 public class LoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -23,7 +23,7 @@ public class LoginFilter implements Filter {
         if (currentUser == null) {
             request.getRequestDispatcher("/index.jsp").forward(request, servletResponse);
         } else {
-            request.getRequestDispatcher("/WEB-INF/mainPageSamyGlavnyPage.jsp").forward(request, servletResponse);
+            request.getRequestDispatcher("/WEB-INF/main.jsp").forward(request, servletResponse);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
