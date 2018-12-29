@@ -1,64 +1,85 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
-<head>
-<style>
+ <head >
+
+ <style>
    .button1 {
     position: absolute; /* Относительное позиционирование */
-    left: 300px;
-    top: 16px;
+    left: 400px;
+    top: 235px;
     line-height: 300px;
    }
-   .button2 {
-    left: 200px;
+      .button2 {
     position: absolute; /* Относительное позиционирование */
+    left: 100px;
+    top: 395px;
+    line-height: 300px;
    }
+      .button3 {
+    position: absolute; /* Относительное позиционирование */
+    left: 100px;
+    top: 516px;
+    line-height: 300px;
+   }
+         .button4 {
+    position: absolute; /* Относительное позиционирование */
+    left: 150px;
+    top: 616px;
+    line-height: 300px;
+   }
+  </style>
 
-table, th, td {
-  border: 2px solid white;
-}
-th, td {
-  padding: 13px;
-}
-</style>
-</head>
-<body style="background-color:powderblue;">
 
-<h1 style="text-align:center;" style="font-size:220">Welcome, ${name} ${surname}</h1>
+  <meta charset="utf-8">
+<h1 style="text-align:center;" style="font-size:220">Personal patient card</h1>
+ </head>
+ <body style="background-color:powderblue;">
 
-<h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
+ <form action="handler.php">
+  <p><b>For diagnosis</b></p>
+  <p><textarea name="comment"></textarea></p>
+ </form>
+  <form action="handler.php">
+  <p><b>
+  Назначьте лечение:</b></p>
+  <p><textarea name="comment"></textarea></p>
+<p><input type="submit" value="assign">
 
-<br>
-  <div class="button1">
-   <button type="button1" onclick="href='/pageOfCreateNewPatient.jsp'">New Pacient</button>
+
+ <div class="button1">
+   <button type="button1" onclick="href='#">perform</button>
    </div>
-   <div class="button2">
-    <button type="button2">Change data</button>
-   </div>
-   <br><br>
-<table class="table" style="width:100%">
-  <tr>
-    <th>Id</th>
-    <th>firstName and lastName</th>
-  </tr>
 
-  <tr>
-    <td>${personalId}</td>
-      <td>
-       <a href="/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
-    </td>
-  </tr>
-  <tr>
-    <td>${personalId}</td>
-    <td>
-    <a href="/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
-    </td>
-  </tr>
-    <tr>
-    <td>${personalId}</td>
-      <td>
-    <a href="'/personalPatientCard.jsp'" style="position: absolute";>${name} ${surname}</a>
-</table>
-<br>
-</body>
+
+
+ </form>
+  <form action="handler.php">
+  <p><b>Назначьте операцию:</b></p>
+  <p><textarea name="comment"></textarea></p>
+<p><input type="submit" value="assign">
+
+<div class="button2">
+   <button type="button2" onclick="href='#'">perform</button>
+   </div>
+
+
+ </form>
+  <form action="handler.php">
+  <p><b>Назначьте процедуру:</b></p>
+  <p><textarea name="comment"></textarea></p>
+<p><input type="submit" value="assign">
+
+<div class="button3">
+   <button type="button3" onclick="href='#'">perform</button>
+   </div>
+
+
+   <br><br><br>
+
+ </form>
+<div class="button4">
+   <button type="button3" onclick="href='#'">Heal</button>
+   </div>
+ </body>
 </html>

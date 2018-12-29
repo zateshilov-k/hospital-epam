@@ -7,29 +7,34 @@
  </head>
  <body style="background-color:powderblue;">
 
- <form action="handler.php">
+ <form >
   <p><b>For diagnosis</b></p>
   <p><textarea name="comment"></textarea></p>
+  <p><input type="submit" value="add new diagnosis"></p>
  </form>
-  <form action="handler.php">
+  <form >
   <p><b>
   Назначьте лечение:</b></p>
   <p><textarea name="comment"></textarea></p>
-<p><input type="submit" value="assign">
- </form>
-  <form action="handler.php">
-  <p><b>Назначьте операцию:</b></p>
-  <p><textarea name="comment"></textarea></p>
-<p><input type="submit" value="assign">
- </form>
-  <form action="handler.php">
-  <p><b>Назначьте процедуру:</b></p>
-  <p><textarea name="comment"></textarea></p>
-<p><input type="submit" value="assign">
-   <br><br><br>
+<input type="submit" value="assign">
+<input type="submit" value="perform">
 
  </form>
-  <button style="vertical-align:middle">Heal
-   </button>
+  <form >
+  <p><b>Назначьте операцию:</b></p>
+  <p><textarea name="comment"></textarea></p>
+<input type="submit" value="assign">
+<input style="text-align:center;" type="submit" value="perform"></p>
+
+ </form>
+  <form >
+  <p><b>Назначьте процедуру:</b></p>
+  <p><textarea name="comment"></textarea></p>
+  <input type="submit" value="assign">
+<input style="text-align:center;" type="submit" value="perform"></p>
+   <br>
+
+ </form>
+   <button>Heal</button>
  </body>
 </html>
