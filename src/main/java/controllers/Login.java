@@ -51,6 +51,7 @@ public class Login extends HttpServlet {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());
             request.setAttribute("role", currentUser.get().getRole());
+            session.setAttribute("user", currentUser);
 //TODO передать коллекцию пациентов на фронт
 
             request.getRequestDispatcher("/main.jsp").forward(request, response);
