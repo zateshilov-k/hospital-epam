@@ -1,6 +1,5 @@
 package model;
 
 public enum Role {
-    // English
-    МЕДБРАТ, ДОКТОР
+    HEAD_DOCTOR, DOCTOR, NURSE
 }
