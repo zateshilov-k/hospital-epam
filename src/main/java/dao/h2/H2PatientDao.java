@@ -29,7 +29,7 @@ public class H2PatientDao implements PatientDao {
 
     @Override
     public List<Patient> getAllPatients() {
-        List<Patient> patients = new ArrayList<>();
+        List<Patient> patientList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(GET_ALL_PATIENTS_SQL)) {
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -39,13 +39,13 @@ public class H2PatientDao implements PatientDao {
                     patient.setFirstName(resultSet.getString("first_name"));
                     patient.setLastName(resultSet.getString("last_name"));
                     patient.setDischarged(resultSet.getBoolean("is_discharged"));
-                    patients.add(patient);
+                    patientList.add(patient);
                 }
             }
         } catch (SQLException e) {
             log.warning(e.getMessage());
         }
-        return patients;
+        return patientList;
     }
 
 }

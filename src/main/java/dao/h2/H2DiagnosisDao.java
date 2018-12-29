@@ -20,8 +20,8 @@ public class H2DiagnosisDao implements DiagnosisDao {
     private static final Logger log = Logger.getLogger(String.valueOf(H2DiagnosisDao.class));
 
     // SQL queries
-    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT diagnosis_id, description, personal_id FROM diagnosis WHERE " +
-            "patient_id = ?";
+    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT diagnosis_id, description, personal_id, patient_id, " +
+            "time, is_healthy FROM diagnosis WHERE " + "patient_id = ?";
 
     public H2DiagnosisDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -39,12 +39,15 @@ public class H2DiagnosisDao implements DiagnosisDao {
                     Diagnosis diagnosis = new Diagnosis();
                     diagnosis.setDiagnosisId(resultSet.getLong("diagnosis_id"));
                     diagnosis.setDescription(resultSet.getString("description"));
-//                    diagnosis.setPersonalId(resultSet.getLong("personal_id"));
-
-//                    H2PersonalDao h2PatientDao = new H2PersonalDao();
-//                    Personal personal = h2PatientDao.getPersonal(resultSet.getLong("personal_id"));\
-
-
+                    // Нужно засунуть personal_id and patient_id with type long. Но, в model patient and personal,
+                    //    private Personal personal вместо private long personalId - не соотвествие с БД, поэтому
+                    // Нужен setPersonalId(long id)
+                    // Сейчас setPersonal(Personal personal)
+                    // Поэтому не распознают методы ниже
+//                    diagnosis.setPersonal(resultSet.getLong("personal_id"));
+//                    diagnosis.setPatient(resultSet.getLong("patient_id"));
+                    diagnosis.setTime(resultSet.getTime("time"));
+                    diagnosis.setHealthy(resultSet.getBoolean("is_healthy"));
                     diagnosisList.add(diagnosis);
                 }
             }
