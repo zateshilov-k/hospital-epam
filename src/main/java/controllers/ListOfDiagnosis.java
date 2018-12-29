@@ -26,7 +26,7 @@ public class ListOfDiagnosis extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Patient> patientList = new H2PatientDao(dataSource).getAllPatients();
-        Patient patient1 = patientList.get(1);
+        Patient patient1 = patientList.get(10);
         System.out.println("OUR PATIENT");
         System.out.println(patient1.getPatientId() + " " + patient1.getFirstName() + " " + patient1.getLastName() + " " + patient1.isDischarged());
         List<Diagnosis> diagnosisListForOnePatient = new H2DiagnosisDao(dataSource).getDiagnosisByPatientId(patient1.getPatientId());

@@ -2,8 +2,6 @@ package dao.h2;
 
 import dao.DiagnosisDao;
 import model.Diagnosis;
-import model.Patient;
-import model.Personal;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -22,7 +20,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
     private static final Logger log = Logger.getLogger(String.valueOf(H2DiagnosisDao.class));
 
     // SQL queries
-    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT diagnosis_id, description FROM diagnosis WHERE " +
+    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT diagnosis_id, description, personal_id FROM diagnosis WHERE " +
             "patient_id = ?";
 
     public H2DiagnosisDao(DataSource dataSource) {
@@ -41,6 +39,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
                     Diagnosis diagnosis = new Diagnosis();
                     diagnosis.setDiagnosisId(resultSet.getLong("diagnosis_id"));
                     diagnosis.setDescription(resultSet.getString("description"));
+//                    diagnosis.setPersonalId(resultSet.getLong("personal_id"));
 
 //                    H2PersonalDao h2PatientDao = new H2PersonalDao();
 //                    Personal personal = h2PatientDao.getPersonal(resultSet.getLong("personal_id"));\
