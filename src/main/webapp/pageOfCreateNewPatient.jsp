@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center;" style="font-size:220">Create new pacient</h1>
+<h1 style="text-align:center;" style="font-size:220">Create new patient</h1>
 <form action = "Save" method="post" style="text-align:center;" action = "Cancel" method="post" style="text-align:center;">
 <fieldset>
   Input firstName:<br>

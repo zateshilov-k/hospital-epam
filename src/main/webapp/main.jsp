@@ -30,7 +30,7 @@ th, td {
 
 <br>
   <div class="button1">
-   <button type="button1">New Pacient</button>
+   <button type="button1" onclick="href='/pageOfCreateNewPatient.jsp'">New Pacient</button>
    </div>
    <div class="button2">
     <button type="button2">Change data</button>
