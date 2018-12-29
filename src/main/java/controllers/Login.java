@@ -48,9 +48,9 @@ public class Login extends HttpServlet {
                 password, dataSource, hashGenerator);
         List<Patient> patients = new ArrayList<>();
         if (currentUser.isPresent()) {
-            request.setAttribute("name", currentUser.get().getFirstName());
-            request.setAttribute("surname", currentUser.get().getLastName());
-            request.setAttribute("role", currentUser.get().getRole());
+            session.setAttribute("name", currentUser.get().getFirstName());
+            session.setAttribute("surname", currentUser.get().getLastName());
+            session.setAttribute("role", currentUser.get().getRole());
             session.setAttribute("user", currentUser);
 //TODO передать коллекцию пациентов на фронт
 
