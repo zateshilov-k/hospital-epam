@@ -23,22 +23,10 @@ tr:nth-child(even) {
 </head>
 <body>
 
-<h1 style="text-align:center;" style="font-size:220">Welcome, ${name} ${surname}</h1>
+<h1 style="text-align:center;" style="font-size:220">Welcome, ${name} ${sessionScope.user.lastName} ${sessionScope.user.firstName} </h1>
+${sessionScope.user}
 
-<table>
-  <script>
-	var pacientTable = document.createElement('table'),
-    tr = table.insertRow();
-    for (i = 1; i < lastElementBD; i++) {
-      String str = "1, Vasya Smirnov, bolen";
-      String[] words = str.split("\\,"); // Разбиение строки на слова с помощью разграничителя (запятая)
-      for(String subStr:words) {
-         System.out.println(subStr);
-      }
-       tr.insertCell();
-    }
-  </script>
-</table>
+
 
 </body>
 </html>

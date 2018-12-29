@@ -4,7 +4,6 @@ import model.Patient;
 import model.Personal;
 import services.PersonalService;
 import utils.HashGenerator;
-import utils.LoginValidate;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -48,10 +47,7 @@ public class Login extends HttpServlet {
                 password, dataSource, hashGenerator);
         List<Patient> patients = new ArrayList<>();
         if (currentUser.isPresent()) {
-            session.setAttribute("name", currentUser.get().getFirstName());
-            session.setAttribute("surname", currentUser.get().getLastName());
-            session.setAttribute("role", currentUser.get().getRole());
-            session.setAttribute("user", currentUser);
+            session.setAttribute("user", currentUser.get());
 //TODO передать коллекцию пациентов на фронт
 
             request.getRequestDispatcher("/main.jsp").forward(request, response);
