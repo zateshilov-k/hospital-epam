@@ -43,7 +43,18 @@ public class H2DiagnosisDao implements DiagnosisDao {
                     //    private Personal personal вместо private long personalId - не соотвествие с БД, поэтому
                     // Нужен setPersonalId(long id)
                     // Сейчас setPersonal(Personal personal)
-                    // Поэтому не распознают методы ниже
+                    // Поэтому не распознают методы ниже\
+
+                    /*
+                    * Peronal p = new Pers();
+                    * p.set.
+                    *
+                    * */
+
+
+                    //personalId = resultSet.getLong("personal_id");
+                    //Personal pers = personalDao.getPersonalById(personalId);
+                    //diagnosis.setPersonal(pers);
 //                    diagnosis.setPersonal(resultSet.getLong("personal_id"));
 //                    diagnosis.setPatient(resultSet.getLong("patient_id"));
                     diagnosis.setTime(resultSet.getTime("time"));
