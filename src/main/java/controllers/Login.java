@@ -1,5 +1,6 @@
 package controllers;
 
+import model.Patient;
 import model.Personal;
 import services.PersonalService;
 import utils.HashGenerator;
@@ -16,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /*
 Обработка страницы авторизации
@@ -47,11 +46,15 @@ public class Login extends HttpServlet {
         String password = request.getParameter("password");
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, dataSource, hashGenerator);
+        List<Patient> patients = new ArrayList<>();
         if (currentUser.isPresent()) {
             request.setAttribute("name", currentUser.get().getFirstName());
             request.setAttribute("surname", currentUser.get().getLastName());
             request.setAttribute("role", currentUser.get().getRole());
+//TODO передать коллекцию пациентов на фронт
+
             request.getRequestDispatcher("/main.jsp").forward(request, response);
+
             //TODO add logging
             String ip = request.getRemoteAddr();
             return;
