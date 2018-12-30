@@ -8,7 +8,7 @@ public interface PersonalDao {
 
     long createPersonal(Personal personal);
 
-    Optional<Personal> readPersonalByEmail(String email);
+    Optional<Personal> readPersonalByLogin(String login);
 
     long updatePersonal(Personal personal);
 

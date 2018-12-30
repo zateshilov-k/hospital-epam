@@ -15,7 +15,7 @@ public class PersonalService {
         LoginValidate loginValidate = new LoginValidate();
         boolean isValid = loginValidate.doValidation(login, password);
         if (isValid) {
-            Optional<Personal> personal = new H2PersonalDao(dataSource).readPersonalByEmail(login);
+            Optional<Personal> personal = new H2PersonalDao(dataSource).readPersonalByLogin(login);
             if (personal.isPresent()) {
                 if (!personal.get().getPassword().equals(hashGenerator.getHash(password))) {
                     return Optional.empty();

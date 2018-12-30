@@ -7,7 +7,7 @@ import lombok.*;
 public class Personal {
 
     private long personalId;
-    private String email;
+    private String login; // it's like email
     private String password;
     private String firstName;
     private String lastName;
