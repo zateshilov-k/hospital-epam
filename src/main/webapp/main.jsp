@@ -14,7 +14,7 @@
     position: absolute; /* Относительное позиционирование */
    }
 	table{
-     caption>Изменение добычи ресурсов по годам</caption>
+     <caption>Изменение добычи ресурсов по годам</caption>
 	  border-collapse: collapse;
 	}
 	td{
@@ -62,8 +62,8 @@
  </script>
 </head>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center;" style="font-size:220">Welcome, ${name} ${surname}</h1>
-<h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
+<h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
+<h1 style="text-align:center" font-size="22">Choose the right patient</h1>
 <br>
   <div class="button1">
    <button type="button1" onclick="href='/personalPatientCard.jsp'" >New Patient</button>
