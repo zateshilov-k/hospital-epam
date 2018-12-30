@@ -2,5 +2,10 @@ package model;
 
 public enum Role {
     // English
-    МЕДБРАТ, ДОКТОР
+    МЕДБРАТ {
+        @Override
+        public String toString() {
+            return super.toString();
+        }
+    }, ДОКТОР
 }

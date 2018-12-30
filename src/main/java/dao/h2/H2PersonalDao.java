@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class H2PersonalDao implements PersonalDao {
 
@@ -17,8 +18,10 @@ public class H2PersonalDao implements PersonalDao {
             "password FROM medical_personal WHERE login = ?;";
     private static final String UPDATE_PERSONAL_SQL = "UPDATE Personals SET login = ?, password = ?, firstName = ?, " +
             "lastName = ?, role = ? WHERE personalId = ?";
+
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
+    private static final Logger log = Logger.getLogger(String.valueOf(H2PersonalDao.class));
 
     public H2PersonalDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -64,7 +67,7 @@ public class H2PersonalDao implements PersonalDao {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("SQLException" + e.getMessage());
+            log.warning(e.getMessage());
         }
         return Optional.empty();
     }

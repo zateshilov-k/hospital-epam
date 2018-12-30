@@ -129,8 +129,8 @@ public class DatabaseInitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
-        final int numberOfPersonal = 2;
-        final int numberOfPatients = 2;
+        final int numberOfPersonal = 10;
+        final int numberOfPatients = 10;
         final int numberOfDiagnosisPerPatient = 1;
         final int numberOfPrescriptionsPerDiagnosis = 2;
 
