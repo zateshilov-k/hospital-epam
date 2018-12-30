@@ -46,11 +46,14 @@ public class Login extends HttpServlet {
         String password = request.getParameter("password");
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, dataSource, hashGenerator);
-        List<Patient> patients = new ArrayList<>();
-        patients = new PatientService().getAllPatients();
+        List<Patient> patients = new PatientService().getAllPatients(dataSource);
+//        System.out.println("Размер коллекции пациентов: "+ patients.size());
+//        patients.forEach(el-> System.out.println(el));
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
-            session.setAttribute("patients", patients);
+            if (patients != null) {
+                session.setAttribute("patients", patients);
+            }
             request.getRequestDispatcher("/main.jsp").forward(request, response);
 
             //TODO add logging
