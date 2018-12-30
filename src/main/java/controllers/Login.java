@@ -2,6 +2,7 @@ package controllers;
 
 import model.Patient;
 import model.Personal;
+import services.PatientService;
 import services.PersonalService;
 import utils.HashGenerator;
 
@@ -46,10 +47,10 @@ public class Login extends HttpServlet {
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, dataSource, hashGenerator);
         List<Patient> patients = new ArrayList<>();
+        patients = new PatientService().getAllPatients();
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
-//TODO передать коллекцию пациентов на фронт
-
+            session.setAttribute("patients", patients);
             request.getRequestDispatcher("/main.jsp").forward(request, response);
 
             //TODO add logging
