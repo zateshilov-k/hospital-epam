@@ -36,10 +36,10 @@
 <h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
 <h1 style="text-align:center" font-size="22">Choose the right patient</h1>
 
-${sessionScope.patients}
+
 <p>End of collections</p>
 <c:forEach var="patient" items="${sessionScope.patients}">
-    <td><div align="center"><b> <c:out  value="${patient.firstName}"/>
+    <td><div align="center"><b> <c:out  value="${patient.firstName}+ ${patient.laststName} "/>
     </b></div></td>
 </c:forEach>
 
