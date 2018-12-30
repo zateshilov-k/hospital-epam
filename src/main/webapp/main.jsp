@@ -35,10 +35,10 @@
 <h1 style="text-align:center;" style="font-size:220">Choose the right patient</h1>
 <br>
   <div class="button1">
-   <button type="button1">New Pacient</button>
+   <button type="button1" onclick="href='/personalPatientCard.jsp'" >New Patient</button>
    </div>
    <div class="button2">
-    <button type="button2">Change data</button>
+    <button type="button2" onclick="href='/personal.jsp'" > Change data </button>
    </div>
  <br><br>
 
