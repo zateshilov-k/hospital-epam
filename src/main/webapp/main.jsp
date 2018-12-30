@@ -39,7 +39,7 @@
 
 <p>End of collections</p>
 <c:forEach var="patient" items="${sessionScope.patients}">
-    <td><div align="center"><b> <c:out  value="${patient.firstName}+ ${patient.laststName} "/>
+    <td><div align="center"><b> <c:out  value="${patient.firstName}"/>
     </b></div></td>
 </c:forEach>
 
