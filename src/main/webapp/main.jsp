@@ -42,7 +42,7 @@
    </div>
  <br><br>
 
- <table style="width:100%">
+ <table style="width:99%">
   <caption>Patient</caption>
   <script>
   window.onload = functional(){
