@@ -25,6 +25,7 @@ import java.util.stream.IntStream;
 
 @WebListener
 public class DatabaseInitListener implements ServletContextListener {
+    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
     private Random random = new Random();
@@ -68,25 +69,17 @@ public class DatabaseInitListener implements ServletContextListener {
         return baseDiseases[random.nextInt(baseDiseases.length)];
     }
 
-    private String getRandomPrescriptionString() {
-        String[] basePrescriptions = {"Операция", "Процедура", "Лекарство"};
-        return basePrescriptions[random.nextInt(basePrescriptions.length)];
-    }
-
-    private void addMedPersonal(Statement statement, int personalId, Random random, String randomRole,
-                                HashGenerator hashGenerator) throws SQLException {
+    private void addPersonal(Statement statement, Personal personal) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
-                + "(" + (personalId) + "," + "\'" + getRandomFirstName() + "\'," + "\'" + getRandomLastName()
-                + "\'," + "\'" + randomRole + "\'," + "\'" + "login"
-                + personalId + "@epam.com" + "\'," + "\'"
-                + hashGenerator.getHash("password1") + "\'" + ");");
-        //System.out.println(hashGenerator.getHash("password1"));
+                + "(" + (personal.getPersonalId()) + "," + "\'" + personal.getFirstName() + "\'," + "\'" + personal.getLastName()
+                + "\'," + "\'" + personal.getRole().toString() + "\'," + "\'" + personal.getLogin() + "\'," + "\'"
+                + personal.getPassword() + "\'" + ");");
     }
 
-    private void addPatients(Statement statement, int patientId, Random random, String isDischarged) throws SQLException {
+    private void addPatients(Statement statement, Patient patient) throws SQLException {
         statement.addBatch("INSERT INTO patient " + "(patient_id, first_name, last_name, is_discharged) VALUES"
-                + "(" + (patientId) + "," + "\'" + getRandomFirstName() + "\'," + "\'" + getRandomLastName()
-                + "\'," + isDischarged + ");");
+                + "(" + (patient.getPatientId()) + "," + "\'" + patient.getFirstName() + "\'," + "\'" + patient.getLastName()
+                + "\'," + "FALSE" + ");");
     }
 
     private String getRandomDate() {
@@ -107,27 +100,30 @@ public class DatabaseInitListener implements ServletContextListener {
         return dt;
     }
 
-    private void addDiagnosis(Statement statement, int diagnosisId, int personalId, int patientId,
-                              Random random) throws SQLException {
-
+    private void addDiagnosis(Statement statement, Diagnosis diagnosis) throws SQLException {
         statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
-                "VALUES" + "(" + (diagnosisId) + "," + "\'" + getRandomDisease() + "\',"
-                + (personalId) + "," + (patientId) + "," + "\'" + getRandomDate() + "\'," + "FALSE" + ");");
+                "VALUES" + "(" + (diagnosis.getDiagnosisId()) + "," + "\'" + diagnosis.getDescription() + "\',"
+                + (diagnosis.getPersonal().getPersonalId())
+                + "," + (diagnosis.getPatient().getPatientId()) + ","
+                + "\'" + diagnosis.getTime().format(df) + "\'," + "FALSE" + ");");
     }
 
-    private void addPrescription(Statement statement, int currentPrescriptionId, int currentPatientId,
-                                 int currentDiagnosisId, boolean isDone, Random random) throws SQLException {
+    private void addPrescription(Statement statement, Prescription prescription) throws SQLException {
         statement.addBatch("INSERT INTO prescription " + "(prescription_id, description, patient_id, time, diagnosis_id," +
-                "type, is_done) VALUES" + "(" + (currentPrescriptionId) + "," + "\'" + "prescription descr"
-                + currentPrescriptionId + "\'," + (currentPatientId) + "," + "\'" + (getRandomDate())
-                + "\'," + currentDiagnosisId + "," + "\'" + getRandomPrescriptionString() + "\',"
-                + (Boolean.valueOf(isDone).toString()).toUpperCase() + ");");
+                "type, is_done) VALUES" + "(" + (prescription.getPrescriptionId()) + "," + "\'" + "prescription descr"
+                + prescription.getDescription() + "\'," + (prescription.getPatient().getPatientId()) + "," + "\'"
+                + (prescription.getTime())
+                + "\'," + prescription.getDiagnosis().getDiagnosisId() + "," + "\'" + prescription.getType().toString() + "\',"
+                + prescription.isDone() + ");");
     }
 
-    private void addPersonalPrescription(Statement statement, int id, int personalId, int prescriptionId,
-                                         String type) throws SQLException {
+    private void addPersonalPrescription(Statement statement, PersonalPrescription personalPrescription) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal_prescription " + "(personal_prescription_id, type, personal_id," +
-                "prescription_id) VALUES" + "(" + id + "," + "\'" + type + "\'," + (personalId) + "," + prescriptionId + ");");
+                "prescription_id) VALUES" + "("
+                + personalPrescription.getPersonalPrescriptionId()
+                + "," + "\'" + personalPrescription.getType().toString() + "\',"
+                + (personalPrescription.getPersonal().getPersonalId())
+                + "," + personalPrescription.getPrescription().getPrescriptionId() + ");");
     }
 
     @Override
@@ -138,35 +134,53 @@ public class DatabaseInitListener implements ServletContextListener {
         final int numberOfDiagnosisPerPatient = 1;
         final int numberOfPrescriptionsPerDiagnosis = 2;
 
-        List<Personal> personals = IntStream.range(1, numberOfPersonal)
-                .mapToObj((i) -> getRandomPersonal(i, false))
-                .collect(Collectors.toList());
-        personals.add(getRandomPersonal(personals.size(), true));
+        List<Personal> personals = getPersonals(numberOfPersonal);
+        List<Patient> patients = getPatients(numberOfPatients);
+        List<Diagnosis> diagnoses = getDiagnoses(numberOfDiagnosisPerPatient, personals, patients);
+        List<Prescription> prescriptions = getPrescriptions(numberOfPrescriptionsPerDiagnosis,diagnoses);
+        List<PersonalPrescription> personalPrescriptions = getPersonalPrescriptions(personals, prescriptions);
 
-        List<Patient> patients = IntStream.range(1, numberOfPatients)
-                .mapToObj((i) -> getRandomPatient(i))
-                .collect(Collectors.toList());
-        List<Diagnosis> diagnoses = new ArrayList<>();
-        int diagnosisId = 0;
-        patients.forEach(patient -> {
-            for (int i = 0; i < numberOfDiagnosisPerPatient; i++) {
-                Personal doctor = IntStream
-                        .generate(() -> random.nextInt(personals.size()))
-                        .mapToObj(j -> personals.get(j))
-                        .filter((p) -> p.getRole() == Role.ДОКТОР)
-                        .findAny().get();
-                diagnoses.add(getRandomDiagonsis(diagnoses.size() + 1, patient, doctor));
+        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement();) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            String path = classLoader.getResource("sql/table_creation.sql").getFile();
+            path = path.substring(1);
+            path = path.replace("/", "\\");
+            Path realPath = Paths.get(path).toRealPath();
+            statement.addBatch(Files.lines(realPath).collect(Collectors.joining()));
+            for (Personal personal : personals) {
+                addPersonal(statement, personal);
             }
-        });
-
-        List<Prescription> prescriptions = new ArrayList<>();
-        diagnoses.forEach(diagnosis -> {
-            for (int i = 0; i < numberOfPrescriptionsPerDiagnosis; i++) {
-                Prescription firstPrescription = getRandomPrescription(prescriptions.size() + 1, diagnosis);
-                prescriptions.add(firstPrescription);
+            for (Patient patient : patients) {
+                addPatients(statement, patient);
             }
-        });
+            for (Diagnosis diagnosis : diagnoses) {
+                addDiagnosis(statement, diagnosis);
+            }
+            for (Prescription prescription : prescriptions) {
+                addPrescription(statement, prescription);
+            }
+            for (PersonalPrescription personalPrescription : personalPrescriptions) {
+                addPersonalPrescription(statement, personalPrescription);
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+            printTable(statement, "medical_personal");
+            printTable(statement, "patient");
+            printTable(statement, "diagnosis");
+            printTable(statement, "prescription");
+            printTable(statement, "medical_personal_prescription");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        servletContextEvent.getServletContext().setAttribute("dataSource", dataSource);
+    }
 
+    private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
         List<PersonalPrescription> personalPrescriptions = new ArrayList<>();
         prescriptions.forEach(prescription -> {
             if (prescription.isDone()) {
@@ -205,11 +219,48 @@ public class DatabaseInitListener implements ServletContextListener {
                     prescription
             ));
         });
-        personals.forEach(System.out::println);
-        patients.forEach(System.out::println);
-        diagnoses.forEach(System.out::println);
-        prescriptions.forEach(System.out::println);
-        personalPrescriptions.forEach(System.out::println);
+        return personalPrescriptions;
+    }
+
+    private List<Prescription> getPrescriptions(int numberOfPrescriptionsPerDiagnosis, List<Diagnosis> diagnoses) {
+        List<Prescription> prescriptions = new ArrayList<>();
+        diagnoses.forEach(diagnosis -> {
+            for (int i = 0; i < numberOfPrescriptionsPerDiagnosis; i++) {
+                Prescription firstPrescription = getRandomPrescription(prescriptions.size() + 1, diagnosis);
+                prescriptions.add(firstPrescription);
+            }
+        });
+        return prescriptions;
+    }
+
+    private List<Diagnosis> getDiagnoses(int numberOfDiagnosisPerPatient, List<Personal> personals, List<Patient> patients) {
+        List<Diagnosis> diagnoses = new ArrayList<>();
+        int diagnosisId = 0;
+        patients.forEach(patient -> {
+            for (int i = 0; i < numberOfDiagnosisPerPatient; i++) {
+                Personal doctor = IntStream
+                        .generate(() -> random.nextInt(personals.size()))
+                        .mapToObj(j -> personals.get(j))
+                        .filter((p) -> p.getRole() == Role.ДОКТОР)
+                        .findAny().get();
+                diagnoses.add(getRandomDiagonsis(diagnoses.size() + 1, patient, doctor));
+            }
+        });
+        return diagnoses;
+    }
+
+    private List<Patient> getPatients(int numberOfPatients) {
+        return IntStream.range(0, numberOfPatients)
+                .mapToObj((i) -> getRandomPatient(i+1))
+                .collect(Collectors.toList());
+    }
+
+    private List<Personal> getPersonals(int numberOfPersonal) {
+        List<Personal> personals = IntStream.range(1, numberOfPersonal)
+                .mapToObj((i) -> getRandomPersonal(i, false))
+                .collect(Collectors.toList());
+        personals.add(getRandomPersonal(personals.size() + 1, true));
+        return personals;
     }
 
     private PersonalPrescriptionType getRandomPersonalPrescriptionType() {
@@ -220,7 +271,7 @@ public class DatabaseInitListener implements ServletContextListener {
     private Prescription getRandomPrescription(int id, Diagnosis diagnosis) {
         return new Prescription(
                 id,
-                getRandomPrescriptionString(),
+                "Prescription descr" + id,
                 diagnosis.getPatient(),
                 diagnosis,
                 random.nextBoolean(),
@@ -235,8 +286,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private LocalDateTime getRandomDateAfter(LocalDateTime time) {
-        time = time.plusDays(random.nextInt(30));
-        return time;
+        return time.plusDays(random.nextInt(30));
     }
 
     private Diagnosis getRandomDiagonsis(int id, Patient patient, Personal doctor) {
@@ -268,7 +318,7 @@ public class DatabaseInitListener implements ServletContextListener {
         }
         return new Personal(
                 id,
-                "login" + id + "epam.com",
+                "login" + id + "@epam.com",
                 hashGenerator.getHash("password" + id),
                 getRandomFirstName(),
                 getRandomLastName(),
@@ -276,88 +326,9 @@ public class DatabaseInitListener implements ServletContextListener {
         );
     }
 
-
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
     }
 
-    public void temp(ServletContextEvent servletContextEvent) {
-        HashGenerator hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute(
-                "hashGenerator");
-        System.out.println("Database init started");
-        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement();) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            String path = classLoader.getResource("sql/table_creation.sql").getFile();
-            path = path.substring(1);
-            path = path.replace("/", "\\");
-            Path realPath = Paths.get(path).toRealPath();
-            statement.addBatch(Files.lines(realPath).collect(Collectors.joining()));
-            final int numberOfMedPersonal = 5;
-            final int numberOfPatients = 10;
-            final int numberOfDiagnosis = 3;
-            final int numberOfPrescriptions = 2;
-            Random random = new Random();
-            for (int medPersonalId = 1; medPersonalId <= numberOfMedPersonal; ++medPersonalId) {
-                String randomRole = getRandomRole();
-                addMedPersonal(statement, medPersonalId, random, randomRole, hashGenerator);
-
-                for (int patientId = 1; patientId <= numberOfPatients; ++patientId) {
-                    String isDischarged = (random.nextBoolean() + "").toUpperCase();
-                    int currentPatientId = patientId + (medPersonalId - 1) * numberOfPatients;
-                    addPatients(statement, currentPatientId, random, isDischarged);
-
-                    for (int diagnosisId = 1; diagnosisId <= numberOfDiagnosis; ++diagnosisId) {
-                        int currentDiagnosisId =
-                                diagnosisId + (patientId - 1) * numberOfDiagnosis + (medPersonalId - 1)
-                                        * numberOfDiagnosis * numberOfPatients;
-                        addDiagnosis(statement, currentDiagnosisId, medPersonalId, currentPatientId, random);
-
-                        for (int prescriptionId = 1; prescriptionId <= numberOfPrescriptions; ++prescriptionId) {
-                            int currentPrescriptionId =
-                                    prescriptionId + (diagnosisId - 1) * numberOfPrescriptions + (patientId - 1) *
-                                            numberOfDiagnosis * numberOfPrescriptions + (medPersonalId - 1)
-                                            * numberOfPatients * numberOfDiagnosis * numberOfPrescriptions;
-                            boolean isPrescriptionDone = random.nextBoolean();
-
-                            addPrescription(statement, currentPrescriptionId, currentPatientId, currentDiagnosisId,
-                                    isPrescriptionDone, random);
-                            for (int medPersonalPrescriptionId = 1; medPersonalPrescriptionId <= 2; ++medPersonalPrescriptionId) {
-                                int currentMedPersonalPrescriptionId =
-                                        medPersonalPrescriptionId + (prescriptionId - 1) * 2 + (diagnosisId - 1)
-                                                * numberOfPrescriptions * 2 + (patientId - 1) * numberOfDiagnosis
-                                                * numberOfPrescriptions * 2 + (medPersonalId - 1) * numberOfPatients
-                                                * numberOfDiagnosis * numberOfPrescriptions * 2;
-                                if (medPersonalPrescriptionId == 1) {
-                                    addPersonalPrescription(statement, currentMedPersonalPrescriptionId,
-                                            medPersonalId, currentPrescriptionId, "Назначено");
-                                } else if (isPrescriptionDone) {
-                                    addPersonalPrescription(statement, currentMedPersonalPrescriptionId,
-                                            medPersonalId, currentPrescriptionId, "Выполнено");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            int[] ints = statement.executeBatch();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
-            printTable(statement, "medical_personal");
-            printTable(statement, "patient");
-            printTable(statement, "diagnosis");
-            printTable(statement, "prescription");
-            printTable(statement, "medical_personal_prescription");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Database init ended");
-        servletContextEvent.getServletContext().setAttribute("dataSource", dataSource);
-
-    }
 }
