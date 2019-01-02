@@ -1,0 +1,33 @@
+package dao.h2;
+
+import dao.DaoFactory;
+import dao.DiagnosisDao;
+import dao.PersonalDao;
+
+import javax.sql.DataSource;
+import java.time.format.DateTimeFormatter;
+
+public class H2DaoFactory implements DaoFactory {
+    final private PersonalDao personalDao;
+    final private DiagnosisDao diagnosisDao;
+
+    public H2DaoFactory(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
+        personalDao = new H2PersonalDao(dataSource);
+        diagnosisDao = new H2DiagnosisDao(dataSource, dateTimeFormatter);
+    }
+
+    @Override
+    public PersonalDao getPersonalDao() {
+        return personalDao;
+    }
+
+    @Override
+    public DiagnosisDao getDiagnosisDao() {
+        return diagnosisDao;
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
+}

@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.DaoFactory;
 import dao.h2.H2DiagnosisDao;
 import dao.h2.H2PatientDao;
 import model.Diagnosis;
@@ -22,14 +23,14 @@ public class ListOfDiagnosis extends HttpServlet {
 
     // Добавить в DAO метод выборки - все диагнозы пациента
     DataSource dataSource;
-
+    DaoFactory daoFactory;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Patient> patientList = new H2PatientDao(dataSource).getAllPatients();
         Patient patient1 = patientList.get(10);
         System.out.println("OUR PATIENT");
         System.out.println(patient1.getPatientId() + " " + patient1.getFirstName() + " " + patient1.getLastName() + " " + patient1.isDischarged());
-        List<Diagnosis> diagnosisListForOnePatient = new H2DiagnosisDao(dataSource).getDiagnosisByPatientId(patient1.getPatientId());
+        List<Diagnosis> diagnosisListForOnePatient = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patient1.getPatientId());
         for (int i = 0; i < diagnosisListForOnePatient.size(); i++) {
             System.out.println(diagnosisListForOnePatient.get(i));
         }
@@ -45,6 +46,7 @@ public class ListOfDiagnosis extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         dataSource = (DataSource) context.getAttribute("dataSource");
+        daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
 
     @Override

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface DiagnosisDao {
 
-    List<Diagnosis> getDiagnosisByPatientId(long patientId);
+    List<Diagnosis> getAllDiagnosesByPatientId(long patientId);
 
 }

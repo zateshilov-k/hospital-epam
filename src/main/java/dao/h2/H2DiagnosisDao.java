@@ -2,6 +2,9 @@ package dao.h2;
 
 import dao.DiagnosisDao;
 import model.Diagnosis;
+import model.Patient;
+import model.Personal;
+import model.Role;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -9,7 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,18 +23,21 @@ public class H2DiagnosisDao implements DiagnosisDao {
 
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
+    private DateTimeFormatter dateTimeFormatter;
     private static final Logger log = Logger.getLogger(String.valueOf(H2DiagnosisDao.class));
 
     // SQL queries
-    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT diagnosis_id, description, personal_id, patient_id, " +
-            "time, is_healthy FROM diagnosis WHERE " + "patient_id = ?";
+    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT * FROM diagnosis JOIN patient " +
+            "ON diagnosis.patient_id = patient.patient_id JOIN medical_personal " +
+            "ON diagnosis.personal_id = medical_personal.personal_id WHERE diagnosis.patient_id = ?;";
 
-    public H2DiagnosisDao(DataSource dataSource) {
+    public H2DiagnosisDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;
+        this.dateTimeFormatter = dateTimeFormatter;
     }
 
     @Override
-    public List<Diagnosis> getDiagnosisByPatientId(long patientId) {
+    public List<Diagnosis> getAllDiagnosesByPatientId(long patientId) {
         List<Diagnosis> diagnosisList = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
@@ -37,28 +46,27 @@ public class H2DiagnosisDao implements DiagnosisDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Diagnosis diagnosis = new Diagnosis();
-                    diagnosis.setDiagnosisId(resultSet.getLong("diagnosis_id"));
-                    diagnosis.setDescription(resultSet.getString("description"));
-                    // Нужно засунуть personal_id and patient_id with type long. Но, в model patient and personal,
-                    //    private Personal personal вместо private long personalId - не соотвествие с БД, поэтому
-                    // Нужен setPersonalId(long id)
-                    // Сейчас setPersonal(Personal personal)
-                    // Поэтому не распознают методы ниже\
+                    Patient patient = new Patient();
+                    patient.setPatientId(resultSet.getLong("patient.patient_id"));
+                    patient.setFirstName(resultSet.getString("patient.first_name"));
+                    patient.setLastName(resultSet.getString("patient.last_name"));
+                    patient.setDischarged(resultSet.getBoolean("patient.is_discharged"));
+                    diagnosis.setPatient(patient);
 
-                    /*
-                    * Peronal p = new Pers();
-                    * p.set.
-                    *
-                    * */
+                    Personal personal = new Personal();
+                    personal.setPersonalId(resultSet.getLong("medical_personal.personal_id"));
+                    personal.setPassword(resultSet.getString("medical_personal.password"));
+                    personal.setLogin(resultSet.getString("medical_personal.login"));
+                    personal.setRole(Role.valueOf(resultSet.getString("medical_personal.role")));
+                    personal.setFirstName(resultSet.getString("medical_personal.first_name"));
+                    personal.setLastName(resultSet.getString("medical_personal.last_name"));
+                    diagnosis.setPersonal(personal);
 
-
-                    //personalId = resultSet.getLong("personal_id");
-                    //Personal pers = personalDao.getPersonalById(personalId);
-                    //diagnosis.setPersonal(pers);
-//                    diagnosis.setPersonal(resultSet.getLong("personal_id"));
-//                    diagnosis.setPatient(resultSet.getLong("patient_id"));
-                    //diagnosis.setTime(resultSet.getTime("time"));
-                    diagnosis.setHealthy(resultSet.getBoolean("is_healthy"));
+                    diagnosis.setDiagnosisId(resultSet.getLong("diagnosis.diagnosis_id"));
+                    diagnosis.setDescription(resultSet.getString("diagnosis.description"));
+                    diagnosis.setTime(LocalDateTime.parse(
+                            resultSet.getString("diagnosis.time"),dateTimeFormatter));
+                    diagnosis.setHealthy(resultSet.getBoolean("diagnosis.is_healthy"));
                     diagnosisList.add(diagnosis);
                 }
             }
