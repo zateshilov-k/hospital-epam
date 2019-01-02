@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@WebServlet("/")
+@WebServlet("/signUp")
 public class SignUp extends HttpServlet {
 
     @Override
