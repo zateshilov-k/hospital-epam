@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.DaoFactory;
 import model.Patient;
 import model.Personal;
 import services.PersonalService;
@@ -23,7 +24,8 @@ import java.util.*;
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {
-    DataSource dataSource;
+    //DataSource dataSource;
+    DaoFactory daoFactory;
     HashGenerator hashGenerator;
 
     @Override
@@ -44,7 +46,7 @@ public class Login extends HttpServlet {
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password");
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
-                password, dataSource, hashGenerator);
+                password, daoFactory, hashGenerator);
         List<Patient> patients = new ArrayList<>();
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
@@ -73,8 +75,8 @@ public class Login extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         ServletContext context = getServletContext();
-        dataSource = (DataSource) context.getAttribute("dataSource");
         hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
+        daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
 
     @Override

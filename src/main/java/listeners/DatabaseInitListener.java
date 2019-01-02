@@ -1,5 +1,6 @@
 package listeners;
 
+import dao.h2.H2DaoFactory;
 import model.*;
 import utils.HashGenerator;
 
@@ -176,7 +177,7 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        servletContextEvent.getServletContext().setAttribute("dataSource", dataSource);
+        servletContextEvent.getServletContext().setAttribute("daoFactory",new H2DaoFactory(dataSource));
     }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
@@ -234,7 +235,6 @@ public class DatabaseInitListener implements ServletContextListener {
 
     private List<Diagnosis> getDiagnoses(int numberOfDiagnosisPerPatient, List<Personal> personals, List<Patient> patients) {
         List<Diagnosis> diagnoses = new ArrayList<>();
-        int diagnosisId = 0;
         patients.forEach(patient -> {
             for (int i = 0; i < numberOfDiagnosisPerPatient; i++) {
                 Personal doctor = IntStream
@@ -260,11 +260,6 @@ public class DatabaseInitListener implements ServletContextListener {
                 .collect(Collectors.toList());
         personals.add(getRandomPersonal(personals.size() + 1, true));
         return personals;
-    }
-
-    private PersonalPrescriptionType getRandomPersonalPrescriptionType() {
-        PersonalPrescriptionType[] personalPrescriptionTypes = PersonalPrescriptionType.values();
-        return personalPrescriptionTypes[random.nextInt(personalPrescriptionTypes.length)];
     }
 
     private Prescription getRandomPrescription(int id, Diagnosis diagnosis) {
