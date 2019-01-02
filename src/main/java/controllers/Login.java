@@ -52,7 +52,9 @@ public class Login extends HttpServlet {
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
             //TODO передать коллекцию пациентов на фронт
-
+            if (patients != null) {
+                session.setAttribute("patients", patients);
+            }
             request.getRequestDispatcher("/main.jsp").forward(request, response);
 
             //TODO add logging
