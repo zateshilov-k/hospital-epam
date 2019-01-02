@@ -55,9 +55,8 @@ public class DatabaseInitListener implements ServletContextListener {
         return baseSurnames[random.nextInt(baseSurnames.length)];
     }
 
-    private String getRandomRole() {
-        String[] baseRoles = {"Доктор", "Медбрат"};
-        return baseRoles[random.nextInt(baseRoles.length)];
+    private Role getRandomRole() {
+        return Role.values()[random.nextInt(Role.values().length)];
     }
 
     private String getRandomDisease() {
@@ -186,15 +185,15 @@ public class DatabaseInitListener implements ServletContextListener {
             if (prescription.isDone()) {
                 Personal executor;
                 switch (prescription.getType()) {
-                    case ОПЕРАЦИЯ:
+                    case OPERATION:
                         executor = IntStream
                                 .generate(() -> random.nextInt(personals.size()))
                                 .mapToObj(j -> personals.get(j))
-                                .filter((p) -> p.getRole() == Role.ДОКТОР)
+                                .filter((p) -> p.getRole() == Role.DOCTOR)
                                 .findAny().get();
                         break;
-                    case ЛЕКАРСТВО:
-                    case ПРОЦЕДУРА:
+                    case DRUG:
+                    case PROCEDURE:
                         executor = IntStream
                                 .generate(() -> random.nextInt(personals.size()))
                                 .mapToObj(j -> personals.get(j))
@@ -206,7 +205,7 @@ public class DatabaseInitListener implements ServletContextListener {
                 }
                 personalPrescriptions.add(new PersonalPrescription(
                                 personalPrescriptions.size() + 1,
-                                PersonalPrescriptionType.ВЫПОЛНИЛ,
+                                PersonalPrescriptionType.DONE,
                                 executor,
                                 prescription
                         )
@@ -214,7 +213,7 @@ public class DatabaseInitListener implements ServletContextListener {
             }
             personalPrescriptions.add(new PersonalPrescription(
                     personalPrescriptions.size() + 1,
-                    PersonalPrescriptionType.НАЗНАЧИЛ,
+                    PersonalPrescriptionType.PRESCRIBE,
                     prescription.getDiagnosis().getPersonal(),
                     prescription
             ));
@@ -241,7 +240,7 @@ public class DatabaseInitListener implements ServletContextListener {
                 Personal doctor = IntStream
                         .generate(() -> random.nextInt(personals.size()))
                         .mapToObj(j -> personals.get(j))
-                        .filter((p) -> p.getRole() == Role.ДОКТОР)
+                        .filter((p) -> p.getRole() == Role.DOCTOR)
                         .findAny().get();
                 diagnoses.add(getRandomDiagonsis(diagnoses.size() + 1, patient, doctor));
             }
@@ -312,9 +311,9 @@ public class DatabaseInitListener implements ServletContextListener {
     private Personal getRandomPersonal(int id, boolean isDoctor) {
         Role role;
         if (isDoctor) {
-            role = Role.ДОКТОР;
+            role = Role.DOCTOR;
         } else {
-            role = Role.valueOf(getRandomRole().toUpperCase());
+            role = getRandomRole();
         }
         return new Personal(
                 id,
