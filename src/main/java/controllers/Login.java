@@ -48,8 +48,7 @@ public class Login extends HttpServlet {
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, daoFactory, hashGenerator);
         List<Patient> patients = new PatientService().getAllPatients(daoFactory);
-//        System.out.println("Размер коллекции пациентов: "+ patients.size());
-//        patients.forEach(el-> System.out.println(el));
+        patients.forEach(System.out::println);
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
             //TODO передать коллекцию пациентов на фронт
