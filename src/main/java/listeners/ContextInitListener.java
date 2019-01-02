@@ -16,7 +16,7 @@ public class ContextInitListener implements ServletContextListener {
         ServletContext servletContext = servletContextEvent.getServletContext();
         try {
             HashGenerator hashGenerator = new HashGenerator();
-            servletContext.setAttribute("hashGenerator",hashGenerator);
+            servletContext.setAttribute("hashGenerator", hashGenerator);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -26,4 +26,5 @@ public class ContextInitListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
     }
+
 }

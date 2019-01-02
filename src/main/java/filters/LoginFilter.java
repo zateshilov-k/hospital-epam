@@ -11,6 +11,7 @@ import java.io.IOException;
  */
 @WebFilter(urlPatterns = {"/index.jsp"})
 public class LoginFilter implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -30,4 +31,5 @@ public class LoginFilter implements Filter {
 
     public void destroy() {
     }
+
 }

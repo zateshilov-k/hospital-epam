@@ -44,6 +44,7 @@ public class H2PatientDao implements PatientDao {
             }
         } catch (SQLException e) {
             log.warning(e.getMessage());
+            System.err.println(e.getMessage());
         }
         return patientList;
     }
