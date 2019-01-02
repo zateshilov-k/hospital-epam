@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.DaoFactory;
 import dao.h2.H2PatientDao;
 import model.Patient;
 import utils.HashGenerator;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ListOfPatients extends HttpServlet {
 
     DataSource dataSource;
-
+    DaoFactory daoFactory;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Patient> patientList = new H2PatientDao(dataSource).getAllPatients();
@@ -40,6 +41,7 @@ public class ListOfPatients extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         dataSource = (DataSource) context.getAttribute("dataSource");
+        daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
 
     @Override
