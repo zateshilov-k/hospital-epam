@@ -28,7 +28,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
     }
 
     @Override
-    public List<Diagnosis> getDiagnosisByPatientId(long patientId) {
+    public List<Diagnosis> getAllDiagnosesByPatientId(long patientId) {
         List<Diagnosis> diagnosisList = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
@@ -39,6 +39,8 @@ public class H2DiagnosisDao implements DiagnosisDao {
                     Diagnosis diagnosis = new Diagnosis();
                     diagnosis.setDiagnosisId(resultSet.getLong("diagnosis_id"));
                     diagnosis.setDescription(resultSet.getString("description"));
+
+
                     // Нужно засунуть personal_id and patient_id with type long. Но, в model patient and personal,
                     //    private Personal personal вместо private long personalId - не соотвествие с БД, поэтому
                     // Нужен setPersonalId(long id)

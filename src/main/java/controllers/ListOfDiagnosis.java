@@ -29,7 +29,7 @@ public class ListOfDiagnosis extends HttpServlet {
         Patient patient1 = patientList.get(10);
         System.out.println("OUR PATIENT");
         System.out.println(patient1.getPatientId() + " " + patient1.getFirstName() + " " + patient1.getLastName() + " " + patient1.isDischarged());
-        List<Diagnosis> diagnosisListForOnePatient = new H2DiagnosisDao(dataSource).getDiagnosisByPatientId(patient1.getPatientId());
+        List<Diagnosis> diagnosisListForOnePatient = new H2DiagnosisDao(dataSource).getAllDiagnosesByPatientId(patient1.getPatientId());
         for (int i = 0; i < diagnosisListForOnePatient.size(); i++) {
             System.out.println(diagnosisListForOnePatient.get(i));
         }

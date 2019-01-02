@@ -177,6 +177,7 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         servletContextEvent.getServletContext().setAttribute("daoFactory",new H2DaoFactory(dataSource));
     }
 
