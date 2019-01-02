@@ -17,6 +17,8 @@
   <br>
   Input Password:<br>
   <input type="text" name= "password">
+  Input Role : <br>
+  <input type="text" name= "role">
 <br>
 <br>
 <button style="text-align:center;" onclick="href='/Main.jsp'">Sign Up</button>

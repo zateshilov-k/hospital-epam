@@ -5,14 +5,14 @@
 <head>
 <style>
    .button1 {
-    position: absolute; /* Относительное позиционирование */
+    position: absolute;
     left: 300px;
     top: 16px;
     line-height: 300px;
    }
    .button2 {
     left: 200px;
-    position: absolute; /* Относительное позиционирование */
+    position: absolute;
    }
 	table{
 
