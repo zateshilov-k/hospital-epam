@@ -12,8 +12,8 @@
   <input type ="text" name= "lastName">
   <br>
 <br>
-<button style="text-align:center;" onclick="href='/Main.jsp'">Save</button>
-<button style="text-align:center;" onclick="href='/Main.jsp'">Cancel</button>
+<button style="text-align:center;" onclick="href='/main.jsp'">Save</button>
+<button style="text-align:center;" onclick="href='/main.jsp'">Cancel</button>
 </fieldset>
 </form>
 </body>
