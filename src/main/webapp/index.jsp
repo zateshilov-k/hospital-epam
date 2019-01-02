@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 <html>
-head>
+<head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,7 +51,6 @@ head>
                 <p><span class="error">${requestScope.loginError}</span></p>
             </c:if>
         </div>
-<button style="text-align:center;" onclick="href='/pageOfSignUp.jsp'">Sign Up</button>
-<a class="btn btn-default" href="/signUp.jsp" role="button">Link</a>
+<a class="btn btn-default" href="/signUp.jsp" role="button">Sign Up</a>
 </body>
 </html>
