@@ -1,8 +1,8 @@
 package controllers;
 
+import dao.DaoFactory;
 import model.Patient;
 import model.Personal;
-import services.PatientService;
 import services.PersonalService;
 import utils.HashGenerator;
 
@@ -24,7 +24,8 @@ import java.util.*;
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {
-    DataSource dataSource;
+    //DataSource dataSource;
+    DaoFactory daoFactory;
     HashGenerator hashGenerator;
 
     @Override
@@ -43,21 +44,18 @@ public class Login extends HttpServlet {
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
-        String password = request.getParameter("password").trim();
+        String password = request.getParameter("password");
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
-                password, dataSource, hashGenerator);
-        List<Patient> patients = new PatientService().getAllPatients(dataSource);
-//        System.out.println("Размер коллекции пациентов: "+ patients.size());
-//        patients.forEach(el-> System.out.println(el));
+                password, daoFactory, hashGenerator);
+        List<Patient> patients = new ArrayList<>();
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
-            if (patients != null) {
-                session.setAttribute("patients", patients);
-            }
+//TODO передать коллекцию пациентов на фронт
+
             request.getRequestDispatcher("/main.jsp").forward(request, response);
 
             //TODO add logging
-           // String ip = request.getRemoteAddr();
+            String ip = request.getRemoteAddr();
             return;
         } else {
             String str = bundle.getString("loginError");
@@ -77,8 +75,8 @@ public class Login extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         ServletContext context = getServletContext();
-        dataSource = (DataSource) context.getAttribute("dataSource");
         hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
+        daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
 
     @Override
