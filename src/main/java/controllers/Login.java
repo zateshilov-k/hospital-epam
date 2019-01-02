@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
-        String password = request.getParameter("password");
+        String password = request.getParameter("password").trim();
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, dataSource, hashGenerator);
         List<Patient> patients = new PatientService().getAllPatients(dataSource);
@@ -57,7 +57,7 @@ public class Login extends HttpServlet {
             request.getRequestDispatcher("/main.jsp").forward(request, response);
 
             //TODO add logging
-            String ip = request.getRemoteAddr();
+           // String ip = request.getRemoteAddr();
             return;
         } else {
             String str = bundle.getString("loginError");
