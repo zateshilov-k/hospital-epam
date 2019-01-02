@@ -1,21 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
 <style>
    .button1 {
-    position: absolute;
+    position: absolute; /* Относительное позиционирование */
     left: 300px;
     top: 16px;
     line-height: 300px;
    }
    .button2 {
     left: 200px;
-    position: absolute;
+    position: absolute; /* Относительное позиционирование */
    }
 	table{
-
+     <caption>Изменение добычи ресурсов по годам</caption>
 	  border-collapse: collapse;
 	}
 	td{
@@ -28,14 +27,16 @@
     font-weight: bold;
     text-align: center;
     }
+
 </style>
   <script>
   window.onload = function(){
   var newTable=document.createElement("table");
-    for( var x=0; x<${sessionScope.patients.size()};x++){
+    for( var x=0; x<5;x++){
       var newRow=newTable.insertRow(x);
        for( var y=0; y<2;y++){
          var newCell=newRow.insertCell(y);
+
         if(x===0 && y===0){
         	newCell.innerHTML="Id";
         	newCell.width=50;
@@ -49,7 +50,7 @@
        	   newCell.innerHTML=x;
        	   newCell.width=50;
         }
-        else {
+        else (y=1 && x>0 ){
           var str="${name}" + "${surname}";
            newCell.innerHTML=str;
            newCell.width=50;
