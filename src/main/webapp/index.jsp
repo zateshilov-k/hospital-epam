@@ -26,7 +26,7 @@
 <button style="text-align:center;">Sign in</button>
 <br>
 <br>
- <button style="text-align:center;" onclick="href='/pageOfSignUp.jsp'">Sign Up</button>
+ <button style="text-align:center;" onclick="href='/signUp.jsp'">Sign Up</button>
 </fieldset>
 </form>
         <div>

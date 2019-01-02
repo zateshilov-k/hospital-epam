@@ -18,8 +18,8 @@
   <input type="text" name= "password">
 <br>
 <br>
-<button style="text-align:center;" onclick="href='/Main.jsp'">Save</button>
-<button style="text-align:center;" onclick="href='/Main.jsp'">Back</button>
+<button style="text-align:center;" onclick="href='/main.jsp'">Save</button>
+<button style="text-align:center;" onclick="href='/main.jsp'">Back</button>
 </fieldset>
 </form>
 </body>

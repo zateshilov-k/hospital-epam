@@ -21,7 +21,7 @@
   <input type="text" name= "role">
 <br>
 <br>
-<button style="text-align:center;" onclick="href='/Main.jsp'">Sign Up</button>
+<button style="text-align:center;" onclick="href='/main.jsp'">Sign Up</button>
 </fieldset>
 </form>
 </html>
