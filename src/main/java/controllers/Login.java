@@ -3,6 +3,7 @@ package controllers;
 import dao.DaoFactory;
 import model.Patient;
 import model.Personal;
+import services.PatientService;
 import services.PersonalService;
 import utils.HashGenerator;
 
@@ -24,7 +25,6 @@ import java.util.*;
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {
-    //DataSource dataSource;
     DaoFactory daoFactory;
     HashGenerator hashGenerator;
 
@@ -47,11 +47,14 @@ public class Login extends HttpServlet {
         String password = request.getParameter("password");
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, daoFactory, hashGenerator);
-        List<Patient> patients = new ArrayList<>();
+        List<Patient> patients = new PatientService().getAllPatients(daoFactory);
+        patients.forEach(System.out::println);
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
-//TODO передать коллекцию пациентов на фронт
-
+            //TODO передать коллекцию пациентов на фронт
+            if (patients != null) {
+                session.setAttribute("patients", patients);
+            }
             request.getRequestDispatcher("/main.jsp").forward(request, response);
 
             //TODO add logging
