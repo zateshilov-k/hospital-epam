@@ -1,5 +1,6 @@
 package listeners;
 
+import dao.DaoFactory;
 import dao.h2.H2DaoFactory;
 import model.*;
 import utils.HashGenerator;
@@ -131,7 +132,7 @@ public class DatabaseInitListener implements ServletContextListener {
         hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
         final int numberOfPersonal = 10;
         final int numberOfPatients = 10;
-        final int numberOfDiagnosisPerPatient = 1;
+        final int numberOfDiagnosisPerPatient = 2;
         final int numberOfPrescriptionsPerDiagnosis = 2;
 
         List<Personal> personals = getPersonals(numberOfPersonal);
@@ -177,8 +178,9 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        servletContextEvent.getServletContext().setAttribute("daoFactory",new H2DaoFactory(dataSource));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
+        servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
     }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
