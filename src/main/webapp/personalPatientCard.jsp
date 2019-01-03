@@ -44,21 +44,21 @@ tr:hover {background-color:#a0a0a0;}
     <td>Грипп</td>
     <td>12.02.2018, 9:30</td>
     <td>Нет</td>
-    <td>Тык</td>
+    <td> <a href="#">Тык</a></td>
   </tr>
     <tr>
     <td>2</td>
     <td>Грипп</td>
     <td>12.02.2018, 9:30</td>
     <td>Нет</td>
-    <td>Тык</td>
+    <td> <a href="#">Тык</a></td>
   </tr>
     <tr>
     <td>3</td>
     <td>Грипп</td>
     <td>12.02.2018, 9:30</td>
     <td>Нет</td>
-    <td>Тык</td>
+    <td> <a href="#">Тык</a></td>
   </tr>
 </table>
 
@@ -81,20 +81,6 @@ function myFunction() {
   </tr>
   <tr>
     <td>1</td>
-    <td>Капотен</td>
-    <td>Лекарство</td>
-    <td>12.08.2018,9:30</td>
-    <td>Выполнен</td>
-  </tr>
-    <tr>
-    <td>2</td>
-    <td>Капотен</td>
-    <td>Лекарство</td>
-    <td>12.08.2018,9:30</td>
-    <td>Выполнен</td>
-  </tr>
-    <tr>
-    <td>3</td>
     <td>Капотен</td>
     <td>Лекарство</td>
     <td>12.08.2018,9:30</td>
