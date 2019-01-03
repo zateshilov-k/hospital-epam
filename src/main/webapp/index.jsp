@@ -1,72 +1,86 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
-          integrity="sha384-PmY9l28YgO4JwMKbTvgaS7XNZJ30MK9FAZjjzXtlqyZCqBY6X6bXIkM++IkyinN+" crossorigin="anonymous">
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="icon" href="Favicon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <title>Войдите в систему EPAM Hospital</title>
 </head>
-<body style="background-color:powderblue;">
-<h1 style="text-align:center" font-size="28"> Welcome to Hospital!</h1>
-<br>
-<form action="/login" method="post" style="text-align:center">
-    <div class="form-row align-items-center">
-        <div class="col-sm-3 mx-7" align-items-center>
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                   placeholder="Enter email">
-        </div>
+<body style="background-color:powderblue">
 
-        <div class="col-3">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+
+
+<main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Войдите в систему EPAM Hospital</div>
+                    <div class="card-body">
+                        <form action="/login" method="post">
+                            <div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Введите e-mail address</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="email_address" class="form-control" name="login" required autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Введите пароль</label>
+                                <div class="col-md-6">
+                                    <input type="password" id="password" class="form-control" name="password" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" align="center">
+
+                            <c:if test="${!empty requestScope.loginError}">
+                            <p><font color="red"><span class="error" >${requestScope.loginError}</span></font></p>
+                            </c:if>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" >
+                                    Login
+                                </button>
+                                <a href="/signUp.jsp" class="btn btn-link">
+                                    Registration
+                                </a>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-</form>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<form action="/login" method="post" style="text-align:center;">
-    <fieldset>
-        <legend></legend>
-        Login:<br>
-        <input type="text" name="login">
-        <br>
-        Password:<br>
-        <input type="text" name="password">
-        <br>
-        <br>
-        <button style="text-align:center">Sign in</button>
-        <br>
-        <br>
+    </div>
 
-    </fieldset>
-</form>
-<div>
-    <c:if test="${!empty requestScope.loginError}">
-        <p><span class="error">${requestScope.loginError}</span></p>
-    </c:if>
-</div>
-<p style="text-align:center"><a class="btn btn-default" href="/signUp.jsp" role="button">Sign Up</a></p>
+</main>
+
+
+
+
+
+
 
 </body>
 </html>
