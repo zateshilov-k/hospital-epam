@@ -27,7 +27,6 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-md-9">
             <table class="table table-list-search">
                 <thead>
@@ -36,7 +35,6 @@
                     <th>Firstname</th>
                     <th>Lastname</th>
                     <th>Action</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -46,10 +44,8 @@
                     <td>${patient.firstName}</td>
                     <td>${patient.lastName}</td>
                     <td><a href="/patient/${patient.patientId}"> Перейти в карточку</a></td>
-
                 </tr>
                 </c:forEach>
-
                 </tbody>
             </table>
         </div>
