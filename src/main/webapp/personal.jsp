@@ -52,7 +52,13 @@
                                            autofocus>
                                 </div>
                             </div>
-
+                            <div class="form-group row">
+                                <label for="field5" class="col-md-4 col-form-label text-md-right">Введите логин (e-mail) </label>
+                                <div class="col-md-6">
+                                    <input type="text" id="field5" class="form-control" name="login" required
+                                           autofocus>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Введите
                                     пароль</label>
