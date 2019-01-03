@@ -9,10 +9,11 @@
 </head>
 <body style="background-color:powderblue;">
 <h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
-<h1 style="text-align:center" font-size="22">Choose the right patient</h1>
+
 
 <div class="container">
     <div class="row">
+        <p style="text-align:left" font-size="14">Choose the right patient</p>
         <div class="col-md-3">
             <form action="#" method="get">
                 <div class="input-group">
@@ -24,6 +25,9 @@
                 </div>
             </form>
         </div>
+    </div>
+    <div class="row">
+
         <div class="col-md-9">
             <table class="table table-list-search">
                 <thead>
@@ -41,7 +45,7 @@
                     <td>${patient.patientId}</td>
                     <td>${patient.firstName}</td>
                     <td>${patient.lastName}</td>
-                    <td>###</td>
+                    <td><a href="/patient/${patient.patientId}"> Перейти в карточку</a></td>
 
                 </tr>
                 </c:forEach>
