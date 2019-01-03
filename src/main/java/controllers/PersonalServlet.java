@@ -6,6 +6,7 @@ import services.PatientService;
 import utils.SignUpValidate;
 import utils.StringFieldValidate;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,6 +62,9 @@ public class PersonalServlet extends HttpServlet {
             //TODO add personal
             //TODO write code here
             List<Patient> patients = new PatientService().getAllPatients(daoFactory);
+            if (patients != null) {
+                session.setAttribute("patients", patients);
+            }
             request.getRequestDispatcher("/main.jsp").forward(request, response);
             System.out.println("Personal is added \t" + firstName+" "+ lastName);
         } else {
@@ -86,5 +90,7 @@ public class PersonalServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
+        ServletContext context = getServletContext();
+        daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
 }
