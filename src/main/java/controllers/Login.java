@@ -44,11 +44,12 @@ public class Login extends HttpServlet {
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
-        String password = request.getParameter("password");
+        String password = request.getParameter("password").trim();
+        System.out.println("Login: " + login);
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, daoFactory, hashGenerator);
         List<Patient> patients = new PatientService().getAllPatients(daoFactory);
-        patients.forEach(System.out::println);
+//        patients.forEach(System.out::println);
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
             //TODO передать коллекцию пациентов на фронт
