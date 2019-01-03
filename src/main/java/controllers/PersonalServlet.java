@@ -37,20 +37,27 @@ public class PersonalServlet extends HttpServlet {
         String lastName = request.getParameter("lastName").trim();
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password").trim();
+        String role = request.getParameter("role");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
+        //TODO сделать проверку на совпадение логина
         if (isValid) {
             isValid = stringFieldValidate.doValidation(lastName);
             if (isValid) {
                 isValid = stringFieldValidate.doValidation(login);
                 if (isValid) {
                     isValid = stringFieldValidate.doValidation(password);
+                    if (isValid) {
+                        isValid = stringFieldValidate.doValidation(role);
+                    }
                 }
             }
         }
         if (isValid) {
             //TODO add personal
             // Patient patient = new PatientService().addPatient(firstName, lastName);
+            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            System.out.println("Personal is added \t" + firstName+" "+ lastName);
         } else {
             String str = bundle.getString("personalError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
