@@ -28,6 +28,7 @@ public class PatientServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("Patient Servlet doPost");
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
@@ -37,6 +38,7 @@ public class PatientServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         String firstName = request.getParameter("firstName").trim();
         String lastName = request.getParameter("lastName").trim();
+        System.out.println("ФИО: "+ firstName + " " + lastName);
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
         if (isValid) {
@@ -45,11 +47,13 @@ public class PatientServlet extends HttpServlet {
         if (isValid) {
             //TODO add patient
             // Patient patient = new PatientService().addPatient(firstName, lastName);
+
+            request.getRequestDispatcher("/main.jsp").forward(request, response);
         } else {
             String str = bundle.getString("patientError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
             request.setAttribute("patientError", str);
-            request.getRequestDispatcher("/").forward(request, response);
+            request.getRequestDispatcher("/patient.jsp").forward(request, response);
             return;
         }
     }

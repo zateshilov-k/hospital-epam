@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@WebServlet("/signUp")
-public class SignUp extends HttpServlet {
+@WebServlet("/addPersonal")
+public class PersonalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
