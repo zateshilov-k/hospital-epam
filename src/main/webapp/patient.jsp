@@ -24,7 +24,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
-  <title>Войдите в систему EPAM Hospital</title>
+  <title>Add patient</title>
 </head>
 <body style="background-color:powderblue">
 
