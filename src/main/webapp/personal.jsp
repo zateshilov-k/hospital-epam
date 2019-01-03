@@ -62,7 +62,7 @@
                 <div class="card">
                     <div class="card-header">Создайте персонал в системе EPAM Hospital</div>
                     <div class="card-body">
-                        <form action="/addPatient" method="post">
+                        <form action="/addPersonal" method="post">
                             <div class="form-group row">
                                 <label for="field1" class="col-md-4 col-form-label text-md-right">Введите имя</label>
                                 <div class="col-md-6">
