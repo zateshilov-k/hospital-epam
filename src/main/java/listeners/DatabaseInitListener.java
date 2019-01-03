@@ -1,5 +1,7 @@
 package listeners;
 
+import dao.DaoFactory;
+import dao.h2.H2DaoFactory;
 import model.*;
 import utils.HashGenerator;
 
@@ -55,9 +57,8 @@ public class DatabaseInitListener implements ServletContextListener {
         return baseSurnames[random.nextInt(baseSurnames.length)];
     }
 
-    private String getRandomRole() {
-        String[] baseRoles = {"Доктор", "Медбрат"};
-        return baseRoles[random.nextInt(baseRoles.length)];
+    private Role getRandomRole() {
+        return Role.values()[random.nextInt(Role.values().length)];
     }
 
     private String getRandomDisease() {
@@ -131,7 +132,7 @@ public class DatabaseInitListener implements ServletContextListener {
         hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
         final int numberOfPersonal = 10;
         final int numberOfPatients = 10;
-        final int numberOfDiagnosisPerPatient = 1;
+        final int numberOfDiagnosisPerPatient = 2;
         final int numberOfPrescriptionsPerDiagnosis = 2;
 
         List<Personal> personals = getPersonals(numberOfPersonal);
@@ -177,7 +178,9 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        servletContextEvent.getServletContext().setAttribute("dataSource", dataSource);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
+        servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
     }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
@@ -186,15 +189,15 @@ public class DatabaseInitListener implements ServletContextListener {
             if (prescription.isDone()) {
                 Personal executor;
                 switch (prescription.getType()) {
-                    case ОПЕРАЦИЯ:
+                    case OPERATION:
                         executor = IntStream
                                 .generate(() -> random.nextInt(personals.size()))
                                 .mapToObj(j -> personals.get(j))
-                                .filter((p) -> p.getRole() == Role.ДОКТОР)
+                                .filter((p) -> p.getRole() == Role.DOCTOR)
                                 .findAny().get();
                         break;
-                    case ЛЕКАРСТВО:
-                    case ПРОЦЕДУРА:
+                    case DRUG:
+                    case PROCEDURE:
                         executor = IntStream
                                 .generate(() -> random.nextInt(personals.size()))
                                 .mapToObj(j -> personals.get(j))
@@ -206,7 +209,7 @@ public class DatabaseInitListener implements ServletContextListener {
                 }
                 personalPrescriptions.add(new PersonalPrescription(
                                 personalPrescriptions.size() + 1,
-                                PersonalPrescriptionType.ВЫПОЛНИЛ,
+                                PersonalPrescriptionType.DONE,
                                 executor,
                                 prescription
                         )
@@ -214,7 +217,7 @@ public class DatabaseInitListener implements ServletContextListener {
             }
             personalPrescriptions.add(new PersonalPrescription(
                     personalPrescriptions.size() + 1,
-                    PersonalPrescriptionType.НАЗНАЧИЛ,
+                    PersonalPrescriptionType.PRESCRIBE,
                     prescription.getDiagnosis().getPersonal(),
                     prescription
             ));
@@ -235,13 +238,12 @@ public class DatabaseInitListener implements ServletContextListener {
 
     private List<Diagnosis> getDiagnoses(int numberOfDiagnosisPerPatient, List<Personal> personals, List<Patient> patients) {
         List<Diagnosis> diagnoses = new ArrayList<>();
-        int diagnosisId = 0;
         patients.forEach(patient -> {
             for (int i = 0; i < numberOfDiagnosisPerPatient; i++) {
                 Personal doctor = IntStream
                         .generate(() -> random.nextInt(personals.size()))
                         .mapToObj(j -> personals.get(j))
-                        .filter((p) -> p.getRole() == Role.ДОКТОР)
+                        .filter((p) -> p.getRole() == Role.DOCTOR)
                         .findAny().get();
                 diagnoses.add(getRandomDiagonsis(diagnoses.size() + 1, patient, doctor));
             }
@@ -261,11 +263,6 @@ public class DatabaseInitListener implements ServletContextListener {
                 .collect(Collectors.toList());
         personals.add(getRandomPersonal(personals.size() + 1, true));
         return personals;
-    }
-
-    private PersonalPrescriptionType getRandomPersonalPrescriptionType() {
-        PersonalPrescriptionType[] personalPrescriptionTypes = PersonalPrescriptionType.values();
-        return personalPrescriptionTypes[random.nextInt(personalPrescriptionTypes.length)];
     }
 
     private Prescription getRandomPrescription(int id, Diagnosis diagnosis) {
@@ -312,9 +309,9 @@ public class DatabaseInitListener implements ServletContextListener {
     private Personal getRandomPersonal(int id, boolean isDoctor) {
         Role role;
         if (isDoctor) {
-            role = Role.ДОКТОР;
+            role = Role.DOCTOR;
         } else {
-            role = Role.valueOf(getRandomRole().toUpperCase());
+            role = getRandomRole();
         }
         return new Personal(
                 id,
