@@ -3,93 +3,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-   .button1 {
-    position: absolute;
-    left: 300px;
-    top: 16px;
-    line-height: 300px;
-   }
-   .button2 {
-    left: 200px;
-    position: absolute;
-   }
-	table{
-
-	  border-collapse: collapse;
-	}
-	td{
-	  border: 1px solid black;
-	  padding: 3px;
-	  text-align: center;
-	}
-    .id{
-    background-color:yellow;
-    font-weight: bold;
-    text-align: center;
-    }
-</style>
-  <%--<script>--%>
-  <%--window.onload = function(){--%>
-  <%--var newTable=document.createElement("table");--%>
-    <%--for( var x=0; x<${sessionScope.patients.size()};x++){--%>
-        <%--var patient = ${sessionScope.patients.get(x)};--%>
-      <%--var newRow=newTable.insertRow(x);--%>
-       <%--for( var y=0; y<2;y++){--%>
-         <%--var newCell=newRow.insertCell(y);--%>
-        <%--if(x===0 && y===0){--%>
-        	<%--newCell.innerHTML="Id";--%>
-        	<%--newCell.width=50;--%>
-        <%--}--%>
-        <%--else if(x===0 && y===1){--%>
-        	<%--newCell.innerHTML="Patient";--%>
-          	<%--newCell.width=50;--%>
-        <%--}--%>
-        <%--else if(y===0 && x>0){--%>
-       	   <%--newCell.classname="id";--%>
-       	   <%--newCell.innerHTML=patient.patientId;--%>
-       	   <%--newCell.width=50;--%>
-        <%--}--%>
-        <%--else {--%>
-          <%--var str="patient.firstName" + "patient.lastName";--%>
-           <%--newCell.innerHTML=str;--%>
-           <%--newCell.width=50;--%>
-       <%--}--%>
-      <%--}--%>
-    <%--}--%>
-    <%--document.body.appendChild(newTable);--%>
-  <%--}--%>
- <%--</script>--%>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body style="background-color:powderblue;">
 <h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
 <h1 style="text-align:center" font-size="22">Choose the right patient</h1>
 
-<table border="1" cellspacing="0" cellpadding="2">
-    <tr>
-        <td>UID</td>
-        <td>Name</td>
-    </tr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form action="#" method="get">
+                <div class="input-group">
+                    <!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+                    <input class="form-control" id="system-search" name="q" placeholder="Search for" required>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <table class="table table-list-search">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Action</th>
 
-    <c:forEach items="${sessionScope.patients}" var="patient">
-        <tr>
-            <td>${patient.patientId}</td>
-            <td>${patient.firstName} ${patient.lastName}</td>
-        </tr>
-    </c:forEach>
-</table>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${sessionScope.patients}" var="patient">
+                <tr>
+                    <td>${patient.patientId}</td>
+                    <td>${patient.firstName}</td>
+                    <td>${patient.lastName}</td>
+                    <td>###</td>
 
+                </tr>
+                </c:forEach>
 
-
-
-<br>
-  <div class="button1">
-   <button type="button1" onclick="href='/personalPatientCard.jsp'" >New Patient</button>
-   </div>
-   <div class="button2">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="button1">
+    <button type="button1" onclick="href='/personalPatientCard.jsp'" >New Patient</button>
+</div>
+<div class="button2">
     <button type="button2" onclick="href='/personal.jsp'" > Change data </button>
-   </div>
- <br><br>
- <br>
+</div>
+<script>
+    $(document).ready(function() {
+        var activeSystemClass = $('.list-group-item.active');
+
+        //something is entered in search form
+        $('#system-search').keyup( function() {
+            var that = this;
+            // affect all table rows on in systems table
+            var tableBody = $('.table-list-search tbody');
+            var tableRowsClass = $('.table-list-search tbody tr');
+            $('.search-sf').remove();
+            tableRowsClass.each( function(i, val) {
+
+                //Lower text for case insensitive
+                var rowText = $(val).text().toLowerCase();
+                var inputText = $(that).val().toLowerCase();
+                if(inputText != '')
+                {
+                    $('.search-query-sf').remove();
+                    tableBody.prepend('<tr class="search-query-sf"><td colspan="6"><strong>Searching for: "'
+                        + $(that).val()
+                        + '"</strong></td></tr>');
+                }
+                else
+                {
+                    $('.search-query-sf').remove();
+                }
+
+                if( rowText.indexOf( inputText ) == -1 )
+                {
+                    //hide rows
+                    tableRowsClass.eq(i).hide();
+
+                }
+                else
+                {
+                    $('.search-sf').remove();
+                    tableRowsClass.eq(i).show();
+                }
+            });
+            //all tr elements are hidden
+            if(tableRowsClass.children(':visible').length == 0)
+            {
+                tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="6">No entries found.</td></tr>');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
