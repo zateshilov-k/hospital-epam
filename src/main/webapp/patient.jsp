@@ -9,70 +9,76 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Fonts -->
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
-  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
-  <link rel="icon" href="Favicon.png">
+    <link rel="icon" href="Favicon.png">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
-  <title>Add patient</title>
+    <title>Add patient</title>
 </head>
 <body style="background-color:powderblue">
 
 
-
 <main class="login-form">
-  <div class="cotainer">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">Создайте пациента в системе EPAM Hospital</div>
-          <div class="card-body">
-            <form action="/addPatient" method="post">
-              <div class="form-group row">
-                <label for="email_address" class="col-md-4 col-form-label text-md-right">Введите имя</label>
-                <div class="col-md-6">
-                  <input type="text" id="email_address" class="form-control" name="firstName" required autofocus>
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Создайте пациента в системе EPAM Hospital</div>
+                    <div class="card-body">
+                        <form action="/addPatient" method="post">
+                            <div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Введите
+                                    имя</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="email_address" class="form-control" name="firstName" required
+                                           autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Введите
+                                    фамилию</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="password" class="form-control" name="lastName" required
+                                           autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" align="center">
+
+                                <c:if test="${!empty requestScope.loginError}">
+                                    <p><font color="red"><span class="error">${requestScope.patientError}</span></font>
+                                    </p>
+                                </c:if>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Сохранить
+                                </button>
+                                <a href="/main.jsp" class="btn btn-link">
+                                    Отмена
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="email_address" class="col-md-4 col-form-label text-md-right">Введите фамилию</label>
-                <div class="col-md-6">
-                  <input type="text" id="password" class="form-control" name="lastName" required autofocus>
-                </div>
-              </div>
 
-              <div class="form-group row" align="center">
-
-                <c:if test="${!empty requestScope.loginError}">
-                  <p><font color="red"><span class="error" >${requestScope.patientError}</span></font></p>
-                </c:if>
-              </div>
-
-              <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary" >
-                  Сохранить
-                </button>
-                <a href="/main.jsp" class="btn btn-link">
-                  Отмена
-                </a>
-              </div>
-          </div>
-          </form>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  </div>
+    </div>
+    </div>
 
 </main>
 
