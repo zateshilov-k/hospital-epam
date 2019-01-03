@@ -1,5 +1,8 @@
 package controllers;
 
+import dao.DaoFactory;
+import model.Patient;
+import services.PatientService;
 import utils.SignUpValidate;
 import utils.StringFieldValidate;
 
@@ -10,12 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 @WebServlet("/addPersonal")
 public class PersonalServlet extends HttpServlet {
-
+    DaoFactory daoFactory;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
@@ -55,7 +59,8 @@ public class PersonalServlet extends HttpServlet {
         }
         if (isValid) {
             //TODO add personal
-            // Patient patient = new PatientService().addPatient(firstName, lastName);
+            //TODO write code here
+            List<Patient> patients = new PatientService().getAllPatients(daoFactory);
             request.getRequestDispatcher("/main.jsp").forward(request, response);
             System.out.println("Personal is added \t" + firstName+" "+ lastName);
         } else {
