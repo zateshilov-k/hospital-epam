@@ -62,7 +62,7 @@
                                 <button type="submit" class="btn btn-primary" >
                                     Login
                                 </button>
-                                <a href="/signUp.jsp" class="btn btn-link">
+                                <a href="/personal.jsp" class="btn btn-link">
                                     Registration
                                 </a>
                             </div>
