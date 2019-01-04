@@ -80,8 +80,7 @@
 <h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<p style="text-align:left" font-size="14">Choose the right patient</p>
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>Id</th>
@@ -96,7 +95,7 @@
             <td>${patient.patientId}</td>
             <td>${patient.firstName}</td>
             <td>${patient.lastName}</td>
-            <td><a href="/patient/${patient.patientId}"> Перейти в карточку</a></td>
+            <td action="/patientCard" method="post"><a href="/patient/${patient.patientId}"> Перейти в карточку</a></td>
         </tr>
     </c:forEach>
     </tbody>
