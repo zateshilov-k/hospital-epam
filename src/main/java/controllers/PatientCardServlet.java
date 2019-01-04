@@ -2,10 +2,7 @@ package controllers;
 
 import dao.DaoFactory;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,14 +19,25 @@ public class PatientCardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doGet(req, resp);
+        System.out.println("Patient Card GET");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=utf-8");
+
         System.out.println("PatientCardServlet doPost method");
-        request.getRequestDispatcher("/personalPatientCard.jsp").forward(request, response);
+        System.out.println(request.getParameter("your_name"));
+        try {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
+            requestDispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("after");
     }
 
     @Override
