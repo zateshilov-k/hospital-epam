@@ -95,7 +95,13 @@
             <td>${patient.patientId}</td>
             <td>${patient.firstName}</td>
             <td>${patient.lastName}</td>
-            <td action="/patientCard" method="post"><a href="/patient/${patient.patientId}"> Перейти в карточку</a></td>
+            <form name="Button" action="/patientCard" method="POST">
+                <td>
+                    <input type="hidden" name="patientId" value="${patient.patientId}"/>
+                    <input type="submit" name="button" value="Перейти в карточку"/>
+                </td>
+            </form>
+            <%--<td action="/patientCard" method="post"><a href="/patient/${patient.patientId}"> Перейти в карточку</a></td>--%>
         </tr>
     </c:forEach>
     </tbody>
