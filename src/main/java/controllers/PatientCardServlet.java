@@ -4,6 +4,7 @@ import dao.DaoFactory;
 import dao.PatientDao;
 import model.Diagnosis;
 import model.Patient;
+import org.json.JSONArray;
 import utils.HashGenerator;
 
 import javax.servlet.*;
@@ -40,7 +41,7 @@ public class PatientCardServlet extends HttpServlet {
 
         List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
         request.setAttribute("currentPatient",patient);
-        request.setAttribute("diagnosesList",diagnosisList);
+        request.setAttribute("diagnosesList",new JSONArray(diagnosisList).toString());
         try {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
             requestDispatcher.forward(request, response);

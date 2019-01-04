@@ -115,18 +115,19 @@ function myFunction() {
 
 </fieldset>
 <script>
-    alert('asd');
-    var diagnosis = (<%=  new JSONArray((List<Diagnosis>) request.getAttribute("diagnosesList")).toString()%>);
-    alert(diagnosis.length);
-    for (var i = 0;  i < patients.length; i++) {
-        var newRow = patientsTable.insertRow(i+1);
-        //newRow.addEventListener("click", mouseClick);
-        for (var j = 0; j < 2; j++) {
+    var diagnosisTable = document.getElementById("diagnosis");
+    var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
+    for (var i = 0;  i < diagnosis.length; i++) {
+        var newRow = diagnosisTable.insertRow(i+1);
+        newRow.addEventListener("click", mouseClick);
+        for (var j = 0; j < 4; j++) {
             var newCell = newRow.insertCell(j);
             if (j === 0 ) {
-                newCell.innerHTML=patients[i]['patientId'];
-            } else {
-                newCell.innerHTML=patients[i]['firstName'] + ' ' + patients[i]['lastName'];
+                newCell.innerHTML=diagnosis[i]['diagnosisId'];
+            } else if (j === 1) {
+                newCell.innerHTML=diagnosis[i]['description']
+            } else if (j === 2) {
+                newCell.innerHTML=diagnosis[i]['time']
             }
         }
     }
