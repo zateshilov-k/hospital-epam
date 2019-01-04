@@ -95,4 +95,9 @@ public class H2DiagnosisDao implements DiagnosisDao {
         }
     }
 
+    @Override
+    public void updateDiagnosis(long diagnosisId, String description, boolean isHealthy){
+        //TODO write code here
+    }
+
 }
