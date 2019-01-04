@@ -28,7 +28,13 @@ public class PatientCardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        System.out.println("PatientCardServlet doPost method");
+//        System.out.println("PatientCardServlet doPost method");
+        Long patiendId = Long.valueOf(request.getParameter("patientId"));
+//        System.out.println("patientId\t"+patiendId);
+//TODO получить пациента по его id
+        //TODO собрать коллекцию диагнозов
+        //TODO собрать map<Diagnosis, Perscription>
+        //TODO передать все на фронт
         request.getRequestDispatcher("/personalPatientCard.jsp").forward(request, response);
     }
 
