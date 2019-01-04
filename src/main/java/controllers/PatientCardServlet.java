@@ -1,6 +1,10 @@
 package controllers;
 
 import dao.DaoFactory;
+import dao.PatientDao;
+import model.Diagnosis;
+import model.Patient;
+import utils.HashGenerator;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 /*
 Сервлет отрабатывает действия в личной карточке пациента
@@ -27,7 +32,15 @@ public class PatientCardServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
 
         System.out.println("PatientCardServlet doPost method");
-        System.out.println(request.getParameter("your_name"));
+        System.out.println(request.getParameter("patientId"));
+        System.out.println("PATIENT_ID" + request.getParameter("patientId"));
+        Long patientId = Long.parseLong(request.getParameter("patientId"));
+        PatientDao patientDao = daoFactory.getPatientDao();
+        Patient patient = patientDao.getPatient(patientId);
+
+        List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
+        request.setAttribute("currentPatient",patient);
+        request.setAttribute("diagnosesList",diagnosisList);
         try {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
             requestDispatcher.forward(request, response);
@@ -48,7 +61,13 @@ public class PatientCardServlet extends HttpServlet {
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         super.service(req, res);
+    }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
+
 }

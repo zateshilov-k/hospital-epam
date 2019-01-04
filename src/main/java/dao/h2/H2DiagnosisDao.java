@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 public class H2DiagnosisDao implements DiagnosisDao {
 
-    @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
     private DateTimeFormatter dateTimeFormatter;
     private static final Logger log = Logger.getLogger(String.valueOf(H2DiagnosisDao.class));

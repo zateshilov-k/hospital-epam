@@ -80,7 +80,7 @@
 <h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
 
 <form action="/patientCard" method="post">
-    <button type="submit" name="your_name" id="buttonToPatientPage"
+    <button type="submit" name="patientId" id="buttonToPatientPage"
             value="your_value" class="btn-link"> Перейти в карточку выбранного пациента</button>
 </form>
 

@@ -1,3 +1,7 @@
+<%@ page import="model.Patient" %>
+<%@ page import="model.Diagnosis" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.json.JSONArray" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -19,7 +23,9 @@ tr:hover {background-color:#a0a0a0;}
 <body style="background-color:powderblue;">
 
 
-<h2 style="text-align:center;" style="font-size:28px" >Личная карточка пациента</h2>
+<h2 style="text-align:center;" style="font-size:28px" >Личная карточка пациента <%=
+((Patient)request.getAttribute("currentPatient")).getFirstName()
+        + " " + ((Patient)request.getAttribute("currentPatient")).getLastName()  %></h2>
 <br>
 
 <button style="text-align:center;" onclick="href='/main.jsp'">To Main</button>
@@ -30,7 +36,7 @@ tr:hover {background-color:#a0a0a0;}
 <legend >История болезней</legend>
 <button onclick="myFunction()">Close diagnosis</button>
 <br><br>
-<table style="display:inline; float:left">
+<table id = "diagnosis" style="display:inline; float:left">
   <caption>Диагнозы:</caption>
   <tr>
     <th>Id</th>
@@ -39,23 +45,7 @@ tr:hover {background-color:#a0a0a0;}
     <th>Открыт</th>
   </tr>
   <tr>
-    <td>1</td>
-    <td>Грипп</td>
-    <td>12.02.2018, 9:30</td>
-    <td>Нет</td>
-  </tr>
-    <tr>
-    <td>2</td>
-    <td>Грипп</td>
-    <td>12.02.2018, 9:30</td>
-    <td>Нет</td>
-  </tr>
-    <tr>
-    <td>3</td>
-    <td>Грипп</td>
-    <td>12.02.2018, 9:30</td>
-    <td>Нет</td>
-  </tr>
+
 </table>
 
 <table class="page" style="display:inline; float:right;" >
@@ -124,6 +114,49 @@ function myFunction() {
  </form>
 
 </fieldset>
+<script>
+    alert('asd');
+    var diagnosis = (<%=  new JSONArray((List<Diagnosis>) request.getAttribute("diagnosesList")).toString()%>);
+    alert(diagnosis.length);
+    for (var i = 0;  i < patients.length; i++) {
+        var newRow = patientsTable.insertRow(i+1);
+        //newRow.addEventListener("click", mouseClick);
+        for (var j = 0; j < 2; j++) {
+            var newCell = newRow.insertCell(j);
+            if (j === 0 ) {
+                newCell.innerHTML=patients[i]['patientId'];
+            } else {
+                newCell.innerHTML=patients[i]['firstName'] + ' ' + patients[i]['lastName'];
+            }
+        }
+    }
 
+    function mouseClick() {
+        var rows = this.parentNode.rows;
+        for (i=1; i < rows.length; i++) {
+            rows[i].style.color = "black";
+        }
+        this.style.color = "red";
+        $.post("test", {patientId : this.cells[0].innerHTML}, function(response) {
+            var diagnoses = JSON.parse(response);
+            updateDiagnosesTable(diagnoses);
+        });
+    }
+    function updateDiagnosesTable(diagnoses) {
+        var table = document.getElementById('diagnosis');
+        $("#diagnosis tbody tr").remove();
+        for (var i = 0;  i < diagnoses.length; i++) {
+            var newRow = table.insertRow(i);
+            for (var j = 0; j < 2; j++) {
+                var newCell = newRow.insertCell(j);
+                if (j === 0 ) {
+                    newCell.innerHTML=diagnoses[i]['diagnosisId'];
+                } else {
+                    newCell.innerHTML=diagnoses[i]['description'];
+                }
+            }
+        }
+    }
+</script>
 </body>
 </html>

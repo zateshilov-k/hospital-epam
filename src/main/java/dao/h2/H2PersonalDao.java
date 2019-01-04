@@ -19,7 +19,6 @@ public class H2PersonalDao implements PersonalDao {
     private static final String UPDATE_PERSONAL_SQL = "UPDATE Personals SET login = ?, password = ?, firstName = ?, " +
             "lastName = ?, role = ? WHERE personalId = ?";
 
-    @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
     private static final Logger log = Logger.getLogger(String.valueOf(H2PersonalDao.class));
 
