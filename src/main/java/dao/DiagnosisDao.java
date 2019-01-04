@@ -9,4 +9,6 @@ public interface DiagnosisDao {
 
     List<Diagnosis> getAllDiagnosesByPatientId(long patientId);
 
+    void addDiagnosis(long patientId, long personalId, String description);
+
 }
