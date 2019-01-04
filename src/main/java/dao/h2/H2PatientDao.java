@@ -28,6 +28,16 @@ public class H2PatientDao implements PatientDao {
             "patient";
 
     @Override
+    public void addPatient(String firstName, String lastName) {
+
+    }
+
+    @Override
+    public void updatePatient(String firstName, String lastName) {
+
+    }
+
+    @Override
     public List<Patient> getAllPatients() {
         List<Patient> patientList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
@@ -47,6 +57,11 @@ public class H2PatientDao implements PatientDao {
             System.err.println(e.getMessage());
         }
         return patientList;
+    }
+
+    @Override
+    public void getPatientsByDoctorId(long personalId) {
+
     }
 
 }
