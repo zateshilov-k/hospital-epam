@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <style>
 table, th, td {
   border: 1px solid black;
@@ -48,41 +49,14 @@ tr:hover {background-color:#a0a0a0;}
 
 </table>
 
-<table class="page" style="display:inline; float:right;" >
+<table id="prescriptions" class="page" style="display:inline; float:right;" >
  <caption>Назначение по выбранному диагнозу:</caption>
-    <script>
-function myFunction() {
-  var x = document.getElementsByClassName("page");
-  for (var i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-}
-</script>
   <tr>
     <th>Id</th>
     <th>Описание</th>
     <th>Тип</th>
     <th>Время</th>
   </tr>
-  <tr>
-    <td>1</td>
-    <td>Капотен</td>
-    <td>Лекарство</td>
-    <td>12.08.2018,9:30</td>
-  </tr>
-    <tr>
-    <td>2</td>
-    <td>Капотен</td>
-    <td>Лекарство</td>
-    <td>12.08.2018,9:30</td>
-  </tr>
-    <tr>
-    <td>3</td>
-    <td>Капотен</td>
-    <td>Лекарство</td>
-    <td>12.08.2018,9:30</td>
-  </tr>
-
 </table>
 </fieldset>
 
@@ -138,22 +112,26 @@ function myFunction() {
             rows[i].style.color = "black";
         }
         this.style.color = "red";
-        $.post("test", {patientId : this.cells[0].innerHTML}, function(response) {
-            var diagnoses = JSON.parse(response);
-            updateDiagnosesTable(diagnoses);
+        $.post("listOfPrescriptions", {diagnosisId : this.cells[0].innerHTML}, function(response) {
+            var prescriptions = JSON.parse(response);
+            updatePrescriptionsTable(prescriptions);
         });
     }
-    function updateDiagnosesTable(diagnoses) {
-        var table = document.getElementById('diagnosis');
-        $("#diagnosis tbody tr").remove();
-        for (var i = 0;  i < diagnoses.length; i++) {
+    function updatePrescriptionsTable(prescriptions) {
+        var table = document.getElementById('prescriptions');
+        $("#prescriptions tbody tr").remove();
+        for (var i = 0;  i < prescriptions.length; i++) {
             var newRow = table.insertRow(i);
-            for (var j = 0; j < 2; j++) {
+            for (var j = 0; j < 4; j++) {
                 var newCell = newRow.insertCell(j);
                 if (j === 0 ) {
-                    newCell.innerHTML=diagnoses[i]['diagnosisId'];
-                } else {
-                    newCell.innerHTML=diagnoses[i]['description'];
+                    newCell.innerHTML=prescriptions[i]['prescriptionId'];
+                } else if (j === 1) {
+                    newCell.innerHTML=prescriptions[i]['description'];
+                } else if( j === 2) {
+                    newCell.innerHTML=prescriptions[i]['type'];
+                } else if (j === 3) {
+                    newCell.innerHTML=prescriptions[i]['time'];
                 }
             }
         }

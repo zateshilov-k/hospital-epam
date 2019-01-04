@@ -35,7 +35,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
                     prescription.setPrescriptionId(resultSet.getLong("prescription_id"));
                     prescription.setType(PrescriptionType.valueOf(resultSet.getString("type")));
                     prescription.setDescription(resultSet.getString("description"));
-                    prescription.setTime(LocalDateTime.parse(resultSet.getString("time"),dateTimeFormatter));
+                    prescription.setTime(LocalDateTime.parse(resultSet.getString("time").substring(0,21),dateTimeFormatter));
                     prescription.setDone(resultSet.getBoolean("is_done"));
                     prescriptions.add(prescription);
                 }
