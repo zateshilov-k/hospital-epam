@@ -86,51 +86,46 @@ tr:hover {background-color:#a0a0a0;}
 <script>
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
-    for (var i = 0;  i < diagnosis.length; i++) {
-        var newRow = diagnosisTable.insertRow(i+1);
-        newRow.addEventListener("click", mouseClick);
-        for (var j = 0; j < 4; j++) {
-            var newCell = newRow.insertCell(j);
-            if (j === 0 ) {
-                newCell.innerHTML=diagnosis[i]['diagnosisId'];
-            } else if (j === 1) {
-                newCell.innerHTML=diagnosis[i]['description']
-            } else if (j === 2) {
-                newCell.innerHTML=diagnosis[i]['time']
-            }
-        }
-    }
+    updateDiagnosisTable(diagnosis,diagnosisTable);
+
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
-    diagnosisSubmitButton.addEventListener("click",listener);
-    function listener() {
+    diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
+    function diagnosisSubmitButtonListener() {
         var diagnosisTextArea = document.getElementById("diagnosisDescription");
-        $.post("addDiagnosis",{description : diagnosisTextArea.value});
-        diagnosisTextArea.value = "";
-        updateDiagnosisTable();
+        if (diagnosisTextArea.value === "") {
+            alert("Введите описание диагноза");
+        } else {
+            $.post("addDiagnosis",{description : diagnosisTextArea.value});
+            diagnosisTextArea.value = "";
+            getAndUpdateDiagnosis();
+        }
+
     }
-    function updateDiagnosisTable() {
+    function getAndUpdateDiagnosis() {
         $.post("listofdiagnosis",{},function (response) {
            var diagnosis = JSON.parse(response);
             var diagnosisTable = document.getElementById("diagnosis");
-            for (var i = 1; i < diagnosisTable.rows.length; ++i) {
-                diagnosisTable.rows[i].innerHTML = "";
-            }
-            for (var i = 0;  i < diagnosis.length; i++) {
-                var newRow = diagnosisTable.insertRow(i+1);
-                newRow.addEventListener("click", mouseClick);
-                for (var j = 0; j < 4; j++) {
-                    var newCell = newRow.insertCell(j);
-                    if (j === 0 ) {
-                        newCell.innerHTML=diagnosis[i]['diagnosisId'];
-                    } else if (j === 1) {
-                        newCell.innerHTML=diagnosis[i]['description']
-                    } else if (j === 2) {
-                        newCell.innerHTML=diagnosis[i]['time']
-                    }
+            updateDiagnosisTable(diagnosis,diagnosisTable);
+        });
+    }
+    function updateDiagnosisTable(diagnosis, table) {
+        for (var i = 1; i < table.rows.length; ++i) {
+            table.rows[i].innerHTML = "";
+        }
+        for (var i = 0;  i < diagnosis.length; i++) {
+            var newRow = table.insertRow(i+1);
+            newRow.addEventListener("click", mouseClick);
+            for (var j = 0; j < 4; j++) {
+                var newCell = newRow.insertCell(j);
+                if (j === 0 ) {
+                    newCell.innerHTML=diagnosis[i]['diagnosisId'];
+                } else if (j === 1) {
+                    newCell.innerHTML=diagnosis[i]['description']
+                } else if (j === 2) {
+                    newCell.innerHTML=diagnosis[i]['time']
                 }
             }
-        });
-
+        }
     }
     function mouseClick() {
         var rows = this.parentNode.rows;
