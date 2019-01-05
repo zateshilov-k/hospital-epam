@@ -49,13 +49,17 @@
     </style>
 </head>
 <body style="background-color:powderblue;overflow:hidden">
+
 <div class="wrapper">
     <nav class="navigation">
         <ul>
             <li><a href="#">Текущий пользователь ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a></li>
             <li><a href="/personal.jsp">Profile</a></li>
-            <li><a href="/patient.jsp">Add patient</a></li>
+            <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
+                <li><a href="/patient.jsp">Add patient</a></li>
+            </c:if>
             <li><a href="#">Logout</a></li>
+            <li><a href="#">${sessionScope.user.role}</a></li>
         </ul>
     </nav>
 </div>
