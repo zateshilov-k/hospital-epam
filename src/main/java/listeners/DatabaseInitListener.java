@@ -245,7 +245,7 @@ public class DatabaseInitListener implements ServletContextListener {
                         .mapToObj(j -> personals.get(j))
                         .filter((p) -> p.getRole() == Role.DOCTOR)
                         .findAny().get();
-                diagnoses.add(getRandomDiagonsis(diagnoses.size() + 1, patient, doctor));
+                diagnoses.add(getRandomDiagnosis(diagnoses.size() + 1, patient, doctor));
             }
         });
         return diagnoses;
@@ -273,11 +273,11 @@ public class DatabaseInitListener implements ServletContextListener {
                 diagnosis,
                 random.nextBoolean(),
                 getRandomDateAfter(diagnosis.getTime()),
-                getRandomPrecriptionType()
+                getRandomPrescriptionType()
         );
     }
 
-    private PrescriptionType getRandomPrecriptionType() {
+    private PrescriptionType getRandomPrescriptionType() {
         PrescriptionType[] prescriptionTypes = PrescriptionType.values();
         return prescriptionTypes[random.nextInt(prescriptionTypes.length)];
     }
@@ -286,7 +286,7 @@ public class DatabaseInitListener implements ServletContextListener {
         return time.plusDays(random.nextInt(30));
     }
 
-    private Diagnosis getRandomDiagonsis(int id, Patient patient, Personal doctor) {
+    private Diagnosis getRandomDiagnosis(int id, Patient patient, Personal doctor) {
         return new Diagnosis(
                 id,
                 getRandomDisease(),

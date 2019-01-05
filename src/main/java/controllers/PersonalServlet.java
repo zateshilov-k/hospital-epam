@@ -93,4 +93,5 @@ public class PersonalServlet extends HttpServlet {
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
+
 }

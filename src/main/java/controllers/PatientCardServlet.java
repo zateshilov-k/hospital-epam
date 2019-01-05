@@ -1,17 +1,18 @@
 package controllers;
 
 import dao.DaoFactory;
+import dao.PatientDao;
+import model.Diagnosis;
+import model.Patient;
+import org.json.JSONArray;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 /*
 Сервлет отрабатывает действия в личной карточке пациента
@@ -22,20 +23,33 @@ public class PatientCardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doGet(req, resp);
+        System.out.println("Patient Card GET");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-//        System.out.println("PatientCardServlet doPost method");
-        Long patiendId = Long.valueOf(request.getParameter("patientId"));
-//        System.out.println("patientId\t"+patiendId);
-//TODO получить пациента по его id
-        //TODO собрать коллекцию диагнозов
-        //TODO собрать map<Diagnosis, Perscription>
-        //TODO передать все на фронт
-        request.getRequestDispatcher("/personalPatientCard.jsp").forward(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=utf-8");
+
+        System.out.println("PatientCardServlet doPost method");
+        System.out.println(request.getParameter("patientId"));
+        System.out.println("PATIENT_ID" + request.getParameter("patientId"));
+        Long patientId = Long.parseLong(request.getParameter("patientId"));
+        PatientDao patientDao = daoFactory.getPatientDao();
+        Patient patient = patientDao.getPatient(patientId);
+
+        List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
+        request.setAttribute("currentPatient",patient);
+        request.setAttribute("diagnosesList",new JSONArray(diagnosisList).toString());
+        try {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
+            requestDispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("after");
     }
 
     @Override
@@ -46,7 +60,13 @@ public class PatientCardServlet extends HttpServlet {
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         super.service(req, res);
+    }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
+
 }

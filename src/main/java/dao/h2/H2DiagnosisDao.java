@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ public class H2DiagnosisDao implements DiagnosisDao {
     private static final String GET_ALL_DIAGNOSES_SQL = "SELECT * FROM diagnosis JOIN patient " +
             "ON diagnosis.patient_id = patient.patient_id JOIN medical_personal " +
             "ON diagnosis.personal_id = medical_personal.personal_id WHERE diagnosis.patient_id = ?;";
+
+    private static final String ADD_DIAGNOSIS = "INSERT INTO diagnosis (description, personal_Id, patient_id, time, " +
+            "is_healthy) VALUES (?, ?, ?, ?,?);";
 
     public H2DiagnosisDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;
@@ -74,6 +78,26 @@ public class H2DiagnosisDao implements DiagnosisDao {
             e.printStackTrace();
         }
         return diagnosisList;
+    }
+
+    @Override
+    public void addDiagnosis(long patientId, long personalId, String description) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(ADD_DIAGNOSIS)) {
+            statement.setString(1, description);
+            statement.setLong(2, personalId);
+            statement.setLong(3, patientId);
+            statement.setString(4, LocalDateTime.now().format(dateTimeFormatter));
+            statement.setBoolean(5,false);
+            System.out.println(statement.execute());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateDiagnosis(long diagnosisId, String description, boolean isHealthy){
+        //TODO write code here
     }
 
 }
