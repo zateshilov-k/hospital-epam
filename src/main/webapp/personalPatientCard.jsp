@@ -143,6 +143,11 @@ tr:hover {background-color:#a0a0a0;}
         for (var i = 1; i < table.rows.length; ++i) {
             table.rows[i].innerHTML = "";
         }
+        if (prescriptions.length === 0) {
+            table.style.display = "none";
+        } else {
+            table.style.display = "block";
+        }
         for (var i = 0;  i < prescriptions.length; i++) {
             var newRow = table.insertRow(i+1);
             for (var j = 0; j < 4; j++) {
