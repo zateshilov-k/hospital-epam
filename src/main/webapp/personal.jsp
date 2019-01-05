@@ -72,9 +72,9 @@
                                 <div class="col-md-6">
                                 <br>
                                 <select name="role">
-                                  <option value="volvo">DOCTOR</option>
-                                  <option value="saab">NURSE</option>
-                                  <option value="saab">ADMIN</option>
+                                  <option value="doctor">Doctor/Доктор</option>
+                                  <option value="nurse">Nurse/Медсестра</option>
+                                  <option value="admin">Administrator/Администратор</option>
                                 </select>
                                 </div>
                             </div>
