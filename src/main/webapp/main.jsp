@@ -35,7 +35,7 @@
         }
         .navigation ul li a{
             float: left;
-            width: 90%;
+            width: 100%;
             color: #333;
             padding: 16px 0;
             font-size: 16px;
