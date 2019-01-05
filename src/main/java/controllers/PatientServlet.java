@@ -2,6 +2,7 @@ package controllers;
 
 import dao.DaoFactory;
 import model.Patient;
+import model.Personal;
 import services.PatientService;
 import utils.StringFieldValidate;
 
@@ -32,7 +33,7 @@ public class PatientServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Patient Servlet doPost");
+//        System.out.println("Patient Servlet doPost");
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
@@ -53,6 +54,8 @@ public class PatientServlet extends HttpServlet {
             //TODO write code here
             List<Patient> patients = new PatientService().getAllPatients(daoFactory);
             if (patients != null) {
+                Personal currentUser = (Personal)session.getAttribute("user");
+                session.setAttribute("user", currentUser);
                 session.setAttribute("patients", patients);
             }
 
