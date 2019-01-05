@@ -116,9 +116,11 @@ tr:hover {background-color:#a0a0a0;}
     }
     function updatePrescriptionsTable(prescriptions) {
         var table = document.getElementById('prescriptions');
-        $("#prescriptions tbody tr").remove();
+        for (var i = 1; i < table.rows.length; ++i) {
+            table.rows[i].innerHTML = "";
+        }
         for (var i = 0;  i < prescriptions.length; i++) {
-            var newRow = table.insertRow(i);
+            var newRow = table.insertRow(i+1);
             for (var j = 0; j < 4; j++) {
                 var newCell = newRow.insertCell(j);
                 if (j === 0 ) {
