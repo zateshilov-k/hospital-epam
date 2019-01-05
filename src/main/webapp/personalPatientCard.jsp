@@ -1,7 +1,4 @@
 <%@ page import="model.Patient" %>
-<%@ page import="model.Diagnosis" %>
-<%@ page import="java.util.List" %>
-<%@ page import="org.json.JSONArray" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
