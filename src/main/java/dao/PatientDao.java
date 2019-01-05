@@ -10,6 +10,5 @@ public interface PatientDao {
     void addPatient (String firstName, String lastName);
     void updatePatient(String firstName, String lastName);
     List<Patient> getAllPatients();
-    void getPatientsByDoctorId(long personalId);
-
+    Patient getPatient(long patientId);
 }
