@@ -99,4 +99,5 @@ public class H2DiagnosisDao implements DiagnosisDao {
     public void updateDiagnosis(long diagnosisId, String description, boolean isHealthy){
         //TODO write code here
     }
+
 }
