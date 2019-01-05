@@ -73,10 +73,10 @@ tr:hover {background-color:#a0a0a0;}
  <form >
   <caption>Тип:</caption>
 <form action="/action_page.php">
-  <select name="cars">
-    <option value="saab">Процедура</option>
-    <option value="fiat">Операция</option>
-    <option value="audi">Таблетки</option>
+  <select name="func">
+    <option value="proc">Процедура</option>
+    <option value="oper">Операция</option>
+    <option value="grug">Таблетки</option>
   </select>
 </form>
  <caption>Описание диагноза:</caption>
