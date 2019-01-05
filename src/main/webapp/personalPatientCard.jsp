@@ -59,17 +59,15 @@ tr:hover {background-color:#a0a0a0;}
 
 <br>
 <fieldset style="float:left">
-<legend>Добавить диагноза</legend>
- <form >
+<legend>Добавить диагноз</legend>
  <br>
   <caption>Описание диагноза:</caption>
-  <p><textarea name="comment"></textarea></p>
-  <p><input type="submit" value="Добавить" ></p>
- </form>
+  <p><textarea name="comment" id="diagnosisDescription"></textarea></p>
+  <p><button id="diagnosisSubmit"  value="Добавить"> </button></p>
 </fieldset>
 
 <fieldset style="display:inline;">
-<legend>Добавить диагноз</legend>
+<legend>Добавить назначение</legend>
  <form >
   <caption>Тип:</caption>
 <form action="/action_page.php">
@@ -102,7 +100,38 @@ tr:hover {background-color:#a0a0a0;}
             }
         }
     }
+    var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
+    diagnosisSubmitButton.addEventListener("click",listener);
+    function listener() {
+        var diagnosisTextArea = document.getElementById("diagnosisDescription");
+        $.post("addDiagnosis",{description : diagnosisTextArea.value});
+        diagnosisTextArea.value = "";
+        updateDiagnosisTable();
+    }
+    function updateDiagnosisTable() {
+        $.post("listofdiagnosis",{},function (response) {
+           var diagnosis = JSON.parse(response);
+            var diagnosisTable = document.getElementById("diagnosis");
+            for (var i = 1; i < diagnosisTable.rows.length; ++i) {
+                diagnosisTable.rows[i].innerHTML = "";
+            }
+            for (var i = 0;  i < diagnosis.length; i++) {
+                var newRow = diagnosisTable.insertRow(i+1);
+                newRow.addEventListener("click", mouseClick);
+                for (var j = 0; j < 4; j++) {
+                    var newCell = newRow.insertCell(j);
+                    if (j === 0 ) {
+                        newCell.innerHTML=diagnosis[i]['diagnosisId'];
+                    } else if (j === 1) {
+                        newCell.innerHTML=diagnosis[i]['description']
+                    } else if (j === 2) {
+                        newCell.innerHTML=diagnosis[i]['time']
+                    }
+                }
+            }
+        });
 
+    }
     function mouseClick() {
         var rows = this.parentNode.rows;
         for (i=1; i < rows.length; i++) {

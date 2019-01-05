@@ -39,6 +39,7 @@ public class PatientCardServlet extends HttpServlet {
 
         List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
         request.setAttribute("currentPatient",patient);
+        request.getSession().setAttribute("currentPatient",patient);
         request.setAttribute("diagnosesList",new JSONArray(diagnosisList).toString());
         try {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
