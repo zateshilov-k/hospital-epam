@@ -36,7 +36,6 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        session.setMaxInactiveInterval(1800);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
             locale = new Locale("ru");
@@ -49,7 +48,6 @@ public class Login extends HttpServlet {
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, daoFactory, hashGenerator);
         List<Patient> patients = new PatientService().getAllPatients(daoFactory);
-//        patients.forEach(System.out::println);
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
             //TODO передать коллекцию пациентов на фронт
