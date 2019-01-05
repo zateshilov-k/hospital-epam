@@ -1,7 +1,6 @@
 package dao;
 
 import model.Diagnosis;
-import model.Patient;
 
 import java.util.List;
 
