@@ -46,7 +46,7 @@
         }
         .navigation ul li a{
             float: left;
-            width: 100%;
+            width: 90%;
             color: #333;
             padding: 16px 0;
             font-size: 16px;
@@ -59,7 +59,7 @@
         }
     </style>
 </head>
-<body style="background-color:powderblue">
+<body style="background-color:powderblue;overflow:hidden">
 <div class="wrapper">
     <nav class="navigation">
         <ul>

@@ -26,7 +26,7 @@
 
     <title>Add patient</title>
 </head>
-<body style="background-color:powderblue">
+<body style="background-color:powderblue;overflow:hidden">
 
 
 <main class="login-form">
