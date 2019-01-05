@@ -63,7 +63,7 @@ tr:hover {background-color:#a0a0a0;}
  <br>
   <caption>Описание диагноза:</caption>
   <p><textarea name="comment" id="diagnosisDescription"></textarea></p>
-  <p><button id="diagnosisSubmit"  value="Добавить"> </button></p>
+  <button id="diagnosisSubmit" value="Добавить">Добавить</button>
 </fieldset>
 
 <fieldset style="display:inline;">
@@ -84,6 +84,7 @@ tr:hover {background-color:#a0a0a0;}
 
 </fieldset>
 <script>
+
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     updateDiagnosisTable(diagnosis,diagnosisTable);
