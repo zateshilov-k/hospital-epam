@@ -77,6 +77,5 @@ public class H2PatientDao implements PatientDao {
         patient.setDischarged(resultSet.getBoolean("is_discharged"));
         return patient;
     }
-}
 
 }

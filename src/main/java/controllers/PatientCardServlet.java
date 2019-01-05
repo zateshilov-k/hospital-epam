@@ -4,6 +4,7 @@ import dao.DaoFactory;
 import dao.PatientDao;
 import model.Diagnosis;
 import model.Patient;
+import org.json.JSONArray;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
