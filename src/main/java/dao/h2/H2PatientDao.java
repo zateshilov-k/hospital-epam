@@ -14,7 +14,7 @@ public class H2PatientDao implements PatientDao {
     // SQL queries
     private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM " +
             "patient";
-    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name) VALUES (?, ?)";
+    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name, is_discharged) VALUES (?, ?, ?)";
     private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ? WHERE patient_id = ?";
     private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?";
 
@@ -27,12 +27,13 @@ public class H2PatientDao implements PatientDao {
     }
 
     @Override
-    public void addPatient(String firstName, String lastName) {
+    public void addPatient(Patient patient) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_PATIENT_SQL,
                      Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, firstName);
-            statement.setString(2, lastName);
+            statement.setString(1, patient.getFirstName());
+            statement.setString(2, patient.getLastName());
+            statement.setBoolean(3, patient.isDischarged());
             System.out.println(statement.execute());
         } catch (SQLException e) {
             log.warning(e.getMessage());
