@@ -188,6 +188,7 @@ public class DatabaseInitListener implements ServletContextListener {
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
     }
 
+    // test adding new patients
     public void addNewPatients() {
         for (int i = 0; i < 3; i++) {
             System.out.println("hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -202,6 +203,7 @@ public class DatabaseInitListener implements ServletContextListener {
         }
     }
 
+    // test update patient
     public void updatePatient() {
         Patient patient = new Patient();
         patient.setPatientId(11);
