@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.DaoFactory;
+import dao.PatientDao;
 import model.Patient;
 import model.Personal;
 import services.PatientService;
@@ -20,7 +21,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
+/*
+сервлет, отрабатывающий желание добавить пациента
+ */
 @WebServlet("/addPatient")
 public class PatientServlet extends HttpServlet {
     DataSource dataSource;
@@ -50,8 +53,12 @@ public class PatientServlet extends HttpServlet {
             isValid = stringFieldValidate.doValidation(lastName);
         }
         if (isValid) {
-            //TODO add patient
-            //TODO write code here
+            PatientDao patientDao = daoFactory.getPatientDao();
+            Patient newPatient = new Patient();
+            newPatient.setFirstName(firstName);
+            newPatient.setLastName(lastName);
+            newPatient.setDischarged(false);
+            patientDao.addPatient(newPatient);
             List<Patient> patients = new PatientService().getAllPatients(daoFactory);
             if (patients != null) {
                 Personal currentUser = (Personal)session.getAttribute("user");
