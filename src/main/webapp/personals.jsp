@@ -34,7 +34,7 @@
         }
         .navigation ul li a{
             float: left;
-            width: 90%;
+            width: 100%;
             color: #333;
             padding: 16px 0;
             font-size: 16px;
@@ -49,7 +49,17 @@
 </head>
 <body style="background-color:powderblue;overflow:hidden">
 
-<h1 style="text-align:center" font-size="28">Welcome, ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h1>
+<div class="wrapper">
+    <nav class="navigation">
+        <ul>
+            <li><a href="#">Текущий пользователь ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a></li>
+            <li><a href="/personalUpdate.jsp">Profile</a></li>
+            <li><a href="/patient.jsp">Add patient</a></li>
+            <li><a href="#">Logout</a></li>
+            <li><a href="#">${sessionScope.user.role}</a></li>
+        </ul>
+    </nav>
+</div>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
@@ -81,8 +91,6 @@
     </c:forEach>
     </tbody>
 </table>
-
-
 
 <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
