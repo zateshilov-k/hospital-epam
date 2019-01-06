@@ -1,9 +1,6 @@
 package controllers;
 
 import dao.DaoFactory;
-import dao.PersonalDao;
-import model.Personal;
-import services.PersonalService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
-
+/*
+сервлет для списка медперсонала
+ */
 @WebServlet("/personals")
 public class PersonalList extends HttpServlet {
     DaoFactory daoFactory;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
@@ -26,12 +25,11 @@ public class PersonalList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
+        System.out.println("PersonalList servlet \t doPost method");
         response.setContentType("text/html;charset=utf-8");
-        List<Personal> personals = new PersonalService().getAllPersonals(daoFactory);
-        if (personals != null) {
-            session.setAttribute("personals", personals);
-        }
-        request.getRequestDispatcher("/personals.jsp").forward(request, response);
+//TODO         сделать переход в личный кабинет
+
+
     }
 
     @Override
