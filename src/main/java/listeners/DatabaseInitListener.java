@@ -136,6 +136,14 @@ public class DatabaseInitListener implements ServletContextListener {
         final int numberOfPrescriptionsPerDiagnosis = 2;
 
         List<Personal> personals = getPersonals(numberOfPersonal);
+        Personal admin = new Personal();
+        admin.setFirstName("AdminName");
+        admin.setLastName("AdminLastName");
+        admin.setLogin("admin@epam.com");
+        admin.setRole(Role.ADMIN);
+        admin.setPassword(hashGenerator.getHash("admin" ));
+        personals.add(admin);
+
         List<Patient> patients = getPatients(numberOfPatients);
         List<Diagnosis> diagnoses = getDiagnoses(numberOfDiagnosisPerPatient, personals, patients);
         List<Prescription> prescriptions = getPrescriptions(numberOfPrescriptionsPerDiagnosis,diagnoses);

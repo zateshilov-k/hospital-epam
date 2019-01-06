@@ -54,7 +54,7 @@
     <nav class="navigation">
         <ul>
             <li><a href="#">Текущий пользователь ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a></li>
-            <li><a href="/personal.jsp">Profile</a></li>
+            <li><a href="/personalUpdate.jsp">Profile</a></li>
             <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
                 <li><a href="/patient.jsp">Add patient</a></li>
             </c:if>

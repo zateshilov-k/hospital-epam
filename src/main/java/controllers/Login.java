@@ -3,6 +3,7 @@ package controllers;
 import dao.DaoFactory;
 import model.Patient;
 import model.Personal;
+import model.Role;
 import services.PatientService;
 import services.PersonalService;
 import utils.HashGenerator;
@@ -47,15 +48,26 @@ public class Login extends HttpServlet {
         System.out.println("Login: " + login);
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, daoFactory, hashGenerator);
-        List<Patient> patients = new PatientService().getAllPatients(daoFactory);
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
-            //TODO передать коллекцию пациентов на фронт
-            if (patients != null) {
-                session.setAttribute("patients", patients);
-            }
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            if (currentUser.get().getRole() == Role.ADMIN) {
+                List<Personal> personals = new PersonalService().getAllPersonals(daoFactory);
+                System.out.println("Personals list:");
+                personals.forEach(System.out::println);
+                if (personals != null) {
+                    session.setAttribute("personals", personals);
+                } else {
+                    System.out.println("Personals is null");
+                }
+                request.getRequestDispatcher("/personals.jsp").forward(request, response);
+            } else {
+                List<Patient> patients = new PatientService().getAllPatients(daoFactory);
+                if (patients != null) {
+                    session.setAttribute("patients", patients);
+                }
 
+                request.getRequestDispatcher("/main.jsp").forward(request, response);
+            }
             //TODO add logging
             String ip = request.getRemoteAddr();
             return;
