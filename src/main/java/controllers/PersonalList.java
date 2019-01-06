@@ -1,6 +1,8 @@
 package controllers;
 
 import dao.DaoFactory;
+import dao.PersonalDao;
+import model.Personal;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -27,9 +29,13 @@ public class PersonalList extends HttpServlet {
         HttpSession session = request.getSession(true);
         System.out.println("PersonalList servlet \t doPost method");
         response.setContentType("text/html;charset=utf-8");
-//TODO         сделать переход в личный кабинет
-
-
+        Long personalId = Long.parseLong(request.getParameter("personaltId"));
+        PersonalDao personalDao = daoFactory.getPersonalDao();
+        Personal personal = personalDao.getPersonalById(personalId);
+        request.setAttribute("currentPersonal",personal);
+        Personal currentUser = (Personal)session.getAttribute("user");
+        session.setAttribute("user", currentUser);
+        request.getRequestDispatcher("/personalUpdate.jsp").forward(request, response);
     }
 
     @Override
