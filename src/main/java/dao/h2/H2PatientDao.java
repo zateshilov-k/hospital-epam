@@ -64,7 +64,6 @@ public class H2PatientDao implements PatientDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //TODO !!!
         return null;
     }
 
