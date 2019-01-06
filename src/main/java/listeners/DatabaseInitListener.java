@@ -58,7 +58,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private Role getRandomRole() {
-        return Role.values()[random.nextInt(Role.values().length)];
+        return Role.values()[random.nextInt(Role.values().length-1)];
     }
 
     private String getRandomDisease() {
