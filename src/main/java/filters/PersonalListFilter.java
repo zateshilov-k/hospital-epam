@@ -30,8 +30,7 @@ public class PersonalListFilter implements Filter {
             request.getRequestDispatcher("/index.jsp").forward(request, servletResponse);
         } else {
             Personal currUser = (Personal) currentUser;
-            //TODO переделать на АДМИНА
-            if (((Personal) currentUser).getRole() == Role.DOCTOR) {
+            if (((Personal) currentUser).getRole() == Role.ADMIN) {
                 request.getRequestDispatcher("/personals.jsp").forward(request, servletResponse);
             } else {
                 request.getRequestDispatcher("/main.jsp").forward(request, servletResponse);
