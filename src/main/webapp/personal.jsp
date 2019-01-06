@@ -26,7 +26,7 @@
 
     <title>Add personal</title>
 </head>
-<body style="background-color:powderblue">
+<body style="background-color:powderblue;overflow:hidden">
 
 
 <main class="login-form">
@@ -68,14 +68,17 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="field3" class="col-md-4 col-form-label text-md-right">Выберите роль</label>
+                                <label class="col-md-4 col-form-label text-md-right">Выберите роль</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="field3" class="form-control" name="role" required autofocus>
+                                <br>
+                                <select name="role">
+                                  <option value="doctor">Doctor/Доктор</option>
+                                  <option value="nurse">Nurse/Медсестра</option>
+                                  <option value="admin">Administrator/Администратор</option>
+                                </select>
                                 </div>
                             </div>
-
                             <div class="form-group row" align="center">
-
                                 <c:if test="${!empty requestScope.loginError}">
                                     <p><font color="red"><span class="error">${requestScope.personalError}</span></font>
                                     </p>
