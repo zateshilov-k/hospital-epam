@@ -4,6 +4,7 @@ import dao.DaoFactory;
 import dao.PatientDao;
 import model.Diagnosis;
 import model.Patient;
+import model.Personal;
 import org.json.JSONArray;
 
 import javax.servlet.*;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class PatientCardServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=utf-8");
 
         System.out.println("PatientCardServlet doPost method");
@@ -36,12 +39,14 @@ public class PatientCardServlet extends HttpServlet {
         Long patientId = Long.parseLong(request.getParameter("patientId"));
         PatientDao patientDao = daoFactory.getPatientDao();
         Patient patient = patientDao.getPatient(patientId);
+        session.setAttribute("currentPatient",patient);
 
         List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
         request.setAttribute("currentPatient",patient);
-        request.getSession().setAttribute("currentPatient",patient);
+
         request.setAttribute("diagnosesList",new JSONArray(diagnosisList).toString());
-        System.out.println(diagnosisList);
+        Personal currentUser = (Personal)session.getAttribute("user");
+        session.setAttribute("user", currentUser);
         try {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
             requestDispatcher.forward(request, response);

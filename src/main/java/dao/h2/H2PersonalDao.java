@@ -7,6 +7,8 @@ import model.Role;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -18,6 +20,9 @@ public class H2PersonalDao implements PersonalDao {
             "password FROM medical_personal WHERE login = ?;";
     private static final String UPDATE_PERSONAL_SQL = "UPDATE Personals SET login = ?, password = ?, firstName = ?, " +
             "lastName = ?, role = ? WHERE personalId = ?";
+    private static final String GET_ALL_PERSONALS_SQL = "SELECT personal_id, first_name, last_name, role, login FROM " +
+            "medical_personal";
+    private static final String GET_PERSONAL_BY_ID = "SELECT * FROM medical_personal WHERE medical_personal.personal_id = ?;";
 
     private DataSource dataSource;
     private static final Logger log = Logger.getLogger(String.valueOf(H2PersonalDao.class));
@@ -88,4 +93,44 @@ public class H2PersonalDao implements PersonalDao {
         }
     }
 
+    @Override
+    public List<Personal> getAllPersonals() {
+        List<Personal> personalList = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(GET_ALL_PERSONALS_SQL)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    personalList.add(getPersonalFromResultSet(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            log.warning(e.getMessage());
+            System.err.println(e.getMessage());
+        }
+        return personalList;
+    }
+
+    @Override
+    public Personal getPersonalById(long personalId) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(GET_PERSONAL_BY_ID)) {
+            statement.setLong(1, personalId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return getPersonalFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Personal getPersonalFromResultSet(ResultSet resultSet) throws SQLException {
+        System.out.println("getPersonalFromResultSet");
+        Personal personal = new Personal();
+        personal.setPersonalId(resultSet.getLong("personal_id"));
+        personal.setFirstName(resultSet.getString("first_name"));
+        personal.setLastName(resultSet.getString("last_name"));
+        return personal;
+    }
 }

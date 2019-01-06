@@ -1,42 +1,35 @@
 package controllers;
 
 import dao.DaoFactory;
-import dao.PatientDao;
-import model.Patient;
+import dao.PersonalDao;
 import model.Personal;
-import services.PatientService;
+import services.PersonalService;
 import utils.StringFieldValidate;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 /*
-сервлет, отрабатывающий желание добавить пациента
+сервлет для личного кабинета персонала
  */
-@WebServlet("/addPatient")
-public class PatientServlet extends HttpServlet {
-    DataSource dataSource;
+@WebServlet("/personalUpdate")
+public class PersonalCabinet extends HttpServlet {
     DaoFactory daoFactory;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doGet(req, resp);
+        super.doGet(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("Patient Servlet doPost");
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
@@ -46,32 +39,40 @@ public class PatientServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         String firstName = request.getParameter("firstName").trim();
         String lastName = request.getParameter("lastName").trim();
-        System.out.println("ФИО: "+ firstName + " " + lastName);
+        String login = request.getParameter("login").trim();
+        String password = request.getParameter("password").trim();
+        //TODO сделать ограничение на изменение роли только для роли АДМИН
+        String role = request.getParameter("role");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
         if (isValid) {
             isValid = stringFieldValidate.doValidation(lastName);
+            if (isValid) {
+                isValid = stringFieldValidate.doValidation(login);
+                if (isValid) {
+                    isValid = stringFieldValidate.doValidation(password);
+                    if (isValid) {
+                        isValid = stringFieldValidate.doValidation(role);
+                    }
+                }
+            }
         }
         if (isValid) {
-            PatientDao patientDao = daoFactory.getPatientDao();
-            Patient newPatient = new Patient();
-            newPatient.setFirstName(firstName);
-            newPatient.setLastName(lastName);
-            newPatient.setDischarged(false);
-            patientDao.addPatient(newPatient);
-            List<Patient> patients = new PatientService().getAllPatients(daoFactory);
-            if (patients != null) {
-                Personal currentUser = (Personal)session.getAttribute("user");
-                session.setAttribute("user", currentUser);
-                session.setAttribute("patients", patients);
-            }
+            //TODO update personal
+            //TODO write code here
 
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
+
+            List<Personal> personals = new PersonalService().getAllPersonals(daoFactory);
+            if (personals != null) {
+                session.setAttribute("personals", personals);
+            }
+            request.getRequestDispatcher("/personals.jsp").forward(request, response);
+            System.out.println("Personal is updated \t" + firstName+" "+ lastName);
         } else {
-            String str = bundle.getString("patientError");
+            String str = bundle.getString("personalError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
-            request.setAttribute("patientError", str);
-            request.getRequestDispatcher("/patient.jsp").forward(request, response);
+            request.setAttribute("personalError", str);
+            request.getRequestDispatcher("/").forward(request, response);
             return;
         }
     }
@@ -86,10 +87,5 @@ public class PatientServlet extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
-    }
-
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
     }
 }

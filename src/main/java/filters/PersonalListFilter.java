@@ -1,38 +1,41 @@
 package filters;
 
+import model.Personal;
+import model.Role;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Locale;
 
-@WebFilter("/*")
-public class LocaleFilter implements Filter {
+/*
+только Админ может сюда заходить
+ */
+
+@WebFilter(urlPatterns = {"/personals.jsp"})
+public class PersonalListFilter implements Filter {
 
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession session = request.getSession(true);
-        String userLocale = request.getParameter("locale");
-        if (userLocale == null || userLocale.isEmpty()) {
-            Locale localeSession = (Locale) session.getAttribute("locale");
-            if (localeSession == null) {
-                session.setAttribute("locale", request.getLocale());
-            }
+        Object currentUser = session.getAttribute("user");
+        Personal currUser = (Personal) currentUser;
+        if (((Personal) currentUser).getRole() == Role.ADMIN) {
+            request.getRequestDispatcher("/personals.jsp").forward(request, servletResponse);
         } else {
-            session.setAttribute("locale", new Locale(userLocale));
+            request.getRequestDispatcher("/main.jsp").forward(request, servletResponse);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    @Override
     public void destroy() {
-
     }
+
 }
