@@ -7,6 +7,7 @@ import model.Role;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -86,6 +87,12 @@ public class H2PersonalDao implements PersonalDao {
         } catch (SQLException e) {
             return 0;
         }
+    }
+
+    @Override
+    public List<Personal> getAllPersonals() {
+        //TODO  write code here
+        return null;
     }
 
 }

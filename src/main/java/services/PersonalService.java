@@ -7,6 +7,7 @@ import utils.HashGenerator;
 import utils.StringFieldValidate;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Optional;
 
 public class PersonalService {
@@ -29,5 +30,9 @@ public class PersonalService {
         } else {
             return Optional.empty();
         }
+    }
+
+    public List<Personal> getAllPersonals(DaoFactory daoFactory) {
+        return  daoFactory.getPersonalDao().getAllPersonals();
     }
 }
