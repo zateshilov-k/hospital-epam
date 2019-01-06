@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <body style="background-color:powderblue;">
-<h1 style="text-align:center;" style="font-size:220">Registration!</h1>
+<h1 style="text-align:center;" style="font-size:220">Registration!!!</h1>
 <form action = "Sigh Up" method="post" style="text-align:center;">
 <fieldset>
 <legend></legend>
