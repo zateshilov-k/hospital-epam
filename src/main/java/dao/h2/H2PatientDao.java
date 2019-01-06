@@ -4,10 +4,7 @@ import dao.PatientDao;
 import model.Patient;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,6 +15,8 @@ public class H2PatientDao implements PatientDao {
     // SQL queries
     private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM " +
             "patient";
+    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name) VALUES (?, ?)";
+
     private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?;";
     private DataSource dataSource;
 
@@ -27,7 +26,15 @@ public class H2PatientDao implements PatientDao {
 
     @Override
     public void addPatient(String firstName, String lastName) {
-
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_PATIENT_SQL,
+                     Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            System.out.println(statement.execute());
+        } catch (SQLException e) {
+            log.warning(e.getMessage());
+        }
     }
 
     @Override
