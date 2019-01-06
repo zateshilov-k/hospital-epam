@@ -46,13 +46,14 @@ tr:hover {background-color:#a0a0a0;}
 
 </table>
 
-<table id="prescriptions" class="page" style="display:inline; float:right;" >
+<table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
  <caption>Назначение по выбранному диагнозу:</caption>
   <tr>
     <th>Id</th>
     <th>Описание</th>
     <th>Тип</th>
     <th>Время</th>
+      <th>Выполнен</th>
   </tr>
 </table>
 </fieldset>
@@ -64,22 +65,23 @@ tr:hover {background-color:#a0a0a0;}
   <caption>Описание диагноза:</caption>
   <p><textarea name="comment" id="diagnosisDescription"></textarea></p>
   <button id="diagnosisSubmit" value="Добавить">Добавить</button>
+
 </fieldset>
 
-<fieldset style="display:inline;">
+<fieldset id="addPrescriptionFieldSet" style="display:none;">
 <legend>Добавить назначение</legend>
- <form >
+ <form>
   <caption>Тип:</caption>
 <form action="/action_page.php">
-  <select name="cars">
-    <option value="saab">Процедура</option>
-    <option value="fiat">Операция</option>
-    <option value="audi">Таблетки</option>
+  <select name="prescriptionType" id="prescriptionType">
+    <option value="Procedure">Процедура</option>
+    <option value="Operation">Операция</option>
+    <option value="Drug">Лекарство</option>
   </select>
 </form>
- <caption>Описание диагноза:</caption>
-  <p><textarea name="comment"></textarea></p>
-  <p><input type="submit" value="Добавить" ></p>
+ <caption>Описание назначения:</caption>
+  <p><textarea id="prescriptionDescription" name="comment"></textarea></p>
+     <button id="prescriptionSubmit" value="Добавить">Добавить</button>
  </form>
 
 </fieldset>
@@ -90,7 +92,30 @@ tr:hover {background-color:#a0a0a0;}
     updateDiagnosisTable(diagnosis,diagnosisTable);
 
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
+
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
+    var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
+
+    function prescriptionSubmitButtonListener() {
+        var prescriptionTextArea = document.getElementById("prescriptionDescription");
+        var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
+        var prescriptionTypeSelect = document.getElementById("prescriptionType");
+        if (prescriptionTextArea.value === "") {
+            alert("Введите описание назначения");
+        } else {
+            $.post("addPrescription", {description : prescriptionTextArea.value,
+             diagnosisId : prescriptionSubmitButton.value,
+             type : prescriptionTypeSelect.value});
+            prescriptionTextArea.value = "";
+            $.post("listOfPrescriptions", {diagnosisId :  prescriptionSubmitButton.value}, function(response) {
+                var prescriptions = JSON.parse(response);
+                updatePrescriptionsTable(prescriptions);
+            });
+        }
+    }
+
+    prescriptionSubmitButton.addEventListener("click",prescriptionSubmitButtonListener);
+
     function diagnosisSubmitButtonListener() {
         var diagnosisTextArea = document.getElementById("diagnosisDescription");
         if (diagnosisTextArea.value === "") {
@@ -115,32 +140,42 @@ tr:hover {background-color:#a0a0a0;}
         }
         for (var i = 0;  i < diagnosis.length; i++) {
             var newRow = table.insertRow(i+1);
-            newRow.addEventListener("click", mouseClick);
+            newRow.addEventListener("click", diagnosisClick);
             for (var j = 0; j < 4; j++) {
                 var newCell = newRow.insertCell(j);
                 if (j === 0 ) {
                     newCell.innerHTML=diagnosis[i]['diagnosisId'];
                 } else if (j === 1) {
-                    newCell.innerHTML=diagnosis[i]['description']
+                    newCell.innerHTML=diagnosis[i]['description'];
                 } else if (j === 2) {
-                    newCell.innerHTML=diagnosis[i]['time']
+                    newCell.innerHTML=diagnosis[i]['time'];
+                } else if (j === 3) {
+                    newCell.innerHTML=diagnosis[i]['opened'];
                 }
             }
         }
     }
-    function mouseClick() {
+    function diagnosisClick() {
         var rows = this.parentNode.rows;
         for (i=1; i < rows.length; i++) {
             rows[i].style.color = "black";
         }
         this.style.color = "red";
+        var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
+        if (this.cells[3].innerHTML === 'false') {
+            prescriptionFieldSet.style.display = "none";
+        } else if(this.cells[3].innerHTML === 'true') {
+            prescriptionFieldSet.style.display = "inline";
+            var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
+            prescriptionSubmitButton.value = this.cells[0].innerHTML;
+        }
         $.post("listOfPrescriptions", {diagnosisId : this.cells[0].innerHTML}, function(response) {
             var prescriptions = JSON.parse(response);
             updatePrescriptionsTable(prescriptions);
         });
     }
     function updatePrescriptionsTable(prescriptions) {
-        var table = document.getElementById('prescriptions');
+        var table = document.getElementById('prescriptionsTable');
         for (var i = 1; i < table.rows.length; ++i) {
             table.rows[i].innerHTML = "";
         }
@@ -151,7 +186,7 @@ tr:hover {background-color:#a0a0a0;}
         }
         for (var i = 0;  i < prescriptions.length; i++) {
             var newRow = table.insertRow(i+1);
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
                 var newCell = newRow.insertCell(j);
                 if (j === 0 ) {
                     newCell.innerHTML=prescriptions[i]['prescriptionId'];
@@ -161,6 +196,8 @@ tr:hover {background-color:#a0a0a0;}
                     newCell.innerHTML=prescriptions[i]['type'];
                 } else if (j === 3) {
                     newCell.innerHTML=prescriptions[i]['time'];
+                } else if (j === 4) {
+                    newCell.innerHTML=prescriptions[i]['done'];
                 }
             }
         }

@@ -41,6 +41,7 @@ public class PatientCardServlet extends HttpServlet {
         request.setAttribute("currentPatient",patient);
         request.getSession().setAttribute("currentPatient",patient);
         request.setAttribute("diagnosesList",new JSONArray(diagnosisList).toString());
+        System.out.println(diagnosisList);
         try {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
             requestDispatcher.forward(request, response);

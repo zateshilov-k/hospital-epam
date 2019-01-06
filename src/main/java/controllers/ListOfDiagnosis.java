@@ -31,7 +31,6 @@ public class ListOfDiagnosis extends HttpServlet {
         List<Diagnosis> diagnosisListForOnePatient = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(currentPatient.getPatientId());
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().write(new JSONArray(diagnosisListForOnePatient).toString());
-        System.out.println("list of diagnosis");
     }
 
 

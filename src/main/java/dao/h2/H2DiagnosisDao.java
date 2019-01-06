@@ -12,11 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -33,7 +31,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
             "ON diagnosis.personal_id = medical_personal.personal_id WHERE diagnosis.patient_id = ?;";
 
     private static final String ADD_DIAGNOSIS = "INSERT INTO diagnosis (description, personal_Id, patient_id, time, " +
-            "is_healthy) VALUES (?, ?, ?, ?,?);";
+            "is_opened) VALUES (?, ?, ?, ?,?);";
 
     public H2DiagnosisDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;
@@ -70,7 +68,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
                     diagnosis.setDescription(resultSet.getString("diagnosis.description"));
                     diagnosis.setTime(LocalDateTime.parse(
                             resultSet.getString("diagnosis.time"),dateTimeFormatter));
-                    diagnosis.setHealthy(resultSet.getBoolean("diagnosis.is_healthy"));
+                    diagnosis.setOpened(resultSet.getBoolean("diagnosis.is_opened"));
                     diagnosisList.add(diagnosis);
                 }
             }
@@ -88,8 +86,8 @@ public class H2DiagnosisDao implements DiagnosisDao {
             statement.setLong(2, personalId);
             statement.setLong(3, patientId);
             statement.setString(4, LocalDateTime.now().format(dateTimeFormatter));
-            statement.setBoolean(5,false);
-            System.out.println(statement.execute());
+            statement.setBoolean(5,true);
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }

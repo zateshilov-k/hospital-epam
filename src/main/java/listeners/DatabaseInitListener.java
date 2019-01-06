@@ -102,7 +102,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private void addDiagnosis(Statement statement, Diagnosis diagnosis) throws SQLException {
-        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
+        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_opened) " +
                 "VALUES" + "(" + (diagnosis.getDiagnosisId()) + "," + "\'" + diagnosis.getDescription() + "\',"
                 + (diagnosis.getPersonal().getPersonalId())
                 + "," + (diagnosis.getPatient().getPatientId()) + ","
