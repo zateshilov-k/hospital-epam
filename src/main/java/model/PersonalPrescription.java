@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonalPrescription {
-
     private long personalPrescriptionId;
     private PersonalPrescriptionType type;
     private Personal personal;
     private Prescription prescription;
-
 }

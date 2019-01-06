@@ -88,13 +88,12 @@ tr:hover {background-color:#a0a0a0;}
 
 </fieldset>
 <script>
-
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     updateDiagnosisTable(diagnosis,diagnosisTable);
 
+    updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
-
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     prescriptionSubmitButton.addEventListener("click",prescriptionSubmitButtonListener);
