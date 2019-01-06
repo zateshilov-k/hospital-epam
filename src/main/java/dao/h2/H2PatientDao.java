@@ -16,7 +16,7 @@ public class H2PatientDao implements PatientDao {
             "patient";
     private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name) VALUES (?, ?)";
     private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ? WHERE patient_id = ?";
-    private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?;";
+    private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?";
 
     private static final Logger log = Logger.getLogger(String.valueOf(H2PatientDao.class));
 
