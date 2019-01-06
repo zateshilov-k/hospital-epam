@@ -65,11 +65,12 @@
     <tbody>
     <c:forEach items="${sessionScope.personals}" var="personal">
         <tr>
-            <td>${personals.patientId}</td>
-            <td>${personals.firstName}</td>
-            <td>${personals.lastName}</td>
-             <td>${personals.role}</td>
-            <form name="Button" action="/patientCard" method="POST">
+            <td>${personal.personalId}</td>
+            <td>${personal.login}</td>
+            <td>${personal.firstName}</td>
+            <td>${personal.lastName}</td>
+             <td>${personal.role}</td>
+            <form name="Button" action="/personals" method="POST">
                 <td>
                     <input type="hidden" name="personalId" value="${personal.personalId}"/>
                     <input type="submit" name="button" value="Перейти в профиль"/>
@@ -85,27 +86,5 @@
 <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-
-    var personalsTable = document.getElementById('example');
-    var personalRow = personalsTable.rows;
-    for (i = 1; i < personalRow.length; ++i) {
-        personalRow[i].addEventListener("click",personalClick);
-    }
-
-    function personalClick() {
-        var rows = this.parentNode.rows;
-        var URL = "/personalPatientCard.jsp";
-        for (i=0; i < rows.length; i++) {
-            rows[i].style.color = "black";
-        }
-        this.style.color = "red";
-        var button = document.getElementById('buttonToPatientPage');
-        button.value = this.cells[0].innerHTML;
-    }
-</script>
 </body>
 </html>
