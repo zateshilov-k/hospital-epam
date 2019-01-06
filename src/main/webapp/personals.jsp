@@ -56,6 +56,7 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>login</th>
         <th>firstName</th>
         <th>lastName</th>
         <th>role</th>
