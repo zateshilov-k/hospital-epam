@@ -2,6 +2,7 @@ package listeners;
 
 import dao.DaoFactory;
 import dao.h2.H2DaoFactory;
+import dao.h2.H2PatientDao;
 import model.*;
 import utils.HashGenerator;
 
@@ -180,7 +181,34 @@ public class DatabaseInitListener implements ServletContextListener {
         }
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
+        // add new patients
+        addNewPatients();
+        // update patient
+        updatePatient();
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
+    }
+
+    public void addNewPatients() {
+        for (int i = 0; i < 3; i++) {
+            System.out.println("hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            String firstName = getRandomFirstName();
+            String lastName = getRandomLastName();
+            Patient patient = new Patient();
+            patient.setFirstName(firstName);
+            patient.setLastName(lastName);
+            patient.setDischarged(false);
+            System.out.println(firstName + " " + lastName);
+            new H2PatientDao(dataSource).addPatient(patient);
+        }
+    }
+
+    public void updatePatient() {
+        Patient patient = new Patient();
+        patient.setPatientId(11);
+        patient.setFirstName("Mark");
+        patient.setLastName("Updater");
+        patient.setDischarged(false);
+        new H2PatientDao(dataSource).updatePatient(patient);
     }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
@@ -251,9 +279,10 @@ public class DatabaseInitListener implements ServletContextListener {
         return diagnoses;
     }
 
+    // id patients
     private List<Patient> getPatients(int numberOfPatients) {
         return IntStream.range(0, numberOfPatients)
-                .mapToObj((i) -> getRandomPatient(i+1))
+                .mapToObj((i) -> getRandomPatient(i + 1))
                 .collect(Collectors.toList());
     }
 
