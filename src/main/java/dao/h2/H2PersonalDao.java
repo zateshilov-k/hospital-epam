@@ -22,6 +22,8 @@ public class H2PersonalDao implements PersonalDao {
             "lastName = ?, role = ? WHERE personalId = ?";
     private static final String GET_ALL_PERSONALS_SQL = "SELECT personal_id, first_name, last_name, role, login FROM " +
             "medical_personal";
+    private static final String GET_PERSONAL_BY_ID = "SELECT * FROM medical_personal WHERE medical_personal.personal_id = ?;";
+
     private DataSource dataSource;
     private static final Logger log = Logger.getLogger(String.valueOf(H2PersonalDao.class));
 
@@ -106,6 +108,21 @@ public class H2PersonalDao implements PersonalDao {
             System.err.println(e.getMessage());
         }
         return personalList;
+    }
+
+    @Override
+    public Personal getPersonalById(long personalId) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(GET_PERSONAL_BY_ID)) {
+            statement.setLong(1, personalId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return getPersonalFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Personal getPersonalFromResultSet(ResultSet resultSet) throws SQLException {
