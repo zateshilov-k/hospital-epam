@@ -92,7 +92,10 @@ tr:hover {background-color:#a0a0a0;}
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     updateDiagnosisTable(diagnosis,diagnosisTable);
 
-    updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    if(diagnosisTable.rows.length > 1) {
+        updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    }
+
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");

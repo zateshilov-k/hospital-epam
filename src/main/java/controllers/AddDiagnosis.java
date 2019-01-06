@@ -32,6 +32,7 @@ public class AddDiagnosis extends HttpServlet {
         HttpSession session = request.getSession();
         Personal user = (Personal) session.getAttribute("user");
         Patient patient = (Patient) session.getAttribute("currentPatient");
+
         daoFactory.getDiagnosisDao().addDiagnosis(patient.getPatientId(), user.getPersonalId(), description);
     }
 

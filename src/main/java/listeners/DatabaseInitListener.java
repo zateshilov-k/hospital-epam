@@ -178,6 +178,13 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
+        // add new patients
+        addNewPatients();
+        // update patient
+        updatePatient();
+
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             printTable(statement, "medical_personal");
             printTable(statement, "patient");
@@ -187,12 +194,6 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
-        // add new patients
-        addNewPatients();
-        // update patient
-        updatePatient();
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
     }
 
