@@ -11,13 +11,15 @@ import java.util.logging.Logger;
 
 public class H2PatientDao implements PatientDao {
 
-    private static final Logger log = Logger.getLogger(String.valueOf(H2PatientDao.class));
     // SQL queries
     private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM " +
             "patient";
     private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name) VALUES (?, ?)";
-
+    private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ? WHERE patient_id = ?";
     private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?;";
+
+    private static final Logger log = Logger.getLogger(String.valueOf(H2PatientDao.class));
+
     private DataSource dataSource;
 
     public H2PatientDao(DataSource dataSource) {
@@ -39,7 +41,14 @@ public class H2PatientDao implements PatientDao {
 
     @Override
     public void updatePatient(String firstName, String lastName) {
-
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_PATIENT_SQL)) {
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            System.out.println(statement.execute());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
