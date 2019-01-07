@@ -22,6 +22,7 @@ public class ListOfPrescriptions extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         Long diagnosisId = Long.parseLong(request.getParameter("diagnosisId"));
+        response.setContentType("text/html;charset=utf-8");
         List<Prescription> prescriptions = daoFactory.getPrescriptionDao().getAllPrescriptionsByDiagnosisId(diagnosisId);
         try {
             PrintWriter writer = response.getWriter();
