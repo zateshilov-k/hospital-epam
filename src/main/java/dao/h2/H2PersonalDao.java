@@ -14,11 +14,11 @@ import java.util.logging.Logger;
 
 public class H2PersonalDao implements PersonalDao {
 
-    private static final String CREATE_PERSONAL_SQL = "INSERT INTO Personals (personalId, login, password, firstName," +
-            " lastName, role) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_PERSONAL_SQL = "INSERT INTO medical_personal (personal_id, login, password, first_name," +
+            " last_name, role) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SELECT_PERSONAL_BY_LOGIN_SQL = "SELECT personal_id, first_name, last_name, role, login, " +
             "password FROM medical_personal WHERE login = ?;";
-    private static final String UPDATE_PERSONAL_SQL = "UPDATE Personals SET login = ?, password = ?, firstName = ?, " +
+    private static final String UPDATE_PERSONAL_SQL = "UPDATE medical_personal SET login = ?, password = ?, firstName = ?, " +
             "lastName = ?, role = ? WHERE personalId = ?";
     private static final String GET_ALL_PERSONALS_SQL = "SELECT personal_id, first_name, last_name, role, login FROM " +
             "medical_personal";
@@ -33,20 +33,25 @@ public class H2PersonalDao implements PersonalDao {
 
     @Override
     public long createPersonal(Personal personal) {
+        System.out.println("H2PersonalDao - какой новый personal к нам приходит:");
+        System.out.println(personal);
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(CREATE_PERSONAL_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, personal.getPersonalId());
+
             statement.setString(2, personal.getLogin());
             statement.setString(3, String.valueOf(personal.getPassword()));
             statement.setString(4, personal.getFirstName());
             statement.setString(5, personal.getLastName());
             statement.setString(6, personal.getRole().toString());
+            statement.execute();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     return resultSet.getLong(1);
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println("creating personal - error");
         }
         return 0;
