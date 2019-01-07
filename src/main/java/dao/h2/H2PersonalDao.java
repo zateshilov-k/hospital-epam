@@ -136,6 +136,8 @@ public class H2PersonalDao implements PersonalDao {
         personal.setPersonalId(resultSet.getLong("personal_id"));
         personal.setFirstName(resultSet.getString("first_name"));
         personal.setLastName(resultSet.getString("last_name"));
+        personal.setRole(Role.valueOf(resultSet.getString("role")));
+        personal.setLogin(resultSet.getString("login"));
         return personal;
     }
 }
