@@ -145,6 +145,22 @@ public class DatabaseInitListener implements ServletContextListener {
         admin.setPassword(hashGenerator.getHash("admin" ));
         personals.add(admin);
 
+        Personal doctor = new Personal();
+        admin.setFirstName("DoctorName");
+        admin.setLastName("DoctorLastName");
+        admin.setLogin("doctor@epam.com");
+        admin.setRole(Role.DOCTOR);
+        admin.setPassword(hashGenerator.getHash("doctor"));
+        personals.add(doctor);
+
+        Personal nurse = new Personal();
+        admin.setFirstName("NurseName");
+        admin.setLastName("NurseLastName");
+        admin.setLogin("nurse@epam.com");
+        admin.setRole(Role.NURSE);
+        admin.setPassword(hashGenerator.getHash("nurse"));
+        personals.add(nurse);
+
         List<Patient> patients = getPatients(numberOfPatients);
         List<Diagnosis> diagnoses = getDiagnoses(numberOfDiagnosisPerPatient, personals, patients);
         List<Prescription> prescriptions = getPrescriptions(numberOfPrescriptionsPerDiagnosis,diagnoses);
