@@ -3,7 +3,6 @@ var currentDiagnosisRow = 1;
 
 function closeDiagnosisButtonListener() {
     var diagnosisTable = document.getElementById("diagnosis");
-    alert("closeDiagnosisButtonListener");
     $.post("closeDiagnosis",{diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
         getAndUpdateDiagnosis();
     });
