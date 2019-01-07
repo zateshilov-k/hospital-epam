@@ -90,7 +90,9 @@ tr:hover {background-color:#a0a0a0;}
 <script>
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
-    updateDiagnosisTable(diagnosis,diagnosisTable);
+    if (diagnosis.length > 0) {
+        updateDiagnosisTable(diagnosis,diagnosisTable);
+    }
     if(diagnosisTable.rows.length > 2) {
         updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     }

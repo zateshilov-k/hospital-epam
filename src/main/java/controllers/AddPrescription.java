@@ -27,7 +27,6 @@ public class AddPrescription extends HttpServlet {
         Personal user = (Personal) session.getAttribute("user");
         Patient patient = (Patient) session.getAttribute("currentPatient");
         daoFactory.getPrescriptionDao().addPrescription(diagnosisId,patient.getPatientId(),description,prescriptionType);
-
     }
 
     @Override

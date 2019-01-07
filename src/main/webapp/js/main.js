@@ -2,23 +2,37 @@ var currentDiagnosisRow = 1;
 
 function prescriptionSubmitButtonListener() {
     var prescriptionTextArea = document.getElementById("prescriptionDescription");
-    var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     var prescriptionTypeSelect = document.getElementById("prescriptionType");
+    var diagnosisTable = document.getElementById("diagnosis");
     if (prescriptionTextArea.value === "") {
         alert("Введите описание назначения");
     } else {
         $.post("addPrescription", {
             description: prescriptionTextArea.value,
-            diagnosisId: prescriptionSubmitButton.value,
+            diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML,
             type: prescriptionTypeSelect.value
         });
         prescriptionTextArea.value = "";
-        updatePrescriptionsTable(prescriptionSubmitButton.value);
+        updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    }
+}
+
+function updatePrescriptionFieldsStyle() {
+    var diagnosisTable = document.getElementById("diagnosis");
+    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
+    var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
+    if (isDiagnosisOpened === 'false') {
+        prescriptionFieldSet.style.display = "none";
+    } else if (isDiagnosisOpened === 'true') {
+        prescriptionFieldSet.style.display = "inline";
     }
 }
 
 function diagnosisSubmitButtonListener() {
     var diagnosisTextArea = document.getElementById("diagnosisDescription");
+    var diagnosisTable = document.getElementById("diagnosis");
+    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
+
     if (diagnosisTextArea.value === "") {
         alert("Введите описание диагноза");
     } else {
@@ -37,6 +51,7 @@ function getAndUpdateDiagnosis() {
 }
 
 function updateDiagnosisTable(diagnosis, table) {
+    var diagnosisTable = document.getElementById("diagnosis");
     for (var i = 1; i < table.rows.length; ++i) {
         table.rows[i].innerHTML = "";
     }
@@ -61,6 +76,8 @@ function updateDiagnosisTable(diagnosis, table) {
             }
         }
     }
+    updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    updatePrescriptionFieldsStyle();
 }
 
 function diagnosisClick() {
@@ -71,16 +88,12 @@ function diagnosisClick() {
     setSpecialStyle(this);
     currentDiagnosisRow = $(this).index();
     var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
-    var isDiagnosisOpened = this.cells[3].innerHTML;
     var currentDiagnosisId = this.cells[0].innerHTML;
 
-    if (isDiagnosisOpened === 'false') {
-        prescriptionFieldSet.style.display = "none";
-    } else if (isDiagnosisOpened === 'true') {
-        prescriptionFieldSet.style.display = "inline";
-        var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
-        prescriptionSubmitButton.value = currentDiagnosisId;
-    }
+    updatePrescriptionFieldsStyle();
+    var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
+    prescriptionSubmitButton.value = currentDiagnosisId;
+
     updatePrescriptionsTable(currentDiagnosisId);
 }
 
