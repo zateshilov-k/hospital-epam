@@ -34,7 +34,7 @@ tr:hover {background-color:#a0a0a0;}
 
 <fieldset >
 <legend >История болезней</legend>
-<button onclick="myFunction()">Close diagnosis</button>
+<button id="closeDiagnosisButton">Close diagnosis</button>
 <br><br>
 <table id = "diagnosis" style="display:inline; float:left">
   <caption>Диагнозы:</caption>
@@ -98,7 +98,8 @@ tr:hover {background-color:#a0a0a0;}
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     prescriptionSubmitButton.addEventListener("click",prescriptionSubmitButtonListener);
-
+    var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
+    closeDiagnosisButton.addEventListener("click",closeDiagnosisButtonListener);
 </script>
 </body>
 </html>

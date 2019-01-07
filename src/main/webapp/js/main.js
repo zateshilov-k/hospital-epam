@@ -1,5 +1,14 @@
 var currentDiagnosisRow = 1;
 
+
+function closeDiagnosisButtonListener() {
+    var diagnosisTable = document.getElementById("diagnosis");
+    alert("closeDiagnosisButtonListener");
+    $.post("closeDiagnosis",{diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
+        getAndUpdateDiagnosis();
+    });
+}
+
 function prescriptionSubmitButtonListener() {
     var prescriptionTextArea = document.getElementById("prescriptionDescription");
     var prescriptionTypeSelect = document.getElementById("prescriptionType");
@@ -18,14 +27,18 @@ function prescriptionSubmitButtonListener() {
     }
 }
 
-function updatePrescriptionFieldsStyle() {
+function updateElementsStyle() {
     var diagnosisTable = document.getElementById("diagnosis");
     var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
+    var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
+
     var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
     if (isDiagnosisOpened === 'false') {
         prescriptionFieldSet.style.display = "none";
+        closeDiagnosisButton.style.display = "none";
     } else if (isDiagnosisOpened === 'true') {
         prescriptionFieldSet.style.display = "inline";
+        closeDiagnosisButton.style.display = "inline";
     }
 }
 
@@ -79,7 +92,7 @@ function updateDiagnosisTable(diagnosis, table) {
         }
     }
     updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
-    updatePrescriptionFieldsStyle();
+    updateElementsStyle();
 }
 
 function diagnosisClick() {
@@ -92,7 +105,7 @@ function diagnosisClick() {
     var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
     var currentDiagnosisId = this.cells[0].innerHTML;
 
-    updatePrescriptionFieldsStyle();
+    updateElementsStyle();
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     prescriptionSubmitButton.value = currentDiagnosisId;
 
