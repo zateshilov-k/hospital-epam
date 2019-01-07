@@ -4,6 +4,7 @@ import dao.DaoFactory;
 import model.Patient;
 import model.Personal;
 import model.PrescriptionType;
+import services.PrescriptionService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,13 +21,14 @@ public class AddPrescription extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         String description = request.getParameter("description");
-        PrescriptionType prescriptionType = PrescriptionType.valueOf(request.getParameter("type").toUpperCase());
-        long diagnosisId = Long.parseLong(request.getParameter("diagnosisId"));
-
+        String type = request.getParameter("type");
+        String diagnosisIdString = request.getParameter("diagnosisId");
         HttpSession session = request.getSession();
         Personal user = (Personal) session.getAttribute("user");
         Patient patient = (Patient) session.getAttribute("currentPatient");
-        daoFactory.getPrescriptionDao().addPrescription(diagnosisId,patient.getPatientId(),description,prescriptionType);
+
+        new PrescriptionService().addPrescribePrescription(user,patient,diagnosisIdString,description,
+                type,daoFactory);
 
     }
 

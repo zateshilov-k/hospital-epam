@@ -34,7 +34,7 @@ public class DatabaseInitListener implements ServletContextListener {
     private Random random = new Random();
     private HashGenerator hashGenerator;
 
-    private void printTable(Statement statement, String table) throws SQLException {
+    public static void printTable(Statement statement, String table) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table + ";");
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -196,10 +196,6 @@ public class DatabaseInitListener implements ServletContextListener {
         }
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
-        // add new patients
-        addNewPatients();
-        // update patient
-        updatePatient();
 
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             printTable(statement, "medical_personal");
@@ -211,31 +207,6 @@ public class DatabaseInitListener implements ServletContextListener {
             e.printStackTrace();
         }
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
-    }
-
-    // test adding new patients
-    public void addNewPatients() {
-        for (int i = 0; i < 3; i++) {
-            System.out.println("hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            String firstName = getRandomFirstName();
-            String lastName = getRandomLastName();
-            Patient patient = new Patient();
-            patient.setFirstName(firstName);
-            patient.setLastName(lastName);
-            patient.setDischarged(false);
-            System.out.println(firstName + " " + lastName);
-            new H2PatientDao(dataSource).addPatient(patient);
-        }
-    }
-
-    // test update patient
-    public void updatePatient() {
-        Patient patient = new Patient();
-        patient.setPatientId(11);
-        patient.setFirstName("Mark");
-        patient.setLastName("Updater");
-        patient.setDischarged(false);
-        new H2PatientDao(dataSource).updatePatient(patient);
     }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {

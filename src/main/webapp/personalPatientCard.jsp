@@ -34,7 +34,7 @@ tr:hover {background-color:#a0a0a0;}
 
 <fieldset >
 <legend >История болезней</legend>
-<button onclick="myFunction()">Close diagnosis</button>
+<button id="closeDiagnosisButton">Close diagnosis</button>
 <br><br>
 <table id = "diagnosis" style="display:inline; float:left">
   <caption>Диагнозы:</caption>
@@ -90,15 +90,16 @@ tr:hover {background-color:#a0a0a0;}
 <script>
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
-    updateDiagnosisTable(diagnosis,diagnosisTable);
-    if(diagnosisTable.rows.length > 2) {
+    if (diagnosis.length > 0) {
+        updateDiagnosisTable(diagnosis,diagnosisTable);
         updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     }
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     prescriptionSubmitButton.addEventListener("click",prescriptionSubmitButtonListener);
-
+    var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
+    closeDiagnosisButton.addEventListener("click",closeDiagnosisButtonListener);
 </script>
 </body>
 </html>

@@ -8,4 +8,5 @@ public interface DaoFactory extends AutoCloseable {
     PatientDao getPatientDao();
     DiagnosisDao getDiagnosisDao();
     PrescriptionDao getPrescriptionDao();
+    PersonalPrescriptionDao getPersonalPrescriptionDao();
 }

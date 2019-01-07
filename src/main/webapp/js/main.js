@@ -1,30 +1,58 @@
 var currentDiagnosisRow = 1;
 
+
+function closeDiagnosisButtonListener() {
+    var diagnosisTable = document.getElementById("diagnosis");
+    $.post("closeDiagnosis",{diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
+        getAndUpdateDiagnosis();
+    });
+}
+
 function prescriptionSubmitButtonListener() {
     var prescriptionTextArea = document.getElementById("prescriptionDescription");
-    var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     var prescriptionTypeSelect = document.getElementById("prescriptionType");
+    var diagnosisTable = document.getElementById("diagnosis");
     if (prescriptionTextArea.value === "") {
         alert("Введите описание назначения");
     } else {
         $.post("addPrescription", {
             description: prescriptionTextArea.value,
-            diagnosisId: prescriptionSubmitButton.value,
+            diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML,
             type: prescriptionTypeSelect.value
+        },function (response) {
+            updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+            prescriptionTextArea.value = "";
         });
-        prescriptionTextArea.value = "";
-        updatePrescriptionsTable(prescriptionSubmitButton.value);
+    }
+}
+
+function updateElementsStyle() {
+    var diagnosisTable = document.getElementById("diagnosis");
+    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
+    var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
+
+    var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
+    if (isDiagnosisOpened === 'false') {
+        prescriptionFieldSet.style.display = "none";
+        closeDiagnosisButton.style.display = "none";
+    } else if (isDiagnosisOpened === 'true') {
+        prescriptionFieldSet.style.display = "inline";
+        closeDiagnosisButton.style.display = "inline";
     }
 }
 
 function diagnosisSubmitButtonListener() {
     var diagnosisTextArea = document.getElementById("diagnosisDescription");
+    var diagnosisTable = document.getElementById("diagnosis");
+    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
+
     if (diagnosisTextArea.value === "") {
         alert("Введите описание диагноза");
     } else {
-        $.post("addDiagnosis", {description: diagnosisTextArea.value});
-        diagnosisTextArea.value = "";
-        getAndUpdateDiagnosis();
+        $.post("addDiagnosis", {description: diagnosisTextArea.value}, function (response) {
+            diagnosisTextArea.value = "";
+            getAndUpdateDiagnosis();
+        });
     }
 }
 
@@ -37,6 +65,7 @@ function getAndUpdateDiagnosis() {
 }
 
 function updateDiagnosisTable(diagnosis, table) {
+    var diagnosisTable = document.getElementById("diagnosis");
     for (var i = 1; i < table.rows.length; ++i) {
         table.rows[i].innerHTML = "";
     }
@@ -61,6 +90,8 @@ function updateDiagnosisTable(diagnosis, table) {
             }
         }
     }
+    updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    updateElementsStyle();
 }
 
 function diagnosisClick() {
@@ -71,16 +102,12 @@ function diagnosisClick() {
     setSpecialStyle(this);
     currentDiagnosisRow = $(this).index();
     var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
-    var isDiagnosisOpened = this.cells[3].innerHTML;
     var currentDiagnosisId = this.cells[0].innerHTML;
 
-    if (isDiagnosisOpened === 'false') {
-        prescriptionFieldSet.style.display = "none";
-    } else if (isDiagnosisOpened === 'true') {
-        prescriptionFieldSet.style.display = "inline";
-        var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
-        prescriptionSubmitButton.value = currentDiagnosisId;
-    }
+    updateElementsStyle();
+    var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
+    prescriptionSubmitButton.value = currentDiagnosisId;
+
     updatePrescriptionsTable(currentDiagnosisId);
 }
 
