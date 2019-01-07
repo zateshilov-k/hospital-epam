@@ -28,13 +28,11 @@ public class AddDiagnosis extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("addDiagnosis doPost");
         String description = request.getParameter("description");
-
         HttpSession session = request.getSession();
         Personal user = (Personal) session.getAttribute("user");
         Patient patient = (Patient) session.getAttribute("currentPatient");
 
         daoFactory.getDiagnosisDao().addDiagnosis(patient.getPatientId(), user.getPersonalId(), description);
-        System.out.println("do Post addDiagnosis end");
     }
 
     @Override

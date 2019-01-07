@@ -34,7 +34,7 @@ public class DatabaseInitListener implements ServletContextListener {
     private Random random = new Random();
     private HashGenerator hashGenerator;
 
-    private void printTable(Statement statement, String table) throws SQLException {
+    public static void printTable(Statement statement, String table) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table + ";");
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();

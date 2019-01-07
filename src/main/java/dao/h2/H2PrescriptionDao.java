@@ -52,7 +52,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
     }
 
     @Override
-    public void addPrescription(long diagnosisId, long patientId, String description, PrescriptionType type) {
+    public long addPrescription(long diagnosisId, long patientId, String description, PrescriptionType type) throws SQLException {
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(ADD_PRESCRIPTION)) {
             statement.setString(1, description);
@@ -61,9 +61,14 @@ public class H2PrescriptionDao implements PrescriptionDao {
             statement.setLong(4,diagnosisId);
             statement.setString(5, type.toString());
             statement.setBoolean(6,false);
-            statement.execute();
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getLong(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        throw new SQLException("There is no generated key");
     }
 }

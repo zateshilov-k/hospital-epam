@@ -92,8 +92,6 @@ tr:hover {background-color:#a0a0a0;}
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     if (diagnosis.length > 0) {
         updateDiagnosisTable(diagnosis,diagnosisTable);
-    }
-    if(diagnosisTable.rows.length > 2) {
         updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     }
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
