@@ -11,9 +11,10 @@ function prescriptionSubmitButtonListener() {
             description: prescriptionTextArea.value,
             diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML,
             type: prescriptionTypeSelect.value
+        },function (response) {
+            updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+            prescriptionTextArea.value = "";
         });
-        prescriptionTextArea.value = "";
-        updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     }
 }
 
@@ -36,9 +37,10 @@ function diagnosisSubmitButtonListener() {
     if (diagnosisTextArea.value === "") {
         alert("Введите описание диагноза");
     } else {
-        $.post("addDiagnosis", {description: diagnosisTextArea.value});
-        diagnosisTextArea.value = "";
-        getAndUpdateDiagnosis();
+        $.post("addDiagnosis", {description: diagnosisTextArea.value}, function (response) {
+            diagnosisTextArea.value = "";
+            getAndUpdateDiagnosis();
+        });
     }
 }
 
