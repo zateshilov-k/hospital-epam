@@ -52,11 +52,10 @@
 <div class="wrapper">
     <nav class="navigation">
         <ul>
-            <li><a href="#">Текущий пользователь ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a></li>
-            <li><a href="/personalUpdate.jsp">Profile</a></li>
-            <li><a href="/patient.jsp">Add patient</a></li>
+            <li><a href="#">Текущий пользователь ${sessionScope.user.role} ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a></li>
+            <li><a href="/personalUpdate.jsp">My Profile</a></li>
+            <li><a href="/personal.jsp">Add personal</a></li>
             <li><a href="#">Logout</a></li>
-            <li><a href="#">${sessionScope.user.role}</a></li>
         </ul>
     </nav>
 </div>
@@ -95,5 +94,10 @@
 <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
 </body>
 </html>
