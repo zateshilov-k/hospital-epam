@@ -3,7 +3,9 @@ package controllers;
 import dao.DaoFactory;
 import dao.PersonalDao;
 import model.Personal;
+import model.Role;
 import services.PersonalService;
+import utils.HashGenerator;
 import utils.StringFieldValidate;
 
 import javax.servlet.ServletContext;
@@ -17,12 +19,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 /*
 сервлет для личного кабинета персонала
  */
 @WebServlet("/personalUpdate")
 public class PersonalCabinet extends HttpServlet {
     DaoFactory daoFactory;
+    HashGenerator hashGenerator;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
@@ -37,11 +42,14 @@ public class PersonalCabinet extends HttpServlet {
         }
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
+        Personal currentUser = (Personal) session.getAttribute("user");
+        Long personalId = Long.parseLong(request.getParameter("personalId"));
         String firstName = request.getParameter("firstName").trim();
+        firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
         String lastName = request.getParameter("lastName").trim();
+        lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password").trim();
-        //TODO сделать ограничение на изменение роли только для роли АДМИН
         String role = request.getParameter("role");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
@@ -60,21 +68,44 @@ public class PersonalCabinet extends HttpServlet {
         if (isValid) {
             //TODO update personal
             //TODO write code here
+            PersonalDao personalDao = daoFactory.getPersonalDao();
 
-
-            List<Personal> personals = new PersonalService().getAllPersonals(daoFactory);
-            if (personals != null) {
-                session.setAttribute("personals", personals);
+            Personal updatedPersonal = new Personal();
+            updatedPersonal.setFirstName(firstName);
+            updatedPersonal.setLastName(lastName);
+            updatedPersonal.setLogin(login);
+            if (role.equals("doctor")) {
+                updatedPersonal.setRole(Role.DOCTOR);
+            } else if (role.equals("admin")) {
+                updatedPersonal.setRole(Role.ADMIN);
+            } else if (role.equals("nurse")) {
+                updatedPersonal.setRole(Role.NURSE);
             }
-            request.getRequestDispatcher("/personals.jsp").forward(request, response);
-            System.out.println("Personal is updated \t" + firstName+" "+ lastName);
-        } else {
+            updatedPersonal.setPassword(hashGenerator.getHash(password));
+            updatedPersonal.setPersonalId(personalId);
+
+            personalDao.updatePersonal(updatedPersonal);
+
+            if (currentUser.getRole() == Role.ADMIN) {
+                List<Personal> personals = personalDao.getAllPersonals();
+                if (personals != null) {
+                    session.setAttribute("personals", personals);
+                }
+                request.getRequestDispatcher("/personals.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/main.jsp").forward(request, response);
+            }
+
+        } else
+
+        {
             String str = bundle.getString("personalError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
             request.setAttribute("personalError", str);
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
+
     }
 
     @Override
@@ -87,5 +118,6 @@ public class PersonalCabinet extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
+        hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
     }
 }
