@@ -47,8 +47,9 @@
             transition:color 0.3s ease;
         }
     </style>
+    <title>Главная страница</title>
 </head>
-<body style="background-color:powderblue;overflow:hidden">
+<body style="background-color:powderblue">
 
 <div class="wrapper">
     <nav class="navigation">

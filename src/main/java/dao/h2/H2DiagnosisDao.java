@@ -27,7 +27,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
             "ON diagnosis.personal_id = medical_personal.personal_id WHERE diagnosis.patient_id = ?;";
     private static final String ADD_DIAGNOSIS = "INSERT INTO diagnosis (description, personal_Id, patient_id, time, " +
             "is_opened) VALUES (?, ?, ?, ?,?);";
-    private static final String CLOSE_DIAGNOSIS = "UPDATE diagnosis SET is_opened = ?;";
+    private static final String CLOSE_DIAGNOSIS = "UPDATE diagnosis SET is_opened = ? WHERE diagnosis_id = ?;";
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
     private DateTimeFormatter dateTimeFormatter;
@@ -103,6 +103,7 @@ public class H2DiagnosisDao implements DiagnosisDao {
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(CLOSE_DIAGNOSIS)) {
             statement.setBoolean(1, false);
+            statement.setLong(2,diagnosisId);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
