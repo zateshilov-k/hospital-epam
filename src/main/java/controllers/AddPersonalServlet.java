@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/*
+сервлет для добавления персонала
+ */
 @WebServlet("/addPersonal")
 public class AddPersonalServlet extends HttpServlet {
     DaoFactory daoFactory;
