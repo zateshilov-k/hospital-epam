@@ -54,8 +54,6 @@ public class Login extends HttpServlet {
             session.setAttribute("user", currentUser.get());
             if (currentUser.get().getRole() == Role.ADMIN) {
                 List<Personal> personals = new PersonalService().getAllPersonals(daoFactory);
-                System.out.println("Personals list:");
-                personals.forEach(System.out::println);
                 if (personals != null) {
                     session.setAttribute("personals", personals);
                 } else {
