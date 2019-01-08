@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.DaoFactory;
+import dao.PatientDao;
 import model.Patient;
 import model.Personal;
 import services.PatientService;
@@ -15,15 +16,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
+/*
+сервлет, отрабатывающий желание добавить пациента
+ */
 @WebServlet("/addPatient")
-public class PatientServlet extends HttpServlet {
-    DataSource dataSource;
+public class AddPatientServlet extends HttpServlet {
     DaoFactory daoFactory;
 
     @Override
@@ -33,7 +34,6 @@ public class PatientServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("Patient Servlet doPost");
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
@@ -42,16 +42,21 @@ public class PatientServlet extends HttpServlet {
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String firstName = request.getParameter("firstName").trim();
+        firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
         String lastName = request.getParameter("lastName").trim();
-        System.out.println("ФИО: "+ firstName + " " + lastName);
+        lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
         if (isValid) {
             isValid = stringFieldValidate.doValidation(lastName);
         }
         if (isValid) {
-            //TODO add patient
-            //TODO write code here
+            PatientDao patientDao = daoFactory.getPatientDao();
+            Patient newPatient = new Patient();
+            newPatient.setFirstName(firstName);
+            newPatient.setLastName(lastName);
+            newPatient.setDischarged(false);
+            patientDao.addPatient(newPatient);
             List<Patient> patients = new PatientService().getAllPatients(daoFactory);
             if (patients != null) {
                 Personal currentUser = (Personal)session.getAttribute("user");

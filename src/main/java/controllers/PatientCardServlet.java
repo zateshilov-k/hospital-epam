@@ -25,7 +25,7 @@ public class PatientCardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Patient Card GET");
+//        System.out.println("Patient Card GET");
     }
 
     @Override
@@ -33,17 +33,16 @@ public class PatientCardServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=utf-8");
 
-        System.out.println("PatientCardServlet doPost method");
-        System.out.println(request.getParameter("patientId"));
-        System.out.println("PATIENT_ID" + request.getParameter("patientId"));
         Long patientId = Long.parseLong(request.getParameter("patientId"));
         PatientDao patientDao = daoFactory.getPatientDao();
         Patient patient = patientDao.getPatient(patientId);
+        session.setAttribute("currentPatient", patient);
 
         List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
-        request.setAttribute("currentPatient",patient);
-        request.setAttribute("diagnosesList",new JSONArray(diagnosisList).toString());
-        Personal currentUser = (Personal)session.getAttribute("user");
+        request.setAttribute("currentPatient", patient);
+
+        request.setAttribute("diagnosesList", new JSONArray(diagnosisList).toString());
+        Personal currentUser = (Personal) session.getAttribute("user");
         session.setAttribute("user", currentUser);
         try {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/personalPatientCard.jsp");
@@ -53,8 +52,6 @@ public class PatientCardServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("after");
     }
 
     @Override

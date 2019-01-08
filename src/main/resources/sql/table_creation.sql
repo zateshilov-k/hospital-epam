@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `diagnosis` (
   `personal_id` INT NOT NULL,
   `patient_id` INT NOT NULL,
   `time` DATETIME NULL,
-  `is_healthy` TINYINT(1) NULL,
+  `is_opened` TINYINT(1) NULL,
   PRIMARY KEY (`diagnosis_id`),
   CONSTRAINT `diagnosis_personal_constraint`
     FOREIGN KEY (`personal_id`)

@@ -36,12 +36,12 @@
                 <div class="card">
                     <div class="card-header">Измените данные о сотруднике в системе EPAM Hospital</div>
                     <div class="card-body">
-                        <form action="/updatePersonal" method="post">
+                        <form action="/personalUpdate" method="post">
                             <div class="form-group row">
                                 <label for="field1" class="col-md-4 col-form-label text-md-right">Введите имя</label>
                                 <div class="col-md-6">
                                     <input type="text" id="field1" class="form-control" name="firstName" required
-                                           autofocus>
+                                           autofocus value="${currentPersonal.firstName}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -49,14 +49,15 @@
                                     фамилию</label>
                                 <div class="col-md-6">
                                     <input type="text" id="field2" class="form-control" name="lastName" required
-                                           autofocus>
+                                           autofocus value="${currentPersonal.lastName}">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="field5" class="col-md-4 col-form-label text-md-right">Введите логин (e-mail) </label>
+                                <label for="field5" class="col-md-4 col-form-label text-md-right">Введите логин
+                                    (e-mail) </label>
                                 <div class="col-md-6">
                                     <input type="text" id="field5" class="form-control" name="login" required
-                                           autofocus>
+                                           autofocus value="${currentPersonal.login}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -66,18 +67,19 @@
                                     <input type="password" id="password" class="form-control" name="password" required>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-md-right">Выберите роль</label>
-                                <div class="col-md-6">
-                                <br>
-                                <select name="role">
-                                  <option value="doctor">Doctor/Доктор</option>
-                                  <option value="nurse">Nurse/Медсестра</option>
-                                  <option value="admin">Administrator/Администратор</option>
-                                </select>
+                            <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label text-md-right">Выберите роль</label>
+                                    <div class="col-md-6">
+                                        <br>
+                                        <select name="role">
+                                            <option value="doctor">Doctor/Доктор</option>
+                                            <option value="nurse">Nurse/Медсестра</option>
+                                            <option value="admin">Administrator/Администратор</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                             <div class="form-group row" align="center">
                                 <c:if test="${!empty requestScope.loginError}">
                                     <p><font color="red"><span class="error">${requestScope.personalError}</span></font>
@@ -86,18 +88,32 @@
                             </div>
 
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+
+                                <%--<button type="hidden" name="personalId" value="${currentPersonal.personalId}"/>--%>
+                                <button type="submit" name="personalId" value="${currentPersonal.personalId}" class="btn btn-primary">
                                     Сохранить
                                 </button>
-                                <a href="/main.jsp" class="btn btn-link">
-                                    Отмена
-                                </a>
+                                <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+                                    <a href="/personals.jsp" class="btn btn-link">
+                                        Отмена
+                                    </a>
+                                </c:if>
+                                <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
+                                    <a href="/main.jsp" class="btn btn-link">
+                                        Отмена
+                                    </a>
+                                </c:if>
+                                <c:if test="${sessionScope.user.role eq 'NURSE'}">
+                                    <a href="/main.jsp" class="btn btn-link">
+                                        Отмена
+                                    </a>
+                                </c:if>
                             </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 </main>

@@ -2,6 +2,7 @@ package listeners;
 
 import dao.DaoFactory;
 import dao.h2.H2DaoFactory;
+import dao.h2.H2PatientDao;
 import model.*;
 import utils.HashGenerator;
 
@@ -33,7 +34,7 @@ public class DatabaseInitListener implements ServletContextListener {
     private Random random = new Random();
     private HashGenerator hashGenerator;
 
-    private void printTable(Statement statement, String table) throws SQLException {
+    public static void printTable(Statement statement, String table) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table + ";");
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -58,7 +59,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private Role getRandomRole() {
-        return Role.values()[random.nextInt(Role.values().length)];
+        return Role.values()[random.nextInt(Role.values().length-1)];
     }
 
     private String getRandomDisease() {
@@ -73,7 +74,9 @@ public class DatabaseInitListener implements ServletContextListener {
     private void addPersonal(Statement statement, Personal personal) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
                 + "(" + (personal.getPersonalId()) + "," + "\'" + personal.getFirstName() + "\'," + "\'" + personal.getLastName()
-                + "\'," + "\'" + personal.getRole().toString() + "\'," + "\'" + personal.getLogin() + "\'," + "\'"
+                + "\'," + "\'"
+                + personal.getRole() + "\'," + "\'"
+                + personal.getLogin() + "\'," + "\'"
                 + personal.getPassword() + "\'" + ");");
     }
 
@@ -102,7 +105,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private void addDiagnosis(Statement statement, Diagnosis diagnosis) throws SQLException {
-        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
+        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_opened) " +
                 "VALUES" + "(" + (diagnosis.getDiagnosisId()) + "," + "\'" + diagnosis.getDescription() + "\',"
                 + (diagnosis.getPersonal().getPersonalId())
                 + "," + (diagnosis.getPatient().getPatientId()) + ","
@@ -142,7 +145,25 @@ public class DatabaseInitListener implements ServletContextListener {
         admin.setLogin("admin@epam.com");
         admin.setRole(Role.ADMIN);
         admin.setPassword(hashGenerator.getHash("admin" ));
+        admin.setPersonalId(personals.size()+1);
         personals.add(admin);
+
+        Personal doctor = new Personal();
+        doctor.setFirstName("DoctorName");
+        doctor.setLastName("DoctorLastName");
+        doctor.setLogin("doctor@epam.com");
+        doctor.setRole(Role.DOCTOR);
+        doctor.setPassword(hashGenerator.getHash("doctor"));
+        doctor.setPersonalId(personals.size()+1);
+        personals.add(doctor);
+
+        Personal nurse = new Personal();
+        nurse.setFirstName("NurseName");
+        nurse.setLogin("nurse@epam.com");
+        nurse.setRole(Role.NURSE);
+        nurse.setPassword(hashGenerator.getHash("nurse"));
+        nurse.setPersonalId(personals.size()+1);
+        personals.add(nurse);
 
         List<Patient> patients = getPatients(numberOfPatients);
         List<Diagnosis> diagnoses = getDiagnoses(numberOfDiagnosisPerPatient, personals, patients);
@@ -157,6 +178,7 @@ public class DatabaseInitListener implements ServletContextListener {
             Path realPath = Paths.get(path).toRealPath();
             statement.addBatch(Files.lines(realPath).collect(Collectors.joining()));
             for (Personal personal : personals) {
+                System.out.println("CHECK:\t" + personal);
                 addPersonal(statement, personal);
             }
             for (Patient patient : patients) {
@@ -177,6 +199,9 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
+
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             printTable(statement, "medical_personal");
             printTable(statement, "patient");
@@ -186,8 +211,6 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
     }
 
@@ -259,9 +282,10 @@ public class DatabaseInitListener implements ServletContextListener {
         return diagnoses;
     }
 
+    // id patients
     private List<Patient> getPatients(int numberOfPatients) {
         return IntStream.range(0, numberOfPatients)
-                .mapToObj((i) -> getRandomPatient(i+1))
+                .mapToObj((i) -> getRandomPatient(i + 1))
                 .collect(Collectors.toList());
     }
 

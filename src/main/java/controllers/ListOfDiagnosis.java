@@ -5,6 +5,7 @@ import dao.h2.H2DiagnosisDao;
 import dao.h2.H2PatientDao;
 import model.Diagnosis;
 import model.Patient;
+import org.json.JSONArray;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,16 +26,13 @@ public class ListOfDiagnosis extends HttpServlet {
     DataSource dataSource;
     DaoFactory daoFactory;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Patient> patientList = new H2PatientDao(dataSource).getAllPatients();
-        Patient patient1 = patientList.get(10);
-        System.out.println("OUR PATIENT");
-        System.out.println(patient1.getPatientId() + " " + patient1.getFirstName() + " " + patient1.getLastName() + " " + patient1.isDischarged());
-        List<Diagnosis> diagnosisListForOnePatient = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patient1.getPatientId());
-        for (int i = 0; i < diagnosisListForOnePatient.size(); i++) {
-            System.out.println(diagnosisListForOnePatient.get(i));
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Patient currentPatient = (Patient) request.getSession().getAttribute("currentPatient");
+        List<Diagnosis> diagnosisListForOnePatient = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(currentPatient.getPatientId());
+        response.setContentType("text/html;charset=utf-8");
+        response.getWriter().write(new JSONArray(diagnosisListForOnePatient).toString());
     }
+
 
     @Override
     public void destroy() {
