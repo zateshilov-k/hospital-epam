@@ -60,7 +60,6 @@
             <li><a href="#">Текущий
                 пользователь ${sessionScope.user.role} ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a>
             </li>
-            <li><a href="/personalUpdate.jsp">My Profile</a></li>
             <li><a href="/personal.jsp">Add personal</a></li>
             <li><a href="#">Logout</a></li>
         </ul>
