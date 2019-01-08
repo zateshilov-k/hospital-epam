@@ -8,6 +8,23 @@
     <script src="<c:url value="/js/main.js" />" type="text/javascript"></script>
     <style>
     table, th, td {
+        padding: 11px;
+        border: 3px solid rgb(230, 230, 230);
+        border-collapse: collapse;
+    }
+    d {
+        padding: 5px;
+        text-align: left;
+    }
+    tr:hover {background-color:rgb(255, 255, 255);}
+    #form1{
+      margin-left: 900px;
+    }
+    </style>
+    </head>
+    <body style="background-color:powderblue;">
+    <style>
+    table, th, td {
         padding: 12px;
         border: 3px solid rgb(230, 230, 230);
         border-collapse: collapse;
@@ -24,8 +41,9 @@
     <body style="background-color:powderblue;">
 
 
-        <h3 style="text-align:center;" style="font-size:25px" >Personal patient card ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h3>
-    <br>
+<h3 style="text-align:center;font-size:28px" >Личная карточка пациента ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
+
+<br>
 
     <button style="text-align:center;" onclick="href='/main.jsp'">To Main</button>
     <br>
@@ -44,10 +62,8 @@
     <th>Time</th>
     <th>Open</th>
     </tr>
-    <tr>
-
-
     </table>
+
 
     <table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
         <caption style=" font-family: Arial, Helvetica, sans-serif;" >Appointment for the selected diagnosis:</caption>
@@ -88,13 +104,16 @@
         </form>
 
         </fieldset>
+
         <script>
+
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     if (diagnosis.length > 0) {
         updateDiagnosisTable(diagnosis,diagnosisTable);
         updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     }
+
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
