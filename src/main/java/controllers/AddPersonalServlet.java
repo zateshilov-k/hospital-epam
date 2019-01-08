@@ -31,8 +31,7 @@ public class AddPersonalServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
@@ -62,19 +61,22 @@ public class AddPersonalServlet extends HttpServlet {
             }
         }
         if (isValid) {
-            PersonalDao personalDao=daoFactory.getPersonalDao();
-            long nextIndex = personalDao.getAllPersonals().size();
+            PersonalDao personalDao = daoFactory.getPersonalDao();
             Personal newPersonal = new Personal();
             newPersonal.setFirstName(firstName);
             newPersonal.setLastName(lastName);
             newPersonal.setLogin(login);
-            newPersonal.setRole(Role.ADMIN);
+            if (role.toLowerCase().contains("doctor")) {
+                role = "DOCTOR";
+            } else if (role.toLowerCase().contains("Administrator")) {
+                role = "ADMIN";
+            } else if (role.toLowerCase().contains("nurse")) {
+                role = "NURSE";
+            }
+            newPersonal.setRole(Role.valueOf(role));
             newPersonal.setPassword(hashGenerator.getHash(password));
-            newPersonal.setPersonalId(nextIndex+1);
             personalDao.createPersonal(newPersonal);
-            System.out.println("Кол-во персонала до добавления "+nextIndex);
             List<Personal> personals = personalDao.getAllPersonals();
-            System.out.println("Кол-во персонала после добавления "+personals.size());
             session.setAttribute("personals", personals);
             request.getRequestDispatcher("/personals.jsp").forward(request, response);
         } else {
