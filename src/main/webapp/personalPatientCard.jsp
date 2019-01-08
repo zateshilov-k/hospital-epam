@@ -6,88 +6,89 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="<c:url value="/js/main.js" />" type="text/javascript"></script>
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
+    <style>
+    table, th, td {
+        padding: 12px;
+        border: 3px solid rgb(230, 230, 230);
+        border-collapse: collapse;
+    }
+    d {
+        padding: 5px;
+        text-align: left;
+    th, t
+    }
+    tr:hover {background-color:rgb(255, 255, 255);}
 
-th, td {
-  padding: 5px;
-  text-align: left;
-}
-tr:hover {background-color:#a0a0a0;}
-
-</style>
-</head>
-<body style="background-color:powderblue;">
+    </style>
+    </head>
+    <body style="background-color:powderblue;">
 
 
-<h2 style="text-align:center;" style="font-size:28px" >Личная карточка пациента <%=
-((Patient)request.getAttribute("currentPatient")).getFirstName()
-        + " " + ((Patient)request.getAttribute("currentPatient")).getLastName()  %></h2>
-<br>
+        <h3 style="text-align:center;" style="font-size:25px" >Personal patient card ${sessionScope.user.lastName} ${sessionScope.user.firstName}</h3>
+    <br>
 
-<button style="text-align:center;" onclick="href='/main.jsp'">To Main</button>
-<br>
-<br>
+    <button style="text-align:center;" onclick="href='/main.jsp'">To Main</button>
+    <br>
+    <br>
 
-<fieldset >
-<legend >История болезней</legend>
-<button id="closeDiagnosisButton">Close diagnosis</button>
-<br><br>
-<table id = "diagnosis" style="display:inline; float:left">
-  <caption>Диагнозы:</caption>
-  <tr>
+    <fieldset >
+    <legend >History of disease</legend>
+    <button id="closeDiagnosisButton">Close diagnosis</button>
+    <br><br>
+
+    <table id = "diagnosis" style="display:inline; float:left">
+        <caption  style=" font-family: Arial, Helvetica, sans-serif;">Diagnoses:</caption>
+    <tr>
     <th>Id</th>
-    <th>Описание</th>
-    <th>Время</th>
-    <th>Открыт</th>
-  </tr>
-  <tr>
+    <th>Description</th>
+    <th>Time</th>
+    <th>Open</th>
+    </tr>
+    <tr>
 
-</table>
 
-<table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
- <caption>Назначение по выбранному диагнозу:</caption>
-  <tr>
+    </table>
+
+    <table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
+        <caption style=" font-family: Arial, Helvetica, sans-serif;" >Appointment for the selected diagnosis:</caption>
+    <tr>
     <th>Id</th>
-    <th>Описание</th>
-    <th>Тип</th>
-    <th>Время</th>
-      <th>Выполнен</th>
-  </tr>
-</table>
-</fieldset>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Time</th>
+    <th>Complited</th>
+    </tr>
+    </table>
+    </fieldset>
 
-<br>
-<fieldset style="float:left">
-<legend>Добавить диагноз</legend>
- <br>
-  <caption>Описание диагноза:</caption>
-  <p><textarea name="comment" id="diagnosisDescription"></textarea></p>
-  <button id="diagnosisSubmit" value="Добавить">Добавить</button>
+    <br>
+    <fieldset style="float:left">
+        <legend>Add a diagnosis</legend>
+    <br>
+    <caption>Description of the diagnosis:</caption>
+    <p><textarea name="comment" id="diagnosisDescription"></textarea></p>
+    <button id="diagnosisSubmit" value="Добавить">Add</button>
 
-</fieldset>
+        </fieldset>
 
-<fieldset id="addPrescriptionFieldSet" style="display:none;">
-<legend>Добавить назначение</legend>
- <form>
-  <caption>Тип:</caption>
-<form action="/action_page.php">
-  <select name="prescriptionType" id="prescriptionType">
-    <option value="Procedure">Процедура</option>
-    <option value="Operation">Операция</option>
-    <option value="Drug">Лекарство</option>
-  </select>
-</form>
- <caption>Описание назначения:</caption>
-  <p><textarea id="prescriptionDescription" name="comment"></textarea></p>
-     <button id="prescriptionSubmit" value="Добавить">Добавить</button>
- </form>
+        <fieldset id="addPrescriptionFieldSet" style="display:none;">
+        <legend>Add appointment</legend>
+    <form>
+    <caption style=" font-family: Arial, Helvetica, sans-serif;">Тип:</caption>
+    <form action="/action_page.php">
+        <select name="prescriptionType" id="prescriptionType">
+        <option value="Procedure">Procedure</option>
+        <option value="Operation">Operation</option>
+        <option value="Drug">Drug</option>
+        </select>
+        </form>
+        <caption style=" font-family: Arial, Helvetica, sans-serif;" >Description of purpose:</caption>
+    <p><textarea id="prescriptionDescription" name="comment"></textarea></p>
+    <button id="prescriptionSubmit" value="Добавить">Add</button>
+        </form>
 
-</fieldset>
-<script>
+        </fieldset>
+        <script>
     var diagnosisTable = document.getElementById("diagnosis");
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     if (diagnosis.length > 0) {
@@ -100,6 +101,6 @@ tr:hover {background-color:#a0a0a0;}
     prescriptionSubmitButton.addEventListener("click",prescriptionSubmitButtonListener);
     var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
     closeDiagnosisButton.addEventListener("click",closeDiagnosisButtonListener);
-</script>
-</body>
+    </script>
+    </body>
 </html>
