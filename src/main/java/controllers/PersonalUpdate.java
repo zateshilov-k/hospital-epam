@@ -4,7 +4,6 @@ import dao.DaoFactory;
 import dao.PersonalDao;
 import model.Personal;
 import model.Role;
-import services.PersonalService;
 import utils.HashGenerator;
 import utils.StringFieldValidate;
 
@@ -21,10 +20,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /*
-сервлет для личного кабинета персонала
+сервлет для личного кабинета персонала (update)
  */
 @WebServlet("/personalUpdate")
-public class PersonalCabinet extends HttpServlet {
+public class PersonalUpdate extends HttpServlet {
     DaoFactory daoFactory;
     HashGenerator hashGenerator;
 
@@ -66,10 +65,7 @@ public class PersonalCabinet extends HttpServlet {
             }
         }
         if (isValid) {
-            //TODO update personal
-            //TODO write code here
             PersonalDao personalDao = daoFactory.getPersonalDao();
-
             Personal updatedPersonal = new Personal();
             updatedPersonal.setFirstName(firstName);
             updatedPersonal.setLastName(lastName);
@@ -95,17 +91,13 @@ public class PersonalCabinet extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/main.jsp").forward(request, response);
             }
-
-        } else
-
-        {
+        } else {
             String str = bundle.getString("personalError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
             request.setAttribute("personalError", str);
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
-
     }
 
     @Override
