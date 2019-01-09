@@ -2,7 +2,7 @@ package internationalization;
 
 import java.util.ListResourceBundle;
 
-public class resource_en extends ListResourceBundle {
+public class resource extends ListResourceBundle {
     private static final Object[][] contents = {
             //titles
             {"titleIndexPage", "Login to EPAM Hospital System"},
@@ -13,30 +13,47 @@ public class resource_en extends ListResourceBundle {
             {"passwordField", "Enter your password"},
             {"firstNameField", "Enter firstname"},
             {"lastNameField", "Enter lastname"},
-            {"chooseRoleField","Chose role"},
-            {"doctorField","doctor"},
-            {"nurseField","nurse"},
-            {"adminField","administrator"},
+            {"chooseRoleField", "Chose role"},
+            {"doctorField", "doctor"},
+            {"nurseField", "nurse"},
+            {"adminField", "administrator"},
+            {"operation","Operation"},
+            {"procedure","Procedure"},
+            {"drug","Drug"},
             //buttons
             {"buttonEnter", "Login"},
             {"buttonSave", "Save"},
             {"buttonCancel", "Cancel"},
             {"buttonOpenProfile", "Open profile"},
             {"buttonOpenCard", "Open card"},
+            {"buttonCloseDiagnosis","Close diagnosis"},
+
             //menus
             {"menuAddPersonal", "Add personal"},
             {"menuAddPatient", "Add patient"},
             {"menuLogout", "Logout"},
             //message
             {"currentUser", "Current user"},
-            {"openPatientCard","Open patient card"},
+            {"openPatientCard", "Open patient card"},
+            {"historyOfDiagnosis", "History of diagnosis"},
+            {"diagnosis", "Diagnosises"},
+            {"addDiagnosis", "Add diagnosis"},
+            {"diagnosisDescription", "Description of diagnosis"},
+            {"addPerscription","Add perscription"},
+            {"perscriptionDescription","Description of perscription"},
+            {"diagnosPerscription", "Perscriptions from diagnosis"},
             //table columns
             {"columnId", "id"},
             {"columnLogin", "Login"},
             {"columnFirstName", "Firstnamr"},
             {"columnLastName", "Lastname"},
             {"columnRole", "Role"},
-            {"columnAction", "Action"}
+            {"columnAction", "Action"},
+            {"columnDescription", "Description"},
+            {"columnTime", "Time"},
+            {"columnOpen", "Open"},
+            {"columnDone", "Done"},
+            {"columnTypeOfPerscription", "Type"}
     };
 
     @Override
