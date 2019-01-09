@@ -71,7 +71,7 @@ public class AddPersonalServlet extends HttpServlet {
             newPersonal.setLogin(login);
             if (role.toLowerCase().contains("doctor")) {
                 role = "DOCTOR";
-            } else if (role.toLowerCase().contains("Administrator")) {
+            } else if (role.toLowerCase().contains("admin")) {
                 role = "ADMIN";
             } else if (role.toLowerCase().contains("nurse")) {
                 role = "NURSE";
