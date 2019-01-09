@@ -106,7 +106,7 @@
             <form name="Button" action="/patientCard" method="POST">
                 <td>
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
-                    <input type="submit" name="button" value=${buttonOpenCard_msg}/>
+                    <input type="submit" name="button" value="${buttonOpenCard_msg}"/>
                 </td>
             </form>
         </tr>
