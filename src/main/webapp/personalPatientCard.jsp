@@ -44,8 +44,6 @@ tr:hover {background-color:#a0a0a0;}
     <th>Время</th>
     <th>Открыт</th>
   </tr>
-  <tr>
-
 </table>
 
 <table id="prescriptionsTable" class="page" style="display:inline; float:right;" >

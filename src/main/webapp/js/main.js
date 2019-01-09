@@ -66,8 +66,9 @@ function getAndUpdateDiagnosis() {
 
 function updateDiagnosisTable(diagnosis, table) {
     var diagnosisTable = document.getElementById("diagnosis");
-    for (var i = 1; i < table.rows.length; ++i) {
-        table.rows[i].innerHTML = "";
+    for(var i = diagnosisTable.rows.length - 1; i > 0; i--)
+    {
+        diagnosisTable.deleteRow(i);
     }
     for (var i = 0; i < diagnosis.length; i++) {
         var newRow = table.insertRow(i + 1);
