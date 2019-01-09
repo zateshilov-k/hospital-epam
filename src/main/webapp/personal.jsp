@@ -89,8 +89,8 @@
                                 <button type="submit" class="btn btn-primary">
                                     Сохранить
                                 </button>
-                                <a href="/main.jsp" class="btn btn-link">
-                                    Отмена
+                                <a href="/personals.jsp" class="btn btn-link">
+                                     Отмена
                                 </a>
                             </div>
                     </form>
