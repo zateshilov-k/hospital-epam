@@ -61,7 +61,7 @@
                 пользователь ${sessionScope.user.role} ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a>
             </li>
             <li><a href="/personal.jsp">Add personal</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="\logout">Logout</a></li>
         </ul>
     </nav>
 </div>

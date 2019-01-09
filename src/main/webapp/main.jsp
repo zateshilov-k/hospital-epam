@@ -58,7 +58,7 @@
             <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
                 <li><a href="/patient.jsp">Add patient</a></li>
             </c:if>
-            <li><a href="#">Logout</a></li>
+            <li><a href="\logout">Logout</a></li>
             <li><a href="#">${sessionScope.user.role}</a></li>
         </ul>
     </nav>
