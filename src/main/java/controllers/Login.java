@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /*
 Обработка страницы авторизации
@@ -30,6 +31,7 @@ import java.util.ResourceBundle;
 public class Login extends HttpServlet {
     DaoFactory daoFactory;
     HashGenerator hashGenerator;
+    private static final Logger log = Logger.getLogger(Login.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,6 +52,7 @@ public class Login extends HttpServlet {
         System.out.println("Login: " + login);
         Optional<Personal> currentUser = new PersonalService().authenticatePersonal(login,
                 password, daoFactory, hashGenerator);
+        String ip = request.getRemoteAddr();
         if (currentUser.isPresent()) {
             session.setAttribute("user", currentUser.get());
             if (currentUser.get().getRole() == Role.ADMIN) {
@@ -69,11 +72,14 @@ public class Login extends HttpServlet {
                 request.getRequestDispatcher("/main.jsp").forward(request, response);
             }
             //TODO add logging
-            String ip = request.getRemoteAddr();
+            log.info("From IP: " + ip + "; User: " + currentUser.get().getLastName()
+                    + currentUser.get().getFirstName() + "; login: " + currentUser.get().getLogin()
+                    + "; role: " + currentUser.get().getRole() + "status: LOGGED");
             return;
         } else {
             String str = bundle.getString("loginError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
+            log.info("From IP: " + ip + "; " + "status: ERROR LOGIN");
             request.setAttribute("loginError", str);
             request.getRequestDispatcher("/").forward(request, response);
             return;
