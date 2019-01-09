@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html id="personals">
@@ -53,15 +54,25 @@
     </style>
 </head>
 <body style="background-color:powderblue;overflow:hidden">
-
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="internationalization.resource" var="loc"/>
+<fmt:message bundle="${loc}" key="currentUser" var="currentUser_msg"/>
+<fmt:message bundle="${loc}" key="menuAddPersonal" var="menuAddPersonal_msg"/>
+<fmt:message bundle="${loc}" key="menuLogout" var="menuLogout_msg"/>
+<fmt:message bundle="${loc}" key="columnId" var="columnId_msg"/>
+<fmt:message bundle="${loc}" key="columnLogin" var="columnLogin_msg"/>
+<fmt:message bundle="${loc}" key="columnFirstName" var="columnFirstName_msg"/>
+<fmt:message bundle="${loc}" key="columnLastName" var="columnLastName_msg"/>
+<fmt:message bundle="${loc}" key="columnRole" var="columnRole_msg"/>
+<fmt:message bundle="${loc}" key="columnAction" var="columnAction_msg"/>
+<fmt:message bundle="${loc}" key="buttonOpenProfile" var="buttonOpenProfile_msg"/>
 <div class="wrapper">
     <nav class="navigation">
         <ul>
-            <li><a href="#">Текущий
-                пользователь ${sessionScope.user.role} ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a>
+            <li><a href="#">${currentUser_msg} ${sessionScope.user.role} ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a>
             </li>
-            <li><a href="/personal.jsp">Add personal</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="/personal.jsp">${menuAddPersonal_msg}</a></li>
+            <li><a href="#">${menuLogout_msg}</a></li>
         </ul>
     </nav>
 </div>
@@ -70,12 +81,12 @@
 <table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th>Id</th>
-        <th>login</th>
-        <th>firstName</th>
-        <th>lastName</th>
-        <th>role</th>
-        <th>action</th>
+        <th>${columnId_msg}</th>
+        <th>${columnLogin_msg}</th>
+        <th>${columnFirstName_msg}</th>
+        <th>${columnLastName_msg}</th>
+        <th>${columnRole_msg}</th>
+        <th>${columnAction_msg}</th>
     </tr>
     </thead>
     <tbody>
@@ -89,7 +100,7 @@
             <form name="Button" action="/personalCard" method="POST">
                 <td>
                     <input type="hidden" name="personalId" value="${personal.personalId}"/>
-                    <input type="submit" name="button" value="Перейти в профиль"/>
+                    <input type="submit" name="button" value=${buttonOpenProfile_msg}/>
                 </td>
             </form>
         </tr>
