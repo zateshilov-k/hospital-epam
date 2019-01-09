@@ -100,7 +100,7 @@
             <form name="Button" action="/personalCard" method="POST">
                 <td>
                     <input type="hidden" name="personalId" value="${personal.personalId}"/>
-                    <input type="submit" name="button" value=${buttonOpenProfile_msg}/>
+                    <input type="submit" name="button" value="${buttonOpenProfile_msg}"/>
                 </td>
             </form>
         </tr>
