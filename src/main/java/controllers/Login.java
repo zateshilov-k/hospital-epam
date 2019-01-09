@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
-            locale = new Locale("ru");
+            locale = new Locale("ru", "RU");
         }
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
@@ -71,7 +71,6 @@ public class Login extends HttpServlet {
 
                 request.getRequestDispatcher("/main.jsp").forward(request, response);
             }
-            //TODO add logging
             log.info("From IP: " + ip + "; User: " + currentUser.get().getLastName()
                     + currentUser.get().getFirstName() + "; login: " + currentUser.get().getLogin()
                     + "; role: " + currentUser.get().getRole() + "status: LOGGED");
