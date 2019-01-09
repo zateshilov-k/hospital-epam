@@ -29,6 +29,7 @@
 </head>
 <body style="background-color:powderblue">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<%--<fmt:setLocale value="de-GR"/>--%>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
 <fmt:message bundle="${loc}" key="loginField" var="enterEmail_msg"/>
 <fmt:message bundle="${loc}" key="passwordField" var="enterPassword_msg"/>
