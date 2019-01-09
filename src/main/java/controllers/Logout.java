@@ -19,5 +19,4 @@ public class Logout extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 }
