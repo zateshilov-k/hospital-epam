@@ -28,7 +28,7 @@
 <body style="background-color:powderblue;overflow:hidden">
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
-<fmt:message bundle="${loc}" key="titleAddPage" var="titleAddPage_msg"/>
+<fmt:message bundle="${loc}" key="titleAddPatientPage" var="titleAddPage_msg"/>
 <fmt:message bundle="${loc}" key="firstNameField" var="firstName_msg"/>
 <fmt:message bundle="${loc}" key="lastNameField" var="lastName_msg"/>
 <fmt:message bundle="${loc}" key="buttonSave" var="buttonSave_msg"/>
