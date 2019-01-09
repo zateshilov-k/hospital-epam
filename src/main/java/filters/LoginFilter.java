@@ -1,5 +1,8 @@
 package filters;
 
+import model.Personal;
+import model.Role;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +27,11 @@ public class LoginFilter implements Filter {
         if (currentUser == null) {
             request.getRequestDispatcher("/index.jsp").forward(request, servletResponse);
         } else {
-            request.getRequestDispatcher("/main.jsp").forward(request, servletResponse);
+            if (((Personal) currentUser).getRole() == Role.ADMIN) {
+                request.getRequestDispatcher("/personals.jsp").forward(request, servletResponse);
+            } else {
+                request.getRequestDispatcher("/main.jsp").forward(request, servletResponse);
+            }
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
