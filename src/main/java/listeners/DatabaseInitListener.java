@@ -212,7 +212,17 @@ public class DatabaseInitListener implements ServletContextListener {
             e.printStackTrace();
         }
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
+//        deletePatientTest();
     }
+
+//    private void deletePatientTest() {
+//        Patient patient = new H2PatientDao(dataSource).getAllPatients().get(5);
+//        System.out.println(patient.getPatientId());
+//        System.out.println(patient.getFirstName());
+//        System.out.println(patient.getLastName());
+//        System.out.println("PATIENT DELETE");
+//        new H2PatientDao(dataSource).deletePatient(5);
+//    }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
         List<PersonalPrescription> personalPrescriptions = new ArrayList<>();

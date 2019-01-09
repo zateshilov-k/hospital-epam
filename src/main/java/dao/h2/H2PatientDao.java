@@ -18,7 +18,7 @@ public class H2PatientDao implements PatientDao {
             "is_discharged" + " = ? WHERE patient_id = ?";
     private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM "
             + "patient";
-    private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?";
+    private static final String GET_PATIENT_SQL = "SELECT * FROM patient WHERE patient.patient_id = ?";
 
     private static final Logger log = Logger.getLogger(H2PatientDao.class.getName());
 
@@ -79,7 +79,7 @@ public class H2PatientDao implements PatientDao {
     public Patient getPatient(long patientId) {
         Patient patient = new Patient();
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
-                connection.prepareStatement(GET_PATIENT)) {
+                connection.prepareStatement(GET_PATIENT_SQL)) {
             statement.setLong(1, patientId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
