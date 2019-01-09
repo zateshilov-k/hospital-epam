@@ -4,6 +4,7 @@ import dao.PrescriptionDao;
 import model.Prescription;
 import model.PrescriptionType;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,15 +14,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class H2PrescriptionDao implements PrescriptionDao {
-    final private DataSource dataSource;
-    final private DateTimeFormatter dateTimeFormatter;
 
     final private String GET_ALL_PRESCRIPTIONS = "SELECT * FROM prescription " +
             " WHERE diagnosis_id = ?;";
     final private String ADD_PRESCRIPTION = "INSERT INTO prescription (description, patient_id, time, diagnosis_id, " +
             "type, is_done) VALUES (?, ?, ?, ?, ?, ?);";
+
+    private static final Logger log = Logger.getLogger(H2PrescriptionDao.class.getName());
+
+    @Resource(name = "jdbc/hospital-h2-db")
+    final private DataSource dataSource;
+    final private DateTimeFormatter dateTimeFormatter;
 
     public H2PrescriptionDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;

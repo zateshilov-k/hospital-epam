@@ -20,7 +20,7 @@ public class H2DaoFactory implements DaoFactory {
         personalDao = new H2PersonalDao(dataSource);
         diagnosisDao = new H2DiagnosisDao(dataSource, dateTimeFormatter);
         patientDao = new H2PatientDao(dataSource);
-        prescriptionDao = new H2PrescriptionDao(dataSource,dateTimeFormatter);
+        prescriptionDao = new H2PrescriptionDao(dataSource, dateTimeFormatter);
         personalPrescriptionDao = new H2PersonalPrescription(dataSource);
     }
 

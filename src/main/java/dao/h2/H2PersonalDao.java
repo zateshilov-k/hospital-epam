@@ -24,8 +24,10 @@ public class H2PersonalDao implements PersonalDao {
             "medical_personal";
     private static final String GET_PERSONAL_BY_ID = "SELECT * FROM medical_personal WHERE medical_personal.personal_id = ?;";
 
+    private static final Logger log = Logger.getLogger(H2PersonalDao.class.getName());
+
+    @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
-    private static final Logger log = Logger.getLogger(String.valueOf(H2PersonalDao.class));
 
     public H2PersonalDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -37,8 +39,6 @@ public class H2PersonalDao implements PersonalDao {
         System.out.println(personal);
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(CREATE_PERSONAL_SQL, Statement.RETURN_GENERATED_KEYS)) {
-//            statement.setLong(1, personal.getPersonalId());
-
             statement.setString(1, personal.getLogin());
             statement.setString(2, String.valueOf(personal.getPassword()));
             statement.setString(3, personal.getFirstName());
@@ -87,12 +87,12 @@ public class H2PersonalDao implements PersonalDao {
         System.out.println(personal);
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(UPDATE_PERSONAL_SQL)) {
-            statement.setLong(6, personal.getPersonalId());
             statement.setString(1, personal.getLogin());
             statement.setString(2, personal.getPassword());
             statement.setString(3, personal.getFirstName());
             statement.setString(4, personal.getLastName());
             statement.setString(5, personal.getRole().toString());
+            statement.setLong(6, personal.getPersonalId());
             statement.executeUpdate();
             return personal.getPersonalId();
         } catch (SQLException e) {
@@ -142,4 +142,5 @@ public class H2PersonalDao implements PersonalDao {
         personal.setLogin(resultSet.getString("login"));
         return personal;
     }
+
 }
