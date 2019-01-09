@@ -45,6 +45,7 @@ public class Login extends HttpServlet {
         if (locale == null) {
             locale = new Locale("ru", "RU");
         }
+        session.setAttribute("locale", locale);
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
