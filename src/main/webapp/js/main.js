@@ -1,9 +1,10 @@
 var currentDiagnosisRow = 1;
+var currentPrescriptionRow = 1;
 
 
 function closeDiagnosisButtonListener() {
     var diagnosisTable = document.getElementById("diagnosis");
-    $.post("closeDiagnosis",{diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
+    $.post("closeDiagnosis", {diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
         getAndUpdateDiagnosis();
     });
 }
@@ -19,7 +20,7 @@ function prescriptionSubmitButtonListener() {
             description: prescriptionTextArea.value,
             diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML,
             type: prescriptionTypeSelect.value
-        },function (response) {
+        }, function (response) {
             updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
             prescriptionTextArea.value = "";
         });
@@ -66,13 +67,12 @@ function getAndUpdateDiagnosis() {
 
 function updateDiagnosisTable(diagnosis, table) {
     var diagnosisTable = document.getElementById("diagnosis");
-    for(var i = diagnosisTable.rows.length - 1; i > 0; i--)
-    {
+    for (var i = diagnosisTable.rows.length - 1; i > 0; i--) {
         diagnosisTable.deleteRow(i);
     }
     for (var i = 0; i < diagnosis.length; i++) {
         var newRow = table.insertRow(i + 1);
-        if ((i+1) === currentDiagnosisRow) {
+        if ((i + 1) === currentDiagnosisRow) {
             setSpecialStyle(newRow);
         } else {
             setDefaultStyle(newRow);
@@ -115,16 +115,17 @@ function diagnosisClick() {
 function setSpecialStyle(row) {
     row.style.color = "red";
 }
+
 function setDefaultStyle(row) {
     row.style.color = "black";
 }
 
 function updatePrescriptionsTable(diagnosis_id) {
     $.post("listOfPrescriptions", {diagnosisId: diagnosis_id}, function (response) {
-         prescriptions = JSON.parse(response);
+        prescriptions = JSON.parse(response);
         var table = document.getElementById('prescriptionsTable');
-        for (var i = 1; i < table.rows.length; ++i) {
-            table.rows[i].innerHTML = "";
+        for (var i = table.rows.length - 1; i > 0; i--) {
+            table.deleteRow(i);
         }
         if (prescriptions.length === 0) {
             table.style.display = "none";
