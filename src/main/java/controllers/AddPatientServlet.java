@@ -39,6 +39,7 @@ public class AddPatientServlet extends HttpServlet {
         if (locale == null) {
             locale = new Locale("ru");
         }
+        session.setAttribute("locale", locale);
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String firstName = request.getParameter("firstName").trim();
