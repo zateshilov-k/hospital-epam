@@ -33,6 +33,7 @@
 <fmt:message bundle="${loc}" key="loginField" var="enterEmail_msg"/>
 <fmt:message bundle="${loc}" key="passwordField" var="enterPassword_msg"/>
 <fmt:message bundle="${loc}" key="titleIndexPage" var="title_msg"/>
+<fmt:message bundle="${loc}" key="buttonEnter" var="buttonEnter_msg"/>
 
 <main class="login-form">
     <div class="cotainer">
@@ -68,7 +69,7 @@
 
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary" id="loginSubmitButton">
-                                    Login
+                                    ${buttonEnter_msg}
                                 </button>
                             </div>
                         </form>
