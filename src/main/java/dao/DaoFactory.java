@@ -1,6 +1,6 @@
 package dao;
 
-public interface DaoFactory extends AutoCloseable {
+public interface DaoFactory {
 
     PersonalDao getPersonalDao();
     PatientDao getPatientDao();

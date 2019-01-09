@@ -9,11 +9,13 @@ import javax.sql.DataSource;
 import java.time.format.DateTimeFormatter;
 
 public class H2DaoFactory implements DaoFactory {
+
     final private PersonalDao personalDao;
     final private DiagnosisDao diagnosisDao;
     final private PatientDao patientDao;
     final private PrescriptionDao prescriptionDao;
     final private PersonalPrescriptionDao personalPrescriptionDao;
+
     public H2DaoFactory(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         personalDao = new H2PersonalDao(dataSource);
         diagnosisDao = new H2DiagnosisDao(dataSource, dateTimeFormatter);
@@ -47,8 +49,4 @@ public class H2DaoFactory implements DaoFactory {
         return personalPrescriptionDao;
     }
 
-    @Override
-    public void close() throws Exception {
-
-    }
 }
