@@ -27,8 +27,7 @@ tr:hover {background-color:#a0a0a0;}
 ((Patient)request.getAttribute("currentPatient")).getFirstName()
         + " " + ((Patient)request.getAttribute("currentPatient")).getLastName()  %></h2>
 <br>
-
-<button style="text-align:center;" onclick="href='/main.jsp'">To Main</button>
+<button onclick="window.location.href='/main.jsp'">To Main</button>
 <br>
 <br>
 
