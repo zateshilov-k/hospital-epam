@@ -1,7 +1,25 @@
 var currentDiagnosisRow = 1;
 var currentPrescriptionRow = 1;
 
+function prescriptionDoneListener() {
+    var prescriptionTable = document.getElementById("prescriptionsTable");
+    var diagnosisTable = document.getElementById("diagnosis");
+    $.post("doPrescription",
+        {prescriptionId : prescriptionTable.rows[currentPrescriptionRow].cells[0].innerHTML}, function () {
+        updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    });
+}
 
+function prescriptionClick() {
+    var rows = this.parentNode.rows;
+    for (i = 1; i < rows.length; i++) {
+        setDefaultStyle(rows[i]);
+    }
+    setSpecialStyle(this);
+    currentPrescriptionRow = $(this).index();
+
+    updatePrescriptionsElementsStyle();
+}
 function closeDiagnosisButtonListener() {
     var diagnosisTable = document.getElementById("diagnosis");
     $.post("closeDiagnosis", {diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
@@ -27,10 +45,10 @@ function prescriptionSubmitButtonListener() {
     }
 }
 
-function updateElementsStyle() {
+function updateDiagnosisElementsStyle() {
     var diagnosisTable = document.getElementById("diagnosis");
-    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
     var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
+    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
 
     var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
     if (isDiagnosisOpened === 'false') {
@@ -39,6 +57,17 @@ function updateElementsStyle() {
     } else if (isDiagnosisOpened === 'true') {
         prescriptionFieldSet.style.display = "inline";
         closeDiagnosisButton.style.display = "inline";
+    }
+}
+function updatePrescriptionsElementsStyle() {
+    var doPrescriptionButton = document.getElementById("doPrescription");
+    var prescriptionTable = document.getElementById("prescriptionsTable");
+
+    var isPrescriptionDone = prescriptionTable.rows[currentPrescriptionRow].cells[4].innerHTML;
+    if (isPrescriptionDone === 'false') {
+        doPrescriptionButton.style.display = "inline";
+    } else if(isPrescriptionDone === 'true') {
+        doPrescriptionButton.style.display = "none";
     }
 }
 
@@ -92,7 +121,6 @@ function updateDiagnosisTable(diagnosis, table) {
         }
     }
     updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
-    updateElementsStyle();
 }
 
 function diagnosisClick() {
@@ -102,10 +130,9 @@ function diagnosisClick() {
     }
     setSpecialStyle(this);
     currentDiagnosisRow = $(this).index();
-    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
     var currentDiagnosisId = this.cells[0].innerHTML;
 
-    updateElementsStyle();
+    updateDiagnosisElementsStyle();
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     prescriptionSubmitButton.value = currentDiagnosisId;
 
@@ -134,6 +161,7 @@ function updatePrescriptionsTable(diagnosis_id) {
         }
         for (var i = 0; i < prescriptions.length; i++) {
             var newRow = table.insertRow(i + 1);
+            newRow.addEventListener("click",prescriptionClick);
             for (var j = 0; j < 5; j++) {
                 var newCell = newRow.insertCell(j);
                 if (j === 0) {
@@ -149,6 +177,7 @@ function updatePrescriptionsTable(diagnosis_id) {
                 }
             }
         }
+        updateDiagnosisElementsStyle();
     });
 
 }

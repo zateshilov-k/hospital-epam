@@ -17,6 +17,11 @@ public class PrescriptionService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    }
+    public void doPrescription(Personal personal, String prescriptionId, DaoFactory daoFactory) {
+        long prescription = Long.parseLong(prescriptionId);
+        daoFactory.getPrescriptionDao().updatePrescription(prescription);
+        daoFactory.getPersonalPrescriptionDao().addPersonalPrescription(personal.getPersonalId(),
+                prescription,PersonalPrescriptionType.DONE.toString());
     }
 }

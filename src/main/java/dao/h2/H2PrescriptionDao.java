@@ -22,6 +22,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
             " WHERE diagnosis_id = ?;";
     final private String ADD_PRESCRIPTION = "INSERT INTO prescription (description, patient_id, time, diagnosis_id, " +
             "type, is_done) VALUES (?, ?, ?, ?, ?, ?);";
+    final private String UPDATE_PRESCRIPTION = "UPDATE prescription SET is_done = ?, time = ? WHERE prescription_id = ?;";
 
     public H2PrescriptionDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;
@@ -58,9 +59,9 @@ public class H2PrescriptionDao implements PrescriptionDao {
             statement.setString(1, description);
             statement.setLong(2, patientId);
             statement.setString(3, LocalDateTime.now().format(dateTimeFormatter));
-            statement.setLong(4,diagnosisId);
+            statement.setLong(4, diagnosisId);
             statement.setString(5, type.toString());
-            statement.setBoolean(6,false);
+            statement.setBoolean(6, false);
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -70,5 +71,18 @@ public class H2PrescriptionDao implements PrescriptionDao {
             e.printStackTrace();
         }
         throw new SQLException("There is no generated key");
+    }
+
+    @Override
+    public void updatePrescription(long prescriptionId) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(UPDATE_PRESCRIPTION)) {
+            statement.setBoolean(1, true);
+            statement.setString(2, LocalDateTime.now().format(dateTimeFormatter));
+            statement.setLong(3, prescriptionId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
