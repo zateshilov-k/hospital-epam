@@ -73,7 +73,7 @@ public class Login extends HttpServlet {
             }
             log.info("From IP: " + ip + "; User: " + currentUser.get().getLastName()
                     + currentUser.get().getFirstName() + "; login: " + currentUser.get().getLogin()
-                    + "; role: " + currentUser.get().getRole() + "status: LOGGED");
+                    + "; role: " + currentUser.get().getRole() + "; status: LOGGED");
             return;
         } else {
             String str = bundle.getString("loginError");
