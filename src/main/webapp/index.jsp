@@ -62,9 +62,6 @@
                                 <button type="submit" class="btn btn-primary" id="loginSubmitButton" >
                                     Login
                                 </button>
-                                <a href="/personal.jsp" class="btn btn-link">
-                                    Registration
-                                </a>
                             </div>
                     </form>
                 </div>
