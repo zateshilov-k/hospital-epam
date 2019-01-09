@@ -21,7 +21,8 @@ import java.util.logging.Logger;
 public class H2DiagnosisDao implements DiagnosisDao {
 
     private static final String GET_ALL_DIAGNOSES_SQL = "SELECT * FROM diagnosis JOIN patient " + "ON diagnosis" +
-            ".patient_id = patient.patient_id JOIN medical_personal " + "ON diagnosis.personal_id = medical_personal" + ".personal_id WHERE diagnosis.patient_id = ?;";
+            ".patient_id = patient.patient_id JOIN medical_personal " + "ON diagnosis.personal_id = medical_personal" +
+            ".personal_id WHERE diagnosis.patient_id = ?;";
     private static final String ADD_DIAGNOSIS =
             "INSERT INTO diagnosis (description, personal_Id, patient_id, time, " + "is_opened) VALUES (?, ?, ?, ?,?);";
     private static final String CLOSE_DIAGNOSIS = "UPDATE diagnosis SET is_opened = ? WHERE diagnosis_id = ?;";
@@ -88,8 +89,9 @@ public class H2DiagnosisDao implements DiagnosisDao {
             statement.setBoolean(5, true);
             statement.execute();
         } catch (SQLException e) {
-            log.info("Add diagnosis, description: " + description + "; personalId: " + personalId + "; patientId: "
-                    + patientId + "; local time: " + LocalDateTime.now().format(dateTimeFormatter) + "; status: FAILED");
+            log.info("Add diagnosis, description: " + description + "; personalId: " + personalId +
+                    "; patientId: " + patientId + "; local time: " + LocalDateTime.now().format(dateTimeFormatter) +
+                    "; status: FAILED");
         }
     }
 
