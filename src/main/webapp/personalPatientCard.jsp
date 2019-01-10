@@ -61,30 +61,30 @@
                  <th>Complited</th>
             </tr>
     </table>
-<legend >История болезней</legend>
-<button id="closeDiagnosisButton">Close diagnosis</button>
-<button id="doPrescription"  style="display:inline; float:right">Do prescription</button>
-<br><br>
-<table id = "diagnosis" style="display:inline; float:left">
-  <caption>Диагнозы:</caption>
-  <tr>
-    <th>Id</th>
-    <th>Описание</th>
-    <th>Время</th>
-    <th>Открыт</th>
-  </tr>
-</table>
+<%--<legend >История болезней</legend>--%>
+<%--<button id="closeDiagnosisButton">Close diagnosis</button>--%>
+<%--<button id="doPrescription"  style="display:inline; float:right">Do prescription</button>--%>
+<%--<br><br>--%>
+<%--<table id = "diagnosis" style="display:inline; float:left">--%>
+  <%--<caption>Диагнозы:</caption>--%>
+  <%--<tr>--%>
+    <%--<th>Id</th>--%>
+    <%--<th>Описание</th>--%>
+    <%--<th>Время</th>--%>
+    <%--<th>Открыт</th>--%>
+  <%--</tr>--%>
+<%--</table>--%>
 
-<table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
- <caption>Назначение по выбранному диагнозу:</caption>
-  <tr>
-    <th>Id</th>
-    <th>Описание</th>
-    <th>Тип</th>
-    <th>Время</th>
-      <th>Выполнен</th>
-  </tr>
-</table>
+<%--<table id="prescriptionsTable" class="page" style="display:inline; float:right;" >--%>
+ <%--<caption>Назначение по выбранному диагнозу:</caption>--%>
+  <%--<tr>--%>
+    <%--<th>Id</th>--%>
+    <%--<th>Описание</th>--%>
+    <%--<th>Тип</th>--%>
+    <%--<th>Время</th>--%>
+      <%--<th>Выполнен</th>--%>
+  <%--</tr>--%>
+<%--</table>--%>
 </fieldset>
 
 <br>
