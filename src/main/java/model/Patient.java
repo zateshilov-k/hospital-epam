@@ -13,5 +13,6 @@ public class Patient {
     private String firstName;
     private String lastName;
     private boolean isDischarged;
+    private boolean isDeleted;
 
 }

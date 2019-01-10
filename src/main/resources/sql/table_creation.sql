@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `first_name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255) NOT NULL,
   `is_discharged` TINYINT(1) NOT NULL,
+  `is_deleted` TINYINT(1) NOT NULL,
   PRIMARY KEY (`patient_id`))
 ;
 

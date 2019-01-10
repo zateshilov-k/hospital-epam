@@ -111,6 +111,22 @@
             </form>
         </tr>
     </c:forEach>
+
+
+    <c:forEach items="${sessionScope.patients}" var="patient">
+            <tr>
+                <td>${patient.patientId}</td>
+                <td>${patient.firstName}</td>
+                <td>${patient.lastName}</td>
+                <form name="Button" action="/patientProfileUpdate" method="POST">
+                    <td>
+                        <input type="submit" name="button" value="/patientProfileUpdate"/>
+                    </td>
+                </form>
+            </tr>
+        </c:forEach>
+
+
     </tbody>
 </table>
 

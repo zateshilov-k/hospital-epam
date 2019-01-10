@@ -81,10 +81,11 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private void addPatients(Statement statement, Patient patient) throws SQLException {
-        statement.addBatch("INSERT INTO patient " + "(patient_id, first_name, last_name, is_discharged) VALUES"
+        statement.addBatch("INSERT INTO patient " + "(patient_id, first_name, last_name, is_discharged, is_deleted) VALUES"
                 + "(" + (patient.getPatientId()) + "," + "\'" + patient.getFirstName() + "\'," + "\'" + patient.getLastName()
-                + "\'," + "FALSE" + ");");
+                + "\'," + "FALSE" + ", " + "FALSE"  + ");");
     }
+
 
     private String getRandomDate() {
         Instant now = Instant.now();
@@ -344,6 +345,7 @@ public class DatabaseInitListener implements ServletContextListener {
                 id,
                 getRandomFirstName(),
                 getRandomLastName(),
+                false,
                 false
         );
     }
