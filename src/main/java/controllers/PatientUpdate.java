@@ -3,15 +3,16 @@ package controllers;
 import dao.DaoFactory;
 import dao.PatientDao;
 import dao.h2.H2PatientDao;
+import model.Diagnosis;
 import model.Patient;
 import model.Personal;
 import model.Role;
+import org.json.JSONArray;
 import services.PersonalService;
 import utils.HashGenerator;
 import utils.StringFieldValidate;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,26 +29,33 @@ import java.util.ResourceBundle;
 public class PatientUpdate extends HttpServlet {
 
     DaoFactory daoFactory;
-    HashGenerator hashGenerator;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+//        System.out.println("Patient Card GET");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        HttpSession session = request.getSession();
-        Patient patient = (Patient) session.getAttribute("currentPatient");
-        System.out.println(patient.getFirstName());
-        System.out.println(patient.getLastName());
-        System.out.println(patient.isDeleted());
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(true);
+        response.setContentType("text/html;charset=utf-8");
+
+        Long patientId = Long.parseLong(request.getParameter("patientId"));
+        PatientDao patientDao = daoFactory.getPatientDao();
+        Patient patient = patientDao.getPatient(patientId);
+        session.setAttribute("currentPatient", patient);
+
+
     }
 
     @Override
     public void destroy() {
-        super.destroy();
+//        super.destroy();
+    }
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        super.service(req, res);
     }
 
     @Override
@@ -55,8 +63,8 @@ public class PatientUpdate extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
-        hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
     }
+
 
 }
 

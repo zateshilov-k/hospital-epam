@@ -15,7 +15,7 @@ public class H2PatientDao implements PatientDao {
     private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name, is_discharged) " +
             "VALUES (?, ?, ?)";
     private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ?, " +
-            "is_discharged" + " = ? WHERE patient_id = ?";
+            "is_discharged = ?, is_deleted = ? " + " WHERE patient_id = ?";
     private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM "
             + "patient";
     private static final String GET_PATIENT_SQL = "SELECT * FROM patient WHERE patient.patient_id = ?";
@@ -50,11 +50,12 @@ public class H2PatientDao implements PatientDao {
             statement.setString(1, patient.getFirstName());
             statement.setString(2, patient.getLastName());
             statement.setBoolean(3, patient.isDischarged());
-            statement.setLong(4, patient.getPatientId());
+            statement.setBoolean(4, patient.isDeleted());
+            statement.setLong(5, patient.getPatientId());
             System.out.println(statement.execute());
         } catch (SQLException e) {
             log.info("Update patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() +
-                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; status: "
+                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; deleted: " + patient.isDeleted() + "; status: "
                     + "FAILED");
         }
     }
