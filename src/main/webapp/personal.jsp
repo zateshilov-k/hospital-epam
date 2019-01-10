@@ -101,7 +101,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     ${buttonSave_msg}
                                 </button>
-                                <a href="/main.jsp" class="btn btn-link">
+                                <a href="/personals.jsp" class="btn btn-link">
                                     ${buttonCancel_msg}
                                 </a>
                             </div>

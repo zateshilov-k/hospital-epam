@@ -6,57 +6,60 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="<c:url value="/js/main.js" />" type="text/javascript"></script>
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
+    <style>
 
-th, td {
-  padding: 5px;
-  text-align: left;
-}
-tr:hover {background-color:#a0a0a0;}
+    table, tbody,thead {
+    display: block;
+    }
+    tbody {
+    height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    }
+
+    table, th, td {
+        padding: 11px;
+        border: 3px solid rgb(230, 230, 230);
+        border-collapse: collapse;
+    }
+    d {
+        padding: 5px;
+        text-align: left;
+    }
+
+    tr:hover {background-color:rgb(255, 255, 255);}
 
 </style>
 </head>
 <body style="background-color:powderblue;">
 
-
-<h2 style="text-align:center;" style="font-size:28px" >Личная карточка пациента <%=
-((Patient)request.getAttribute("currentPatient")).getFirstName()
-        + " " + ((Patient)request.getAttribute("currentPatient")).getLastName()  %></h2>
+<h3 style="text-align:center;font-size:28px" >Личная карточка пациента ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
 <br>
 <button onclick="window.location.href='/main.jsp'">To Main</button>
-<br>
-<br>
-
-<fieldset >
-<legend >История болезней</legend>
-<button id="closeDiagnosisButton">Close diagnosis</button>
 <br><br>
-<table id = "diagnosis" style="display:inline; float:left">
-  <caption>Диагнозы:</caption>
-  <tr>
-    <th>Id</th>
-    <th>Описание</th>
-    <th>Время</th>
-    <th>Открыт</th>
-  </tr>
-  <tr>
-
-</table>
-
-<table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
- <caption>Назначение по выбранному диагнозу:</caption>
-  <tr>
-    <th>Id</th>
-    <th>Описание</th>
-    <th>Тип</th>
-    <th>Время</th>
-      <th>Выполнен</th>
-  </tr>
-</table>
+<fieldset >
+   <legend >History of disease</legend>
+    <button id="closeDiagnosisButton">Close diagnosis</button>
+    <br><br>
+    <table id = "diagnosis" style="display:inline; float:left">
+        <caption  style=" font-family: Arial, Helvetica, sans-serif;">Diagnoses:</caption>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Time</th>
+                <th>Open</th>
+            </tr>
+    </table>
+     <table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
+        <caption style=" font-family: Arial, Helvetica, sans-serif;" >Appointments:</caption>
+            <tr>
+                <th>Id</th>
+                 <th>Description</th>
+                 <th>Type</th>
+                 <th>Time</th>
+                 <th>Complited</th>
+            </tr>
+    </table>
 </fieldset>
 
 <br>
@@ -93,6 +96,7 @@ tr:hover {background-color:#a0a0a0;}
         updateDiagnosisTable(diagnosis,diagnosisTable);
         updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
     }
+
     var diagnosisSubmitButton = document.getElementById("diagnosisSubmit");
     diagnosisSubmitButton.addEventListener("click",diagnosisSubmitButtonListener);
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
