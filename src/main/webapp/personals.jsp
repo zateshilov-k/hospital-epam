@@ -55,6 +55,8 @@
 </head>
 <body style="background-color:powderblue;overflow:hidden">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<%--<fmt:setLocale value="de-GR"/>--%>
+<%--<fmt:setLocale value="en-EN"/>--%>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
 <fmt:message bundle="${loc}" key="currentUser" var="currentUser_msg"/>
 <fmt:message bundle="${loc}" key="menuAddPersonal" var="menuAddPersonal_msg"/>
@@ -96,7 +98,8 @@
             <td>${personal.login}</td>
             <td>${personal.firstName}</td>
             <td>${personal.lastName}</td>
-            <td>${personal.role}</td>
+            <fmt:message bundle="${loc}" key="${personal.role}" var="personalRole_msg"/>
+            <td>${personalRole_msg}</td>
             <form name="Button" action="/personalCard" method="POST">
                 <td>
                     <input type="hidden" name="personalId" value="${personal.personalId}"/>
