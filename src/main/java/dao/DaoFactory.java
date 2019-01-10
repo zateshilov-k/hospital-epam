@@ -1,11 +1,14 @@
 package dao;
 
-import model.Diagnosis;
-
-public interface DaoFactory extends AutoCloseable {
+public interface DaoFactory {
 
     PersonalDao getPersonalDao();
+
     PatientDao getPatientDao();
+
     DiagnosisDao getDiagnosisDao();
+
     PrescriptionDao getPrescriptionDao();
+
+    PersonalPrescriptionDao getPersonalPrescriptionDao();
 }

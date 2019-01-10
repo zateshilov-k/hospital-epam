@@ -17,9 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 /*
 Обработка страницы авторизации
@@ -52,8 +54,6 @@ public class Login extends HttpServlet {
             session.setAttribute("user", currentUser.get());
             if (currentUser.get().getRole() == Role.ADMIN) {
                 List<Personal> personals = new PersonalService().getAllPersonals(daoFactory);
-                System.out.println("Personals list:");
-                personals.forEach(System.out::println);
                 if (personals != null) {
                     session.setAttribute("personals", personals);
                 } else {

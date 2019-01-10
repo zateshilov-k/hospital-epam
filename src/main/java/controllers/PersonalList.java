@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 /*
-сервлет для списка медперсонала
+сервлет для списка медперсонала? отрабатывает переход в личный кабинет медперсоанала
  */
-@WebServlet("/personals")
+@WebServlet("/personalCard")
 public class PersonalList extends HttpServlet {
     DaoFactory daoFactory;
 
@@ -27,11 +27,11 @@ public class PersonalList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        System.out.println("PersonalList servlet \t doPost method");
         response.setContentType("text/html;charset=utf-8");
-        Long personalId = Long.parseLong(request.getParameter("personaltId"));
+        Long personalId = Long.parseLong(request.getParameter("personalId"));
+        System.out.println("PersonalList servlet get id of Personal = " + personalId);
         PersonalDao personalDao = daoFactory.getPersonalDao();
-        Personal personal = personalDao.getPersonalById(personalId);
+        Personal personal = personalDao.getPersonalById((long)personalId);
         request.setAttribute("currentPersonal",personal);
         Personal currentUser = (Personal)session.getAttribute("user");
         session.setAttribute("user", currentUser);

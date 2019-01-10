@@ -34,7 +34,7 @@ public class DatabaseInitListener implements ServletContextListener {
     private Random random = new Random();
     private HashGenerator hashGenerator;
 
-    private void printTable(Statement statement, String table) throws SQLException {
+    public static void printTable(Statement statement, String table) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table + ";");
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -74,7 +74,9 @@ public class DatabaseInitListener implements ServletContextListener {
     private void addPersonal(Statement statement, Personal personal) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
                 + "(" + (personal.getPersonalId()) + "," + "\'" + personal.getFirstName() + "\'," + "\'" + personal.getLastName()
-                + "\'," + "\'" + personal.getRole().toString() + "\'," + "\'" + personal.getLogin() + "\'," + "\'"
+                + "\'," + "\'"
+                + personal.getRole() + "\'," + "\'"
+                + personal.getLogin() + "\'," + "\'"
                 + personal.getPassword() + "\'" + ");");
     }
 
@@ -103,7 +105,7 @@ public class DatabaseInitListener implements ServletContextListener {
     }
 
     private void addDiagnosis(Statement statement, Diagnosis diagnosis) throws SQLException {
-        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_healthy) " +
+        statement.addBatch("INSERT INTO diagnosis " + "(diagnosis_id, description, personal_id, patient_id, time, is_opened) " +
                 "VALUES" + "(" + (diagnosis.getDiagnosisId()) + "," + "\'" + diagnosis.getDescription() + "\',"
                 + (diagnosis.getPersonal().getPersonalId())
                 + "," + (diagnosis.getPatient().getPatientId()) + ","
@@ -143,7 +145,25 @@ public class DatabaseInitListener implements ServletContextListener {
         admin.setLogin("admin@epam.com");
         admin.setRole(Role.ADMIN);
         admin.setPassword(hashGenerator.getHash("admin" ));
+        admin.setPersonalId(personals.size()+1);
         personals.add(admin);
+
+        Personal doctor = new Personal();
+        doctor.setFirstName("DoctorName");
+        doctor.setLastName("DoctorLastName");
+        doctor.setLogin("doctor@epam.com");
+        doctor.setRole(Role.DOCTOR);
+        doctor.setPassword(hashGenerator.getHash("doctor"));
+        doctor.setPersonalId(personals.size()+1);
+        personals.add(doctor);
+
+        Personal nurse = new Personal();
+        nurse.setFirstName("NurseName");
+        nurse.setLogin("nurse@epam.com");
+        nurse.setRole(Role.NURSE);
+        nurse.setPassword(hashGenerator.getHash("nurse"));
+        nurse.setPersonalId(personals.size()+1);
+        personals.add(nurse);
 
         List<Patient> patients = getPatients(numberOfPatients);
         List<Diagnosis> diagnoses = getDiagnoses(numberOfDiagnosisPerPatient, personals, patients);
@@ -158,6 +178,7 @@ public class DatabaseInitListener implements ServletContextListener {
             Path realPath = Paths.get(path).toRealPath();
             statement.addBatch(Files.lines(realPath).collect(Collectors.joining()));
             for (Personal personal : personals) {
+                System.out.println("CHECK:\t" + personal);
                 addPersonal(statement, personal);
             }
             for (Patient patient : patients) {
@@ -178,6 +199,9 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
+
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             printTable(statement, "medical_personal");
             printTable(statement, "patient");
@@ -187,39 +211,18 @@ public class DatabaseInitListener implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DaoFactory daoFactory = new H2DaoFactory(dataSource,dateTimeFormatter);
-        // add new patients
-        addNewPatients();
-        // update patient
-        updatePatient();
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
+//        deletePatientTest();
     }
 
-    // test adding new patients
-    public void addNewPatients() {
-        for (int i = 0; i < 3; i++) {
-            System.out.println("hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            String firstName = getRandomFirstName();
-            String lastName = getRandomLastName();
-            Patient patient = new Patient();
-            patient.setFirstName(firstName);
-            patient.setLastName(lastName);
-            patient.setDischarged(false);
-            System.out.println(firstName + " " + lastName);
-            new H2PatientDao(dataSource).addPatient(patient);
-        }
-    }
-
-    // test update patient
-    public void updatePatient() {
-        Patient patient = new Patient();
-        patient.setPatientId(11);
-        patient.setFirstName("Mark");
-        patient.setLastName("Updater");
-        patient.setDischarged(false);
-        new H2PatientDao(dataSource).updatePatient(patient);
-    }
+//    private void deletePatientTest() {
+//        Patient patient = new H2PatientDao(dataSource).getAllPatients().get(5);
+//        System.out.println(patient.getPatientId());
+//        System.out.println(patient.getFirstName());
+//        System.out.println(patient.getLastName());
+//        System.out.println("PATIENT DELETE");
+//        new H2PatientDao(dataSource).deletePatient(5);
+//    }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
         List<PersonalPrescription> personalPrescriptions = new ArrayList<>();

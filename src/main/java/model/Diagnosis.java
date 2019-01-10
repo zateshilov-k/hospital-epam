@@ -15,7 +15,7 @@ public class Diagnosis {
     private String description;
     private Personal personal;
     private Patient patient;
-    private boolean isHealthy;
+    private boolean isOpened;
     private LocalDateTime time;
 
 }

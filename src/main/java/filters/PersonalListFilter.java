@@ -13,7 +13,7 @@ import java.io.IOException;
 только Админ может сюда заходить
  */
 
-@WebFilter(urlPatterns = {"/index.jsp"})
+@WebFilter(urlPatterns = {"/personals.jsp"})
 public class PersonalListFilter implements Filter {
 
 
@@ -26,16 +26,11 @@ public class PersonalListFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession session = request.getSession(true);
         Object currentUser = session.getAttribute("user");
-        if (currentUser == null) {
-            request.getRequestDispatcher("/index.jsp").forward(request, servletResponse);
+        Personal currUser = (Personal) currentUser;
+        if (((Personal) currentUser).getRole() == Role.ADMIN) {
+            request.getRequestDispatcher("/personals.jsp").forward(request, servletResponse);
         } else {
-            Personal currUser = (Personal) currentUser;
-            if (((Personal) currentUser).getRole() == Role.ADMIN) {
-                request.getRequestDispatcher("/personals.jsp").forward(request, servletResponse);
-            } else {
-                request.getRequestDispatcher("/main.jsp").forward(request, servletResponse);
-            }
-
+            request.getRequestDispatcher("/main.jsp").forward(request, servletResponse);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
