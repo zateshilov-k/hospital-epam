@@ -40,6 +40,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
                     Prescription prescription = new Prescription();
                     prescription.setPrescriptionId(resultSet.getLong("prescription_id"));
                     prescription.setType(PrescriptionType.valueOf(resultSet.getString("type")));
+
                     prescription.setDescription(resultSet.getString("description"));
                     prescription.setTime(LocalDateTime.parse(resultSet.getString("time").substring(0, 21), dateTimeFormatter));
                     prescription.setDone(resultSet.getBoolean("is_done"));
@@ -60,7 +61,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
             statement.setLong(2, patientId);
             statement.setString(3, LocalDateTime.now().format(dateTimeFormatter));
             statement.setLong(4, diagnosisId);
-            statement.setString(5, type.toString());
+            statement.setString(5, type.name());
             statement.setBoolean(6, false);
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();

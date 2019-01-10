@@ -22,6 +22,7 @@ public class AddPrescription extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         String description = request.getParameter("description");
         String type = request.getParameter("type");
+        System.out.println("TYPE :"+ type);
         String diagnosisIdString = request.getParameter("diagnosisId");
         HttpSession session = request.getSession();
         Personal user = (Personal) session.getAttribute("user");

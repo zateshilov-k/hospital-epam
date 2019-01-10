@@ -23,5 +23,6 @@ public class PrescriptionService {
         daoFactory.getPrescriptionDao().updatePrescription(prescription);
         daoFactory.getPersonalPrescriptionDao().addPersonalPrescription(personal.getPersonalId(),
                 prescription,PersonalPrescriptionType.DONE.toString());
+
     }
 }

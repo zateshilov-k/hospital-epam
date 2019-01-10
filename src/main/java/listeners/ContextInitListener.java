@@ -1,5 +1,6 @@
 package listeners;
 
+import model.PrescriptionType;
 import utils.HashGenerator;
 
 import javax.servlet.ServletContext;

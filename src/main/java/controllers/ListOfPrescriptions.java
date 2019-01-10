@@ -1,7 +1,9 @@
 package controllers;
 
+import com.google.gson.GsonBuilder;
 import dao.DaoFactory;
 import model.Prescription;
+import model.PrescriptionType;
 import org.json.JSONArray;
 
 import javax.servlet.ServletContext;
@@ -14,6 +16,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Locale;
 
 @WebServlet("/listOfPrescriptions")
 public class ListOfPrescriptions extends HttpServlet {
@@ -23,10 +26,15 @@ public class ListOfPrescriptions extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         Long diagnosisId = Long.parseLong(request.getParameter("diagnosisId"));
         response.setContentType("text/html;charset=utf-8");
+        Locale locale = (Locale) request.getSession().getAttribute("locale");
+        System.out.println(locale);
+        PrescriptionType.locale = locale;
         List<Prescription> prescriptions = daoFactory.getPrescriptionDao().getAllPrescriptionsByDiagnosisId(diagnosisId);
         try {
             PrintWriter writer = response.getWriter();
-            writer.write(new JSONArray(prescriptions).toString());
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Prescription.class,new PrescriptionType.PrescriptionTypeAdapter());
+            writer.write(gsonBuilder.create().toJson(prescriptions).toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

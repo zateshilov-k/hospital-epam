@@ -115,7 +115,7 @@ public class DatabaseInitListener implements ServletContextListener {
                 "type, is_done) VALUES" + "(" + (prescription.getPrescriptionId()) + "," + "\'" + "prescription descr"
                 + prescription.getDescription() + "\'," + (prescription.getPatient().getPatientId()) + "," + "\'"
                 + (prescription.getTime())
-                + "\'," + prescription.getDiagnosis().getDiagnosisId() + "," + "\'" + prescription.getType().toString() + "\',"
+                + "\'," + prescription.getDiagnosis().getDiagnosisId() + "," + "\'" + prescription.getType().name() + "\',"
                 + prescription.isDone() + ");");
     }
 
