@@ -95,6 +95,7 @@
         <th>${columnFirstName_msg}</th>
         <th>${columnLastName_msg}</th>
         <th>${columnAction_msg}</th>
+        <%--<th>Update</th>--%>
     </tr>
     </thead>
     <tbody>
@@ -103,14 +104,23 @@
             <td>${patient.patientId}</td>
             <td>${patient.firstName}</td>
             <td>${patient.lastName}</td>
-            <form name="Button" action="/patientCard" method="POST">
-                <td>
+            <td>
+                <form name="Button" action="/patientCard" method="POST" style="display:inline">
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
                     <input type="submit" name="button" value="${buttonOpenCard_msg}"/>
-                </td>
-            </form>
+                </form>
+                <form name="Button" action="/patientProfile" method="POST" style="display:inline">
+                    <input type="hidden" name="patientId" value="${patient.patientId}"/>
+                    <input type="hidden" name="firstName" value="${patient.firstName}"/>
+                    <input type="hidden" name="lastName" value="${patient.lastName}"/>
+                    <input type="submit" name="button" value="Update Profile"/>
+                </form>
+            </td>
         </tr>
     </c:forEach>
+
+
+
     </tbody>
 </table>
 

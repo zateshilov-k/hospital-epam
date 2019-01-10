@@ -12,11 +12,11 @@ import java.util.logging.Logger;
 
 public class H2PatientDao implements PatientDao {
 
-    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name, is_discharged) " +
-            "VALUES (?, ?, ?)";
+    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name, is_discharged, is_deleted) " +
+            "VALUES (?, ?, ?, ?)";
     private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ?, " +
-            "is_discharged" + " = ? WHERE patient_id = ?";
-    private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM "
+            "is_discharged = ?, is_deleted = ? " + " WHERE patient_id = ?";
+    private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged, is_deleted FROM "
             + "patient";
     private static final String GET_PATIENT_SQL = "SELECT * FROM patient WHERE patient.patient_id = ?";
 
@@ -36,6 +36,7 @@ public class H2PatientDao implements PatientDao {
             statement.setString(1, patient.getFirstName());
             statement.setString(2, patient.getLastName());
             statement.setBoolean(3, patient.isDischarged());
+            statement.setBoolean(4, patient.isDeleted());
             System.out.println(statement.execute());
         } catch (SQLException e) {
             log.info("Add patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() + "; " +
@@ -50,12 +51,13 @@ public class H2PatientDao implements PatientDao {
             statement.setString(1, patient.getFirstName());
             statement.setString(2, patient.getLastName());
             statement.setBoolean(3, patient.isDischarged());
-            statement.setLong(4, patient.getPatientId());
-            System.out.println(statement.execute());
+            statement.setBoolean(4, patient.isDeleted());
+            statement.setLong(5, patient.getPatientId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             log.info("Update patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() +
-                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; status: "
-                    + "FAILED");
+                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; deleted:" +
+                    " " + patient.isDeleted() + "; status: " + "FAILED");
         }
     }
 
@@ -97,6 +99,7 @@ public class H2PatientDao implements PatientDao {
         patient.setFirstName(resultSet.getString("first_name"));
         patient.setLastName(resultSet.getString("last_name"));
         patient.setDischarged(resultSet.getBoolean("is_discharged"));
+        patient.setDeleted(resultSet.getBoolean("is_deleted"));
         return patient;
     }
 

@@ -49,4 +49,5 @@ public class PersonalList extends HttpServlet {
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     }
+
 }
