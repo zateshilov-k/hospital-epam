@@ -53,7 +53,8 @@ public class resource_ru extends ListResourceBundle {
             {"diagnosPerscription", "Назначение по выбранному диагнозу"},
             {"loginErrorMsg", "Неверный логин или пароль!"},
             {"patientErrorMsg", "Неверное имя или фамилия!"},
-            {"personalError","Неверное имя или фамилия"},
+            {"personalErrorMsg","Неверное имя или фамилия!"},
+            {"createPersonalError","Ошибка создания!"},
             //table columns
             {"columnId", "Код"},
             {"columnLogin", "Логин"},

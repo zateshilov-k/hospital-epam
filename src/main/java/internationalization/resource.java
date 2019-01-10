@@ -53,7 +53,8 @@ public class resource extends ListResourceBundle {
             {"diagnosPerscription", "Perscriptions from diagnosis"},
             {"loginErrorMsg", "Invalid login or password!"},
             {"patientErrorMsg", "Invalid firstname or lastname!"},
-            {"personalError","Invalid firstname or lastname"},
+            {"personalErrorMsg","Invalid firstname or lastname!"},
+            {"createPersonalError","Creation error!"},
             //table columns
             {"columnId", "id"},
             {"columnLogin", "Login"},

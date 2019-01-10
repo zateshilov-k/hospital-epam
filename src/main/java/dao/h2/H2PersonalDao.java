@@ -36,7 +36,7 @@ public class H2PersonalDao implements PersonalDao {
 
     @Override
     public long createPersonal(Personal personal) {
-        long personalId = 0;
+        long personalId = -1;
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(CREATE_PERSONAL_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, personal.getLogin());

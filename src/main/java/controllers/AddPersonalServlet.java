@@ -36,11 +36,11 @@ public class AddPersonalServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        Locale locale = (Locale) session.getAttribute("locale");
-        if (locale == null) {
-            locale = new Locale("ru");
-        }
-        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
+//        Locale locale = (Locale) session.getAttribute("locale");
+//        if (locale == null) {
+//            locale = new Locale("ru");
+//        }
+//        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String firstName = request.getParameter("firstName").trim();
         firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
@@ -64,6 +64,7 @@ public class AddPersonalServlet extends HttpServlet {
                 }
             }
         }
+        long newPersonalId = 0;
         if (isValid) {
             PersonalDao personalDao = daoFactory.getPersonalDao();
             Personal newPersonal = new Personal();
@@ -79,15 +80,19 @@ public class AddPersonalServlet extends HttpServlet {
             }
             newPersonal.setRole(Role.valueOf(role));
             newPersonal.setPassword(hashGenerator.getHash(password));
-            personalDao.createPersonal(newPersonal);
-            List<Personal> personals = personalDao.getAllPersonals();
-            session.setAttribute("personals", personals);
-            request.getRequestDispatcher("/personals.jsp").forward(request, response);
+            newPersonalId = personalDao.createPersonal(newPersonal);
+            if (newPersonalId >= 0) {
+                List<Personal> personals = personalDao.getAllPersonals();
+                session.setAttribute("personals", personals);
+                request.getRequestDispatcher("/personals.jsp").forward(request, response);
+            }
         } else {
-            String str = bundle.getString("personalError");
-            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
-            request.setAttribute("personalError", str);
-            request.getRequestDispatcher("/").forward(request, response);
+            if (newPersonalId < 0) {
+                request.setAttribute("createPersonalError", "createError");
+            } else {
+                request.setAttribute("personalError", "personalError");
+                request.getRequestDispatcher("/").forward(request, response);
+            }
             return;
         }
     }
