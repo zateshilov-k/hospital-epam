@@ -52,14 +52,14 @@
                                            autofocus value="${currentPatient.lastName}">
                                 </div>
                             </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-
-                                     <input type="checkbox" name="vehicle2" value="Car" style="width: 200px;"  >Not Active Patient<br>
-                                    </div>
+                            <div class="form-group row">
+                                <label for="field2" class="col-md-4 col-form-label text-md-right">Not Active</label>
+                                <div class="col-md-6">
+                                    <input type="checkbox" id="field3" class="form-control" name="isDeleted">
                                 </div>
+                            </div>
+
+
 
                             <div class="form-group row" align="center">
                                 <c:if test="${!empty requestScope.loginError}">

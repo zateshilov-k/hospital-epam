@@ -47,15 +47,19 @@ public class PatientUpdate extends HttpServlet {
         firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
         String lastName = request.getParameter("lastName").trim();
         lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
-        String isDischarged = request.getParameter("isDischarged");
-        String isDeleted = request.getParameter("isDeleted");
+        boolean isDischarged = Boolean.parseBoolean(request.getParameter("isDischarged"));
+        boolean isDeleted = Boolean.parseBoolean(request.getParameter("isDeleted"));
 
         PatientDao patientDao = daoFactory.getPatientDao();
         Patient patient = patientDao.getPatient(patientId);
         session.setAttribute("currentPatient", patient);
         request.setAttribute("currentPatient", patient);
+
+        System.out.println(patientId);
         System.out.println(firstName);
         System.out.println(lastName);
+        System.out.println(isDischarged);
+        System.out.println(isDeleted);
 
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
@@ -66,8 +70,8 @@ public class PatientUpdate extends HttpServlet {
         Patient updatedPatient = new Patient();
         updatedPatient.setFirstName(firstName);
         updatedPatient.setLastName(lastName);
-//        updatedPatient.setDischarged(isDischarged);
-//        updatedPatient.setDeleted(isDeleted);
+        updatedPatient.setDischarged(isDischarged);
+        updatedPatient.setDeleted(isDeleted);
         updatedPatient.setPatientId(patientId);
         patientDao.updatePatient(updatedPatient);
 
