@@ -1,5 +1,6 @@
 <%@ page import="model.Patient" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -32,6 +33,9 @@
 </style>
 </head>
 <body style="background-color:powderblue;">
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="internationalization.resource" var="loc"/>
+<fmt:message bundle="${loc}" key="titleAddPatientPage" var="titleAddPage_msg"/>
 
 <h3 style="text-align:center;font-size:28px" >Личная карточка пациента ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
 <br>
