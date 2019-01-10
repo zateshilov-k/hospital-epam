@@ -47,6 +47,7 @@ public class AddPersonalServlet extends HttpServlet {
         String lastName = request.getParameter("lastName").trim();
         lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
         String login = request.getParameter("login").trim();
+        login = new String(login.getBytes("ISO-8859-1"), "UTF-8");
         String password = request.getParameter("password").trim();
         String role = request.getParameter("role");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
@@ -89,7 +90,6 @@ public class AddPersonalServlet extends HttpServlet {
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
-
     }
 
     @Override
@@ -109,5 +109,4 @@ public class AddPersonalServlet extends HttpServlet {
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
         hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
     }
-
 }
