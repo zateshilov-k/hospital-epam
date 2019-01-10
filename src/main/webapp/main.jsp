@@ -75,7 +75,7 @@
                 <a href="#">${currentUser_msg} ${sessionScope.user.role} ${sessionScope.user.lastName} ${sessionScope.user.firstName}</a>
             </li>
             <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
-                <li action="/addPatient"><a href="/patient.jsp">${menuAddPatient_msg}</a></li>
+                <li><a href="/patient.jsp">${menuAddPatient_msg}</a></li>
             </c:if>
             <li><a href="/logout">${menuLogout_msg}</a></li>
         </ul>

@@ -29,6 +29,7 @@
 </head>
 <body style="background-color:powderblue;overflow:hidden">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<%--<fmt:setLocale value="de-GR"/>--%>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
 <fmt:message bundle="${loc}" key="titleAddPersonalPage" var="titleAddPersonalPage_msg"/>
 <fmt:message bundle="${loc}" key="firstNameField" var="firstNameField_msg"/>
@@ -38,6 +39,9 @@
 <fmt:message bundle="${loc}" key="chooseRoleField" var="chooseRoleField_msg"/>
 <fmt:message bundle="${loc}" key="buttonSave" var="buttonSave_msg"/>
 <fmt:message bundle="${loc}" key="buttonCancel" var="buttonCancel_msg"/>
+<fmt:message bundle="${loc}" key="personalErrorMsg" var="personalErrorMsg_msg"/>
+<fmt:message bundle="${loc}" key="createPersonalError" var="createPersonalError_msg"/>
+
 
 <main class="login-form">
     <div class="cotainer">
@@ -92,7 +96,13 @@
                             </div>
                             <div class="form-group row" align="center">
                                 <c:if test="${!empty requestScope.loginError}">
-                                    <p><font color="red"><span class="error">${requestScope.personalError}</span></font>
+                                    <p><font color="red"><span class="error">${personalErrorMsg_msg}</span></font>
+                                    </p>
+                                </c:if>
+                            </div>
+                            <div class="form-group row" align="center">
+                                <c:if test="${!empty requestScope.createPersonalError}">
+                                    <p><font color="red"><span class="error">${createPersonalError_msg}</span></font>
                                     </p>
                                 </c:if>
                             </div>

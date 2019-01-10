@@ -19,9 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 /*
@@ -41,12 +39,6 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        Locale locale = (Locale) session.getAttribute("locale");
-        if (locale == null) {
-            locale = new Locale("ru", "RU");
-        }
-        session.setAttribute("locale", locale);
-        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password").trim();
@@ -77,10 +69,8 @@ public class Login extends HttpServlet {
                     + "; role: " + currentUser.get().getRole() + "; status: LOGGED");
             return;
         } else {
-            String str = bundle.getString("loginError");
-            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
             log.info("From IP: " + ip + "; " + "status: ERROR LOGIN");
-            request.setAttribute("loginError", str);
+            request.setAttribute("loginError", "loginError");
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }

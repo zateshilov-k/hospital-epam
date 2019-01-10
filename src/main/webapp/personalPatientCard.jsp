@@ -9,8 +9,8 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="<c:url value="/js/main.js" />" type="text/javascript"></script>
-    <style>
 
+    <style>
     table, tbody,thead {
     display: block;
     }
@@ -35,8 +35,8 @@
 </style>
 </head>
 <body style="background-color:powderblue;">
-<fmt:setLocale value="${sessionScope.locale}"/>
-<%--<fmt:setLocale value="de-GR"/>--%>
+<%--<fmt:setLocale value="${sessionScope.locale}"/>--%>
+<fmt:setLocale value="de-GR"/>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
 <fmt:message bundle="${loc}" key="currentPatientCard" var="currentPatientCard_msg"/>
 <fmt:message bundle="${loc}" key="buttonCloseDiagnosis" var="buttonCloseDiagnosis_msg"/>

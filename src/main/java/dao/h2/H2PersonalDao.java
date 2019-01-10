@@ -36,7 +36,7 @@ public class H2PersonalDao implements PersonalDao {
 
     @Override
     public long createPersonal(Personal personal) {
-        long personalId = 0;
+        long personalId = -1;
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(CREATE_PERSONAL_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, personal.getLogin());
@@ -93,6 +93,9 @@ public class H2PersonalDao implements PersonalDao {
             statement.setLong(6, personal.getPersonalId());
             statement.executeUpdate();
             personalId = personal.getPersonalId();
+            log.info("Update personal by ID: " + personal.getPersonalId() + "; login: " + personal.getLogin() + "; "
+                    + "first name: " + personal.getFirstName() + "; last name: " + personal.getLastName() + "; role: " +
+                    personal.getRole().toString() + "; status: SUCCESS");
         } catch (SQLException e) {
             log.info("Update personal by ID: " + personal.getPersonalId() + "; login: " + personal.getLogin() + "; "
                     + "first name: " + personal.getFirstName() + "; last name: " + personal.getLastName() + "; role: " +
