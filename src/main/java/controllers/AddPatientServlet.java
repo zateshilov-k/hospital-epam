@@ -35,12 +35,12 @@ public class AddPatientServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        Locale locale = (Locale) session.getAttribute("locale");
-        if (locale == null) {
-            locale = new Locale("ru");
-        }
-        session.setAttribute("locale", locale);
-        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
+//        Locale locale = (Locale) session.getAttribute("locale");
+//        if (locale == null) {
+//            locale = new Locale("ru");
+//        }
+//        session.setAttribute("locale", locale);
+//        ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         String firstName = request.getParameter("firstName").trim();
         firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
@@ -67,9 +67,9 @@ public class AddPatientServlet extends HttpServlet {
 
             request.getRequestDispatcher("/main.jsp").forward(request, response);
         } else {
-            String str = bundle.getString("patientError");
-            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
-            request.setAttribute("patientError", str);
+//            String str = bundle.getString("patientError");
+//            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
+            request.setAttribute("patientError", "patientError");
             request.getRequestDispatcher("/patient.jsp").forward(request, response);
             return;
         }
