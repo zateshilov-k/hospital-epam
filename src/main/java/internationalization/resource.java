@@ -55,6 +55,7 @@ public class resource extends ListResourceBundle {
             {"patientErrorMsg", "Invalid firstname or lastname!"},
             {"personalErrorMsg","Invalid firstname or lastname!"},
             {"createPersonalError","Creation error!"},
+            {"updatePersonalError","Update error!"},
             //table columns
             {"columnId", "id"},
             {"columnLogin", "Login"},

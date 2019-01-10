@@ -55,6 +55,8 @@ public class resource_ru extends ListResourceBundle {
             {"patientErrorMsg", "Неверное имя или фамилия!"},
             {"personalErrorMsg","Неверное имя или фамилия!"},
             {"createPersonalError","Ошибка создания!"},
+            {"updatePersonalError","Ошибка обновления данных!"},
+
             //table columns
             {"columnId", "Код"},
             {"columnLogin", "Логин"},

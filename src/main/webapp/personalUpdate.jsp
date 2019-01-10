@@ -41,6 +41,7 @@
 <fmt:message bundle="${loc}" key="buttonSave" var="buttonSave_msg"/>
 <fmt:message bundle="${loc}" key="buttonCancel" var="buttonCancel_msg"/>
 <fmt:message bundle="${loc}" key="titleUpdatePersonalPage" var="titleUpdatePersonalPage_msg"/>
+<fmt:message bundle="${loc}" key="updatePersonalError" var="updatePersonalError_msg"/>
 
 
 <main class="login-form">
@@ -96,8 +97,8 @@
                                 </div>
                             </c:if>
                             <div class="form-group row" align="center">
-                                <c:if test="${!empty requestScope.loginError}">
-                                    <p><font color="red"><span class="error">${requestScope.personalError}</span></font>
+                                <c:if test="${!empty requestScope.personalError}">
+                                    <p><font color="red"><span class="error">${updatePersonalError_msg}</span></font>
                                     </p>
                                 </c:if>
                             </div>

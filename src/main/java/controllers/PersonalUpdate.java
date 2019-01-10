@@ -48,6 +48,7 @@ public class PersonalUpdate extends HttpServlet {
         String lastName = request.getParameter("lastName").trim();
         lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
         String login = request.getParameter("login").trim();
+        login = new String(login.getBytes("ISO-8859-1"), "UTF-8");
         String password = request.getParameter("password").trim();
         String role = request.getParameter("role");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
@@ -82,19 +83,16 @@ public class PersonalUpdate extends HttpServlet {
 
             personalDao.updatePersonal(updatedPersonal);
 
-            if (currentUser.getRole() == Role.ADMIN) {
                 List<Personal> personals = personalDao.getAllPersonals();
                 if (personals != null) {
                     session.setAttribute("personals", personals);
                 }
                 request.getRequestDispatcher("/personals.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("/main.jsp").forward(request, response);
-            }
+
         } else {
-            String str = bundle.getString("personalError");
-            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
-            request.setAttribute("personalError", str);
+//            String str = bundle.getString("personalError");
+//            str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
+            request.setAttribute("personalError", "personalError");
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
