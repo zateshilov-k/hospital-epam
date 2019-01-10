@@ -59,7 +59,7 @@ public class resource extends ListResourceBundle {
             //table columns
             {"columnId", "id"},
             {"columnLogin", "Login"},
-            {"columnFirstName", "Firstnamr"},
+            {"columnFirstName", "Firstname"},
             {"columnLastName", "Lastname"},
             {"columnRole", "Role"},
             {"columnAction", "Action"},
