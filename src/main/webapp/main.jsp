@@ -118,9 +118,10 @@
                 <td>${patient.patientId}</td>
                 <td>${patient.firstName}</td>
                 <td>${patient.lastName}</td>
-                <form name="Button" action="/patientProfileUpdate" method="POST">
+                <form name="Button" action="/patientProfile" method="POST">
                     <td>
-                        <input type="submit" name="button" value="/patientProfileUpdate"/>
+                    <input type="hidden" name="patientId" value="${patient.patientId}"/>
+                        <input type="submit" name="button" value="Update Profile"/>
                     </td>
                 </form>
             </tr>

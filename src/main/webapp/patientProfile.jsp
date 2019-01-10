@@ -36,12 +36,12 @@
                 <div class="card">
                     <div class="card-header">Измените данные о пациенте в системе EPAM Hospital</div>
                     <div class="card-body">
-                        <form action="/patientProfileUpdate" method="post">
+                        <form action="/patientProfile" method="post">
                             <div class="form-group row">
                                 <label for="field1" class="col-md-4 col-form-label text-md-right">Введите имя</label>
                                 <div class="col-md-6">
                                     <input type="text" id="field1" class="form-control" name="firstName" required
-                                           autofocus value="${currentPersonal.firstName}">
+                                           autofocus value="${currentPatient.firstName}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -49,7 +49,7 @@
                                     фамилию</label>
                                 <div class="col-md-6">
                                     <input type="text" id="field2" class="form-control" name="lastName" required
-                                           autofocus value="${currentPersonal.lastName}">
+                                           autofocus value="${currentPatient.lastName}">
                                 </div>
                             </div>
 
@@ -71,7 +71,7 @@
                             <div class="col-md-6 offset-md-4">
 
 
-                                <button type="submit" name="personalId" value="${currentPersonal.personalId}" class="btn btn-primary">
+                                <button type="submit" name="patientId" value="${currentPatient.patientId}" class="btn btn-primary">
                                     Сохранить
                                 </button>
                                 <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
