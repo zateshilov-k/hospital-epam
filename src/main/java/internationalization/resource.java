@@ -14,7 +14,7 @@ public class resource extends ListResourceBundle {
             {"passwordField", "Enter your password"},
             {"firstNameField", "Enter firstname"},
             {"lastNameField", "Enter lastname"},
-            {"chooseRoleField", "Chose role"},
+            {"chooseRoleField", "Choose role"},
             {"doctorField", "doctor"},
             {"nurseField", "nurse"},
             {"adminField", "administrator"},

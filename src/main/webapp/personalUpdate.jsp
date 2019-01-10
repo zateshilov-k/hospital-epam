@@ -84,7 +84,7 @@
                             </div>
                             <c:if test="${sessionScope.user.role eq 'ADMIN'}">
                                 <div class="form-group row">
-                                    <label class="col-md-4 col-form-label text-md-right">${chooseRoleField_msg}ь</label>
+                                    <label class="col-md-4 col-form-label text-md-right">${chooseRoleField_msg}</label>
                                     <div class="col-md-6">
                                         <br>
                                         <select name="role">
