@@ -22,12 +22,14 @@ public class H2PrescriptionDao implements PrescriptionDao {
     final private String ADD_PRESCRIPTION =
             "INSERT INTO prescription (description, patient_id, time, diagnosis_id, " + "type, is_done) VALUES (?, ?," +
                     " ?, ?, ?, ?);";
+    final private String UPDATE_PRESCRIPTION = "UPDATE prescription SET is_done = ?, time = ? WHERE prescription_id = ?;";
 
     private static final Logger log = Logger.getLogger(H2PrescriptionDao.class.getName());
 
     @Resource(name = "jdbc/hospital-h2-db")
     final private DataSource dataSource;
     final private DateTimeFormatter dateTimeFormatter;
+
 
     public H2PrescriptionDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;
@@ -46,8 +48,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
                     prescription.setPrescriptionId(resultSet.getLong("prescription_id"));
                     prescription.setType(PrescriptionType.valueOf(resultSet.getString("type")));
                     prescription.setDescription(resultSet.getString("description"));
-                    prescription.setTime(LocalDateTime.parse(resultSet.getString("time").substring(0, 21),
-                            dateTimeFormatter));
+                    prescription.setTime(LocalDateTime.parse(resultSet.getString("time").substring(0, 21), dateTimeFormatter));
                     prescription.setDone(resultSet.getBoolean("is_done"));
                     prescriptions.add(prescription);
                 }
@@ -59,7 +60,7 @@ public class H2PrescriptionDao implements PrescriptionDao {
     }
 
     @Override
-    public long addPrescription(long diagnosisId, long patientId, String description, PrescriptionType type) {
+    public long addPrescription(long diagnosisId, long patientId, String description, PrescriptionType type) throws SQLException {
         long prescriptionId = 0;
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(ADD_PRESCRIPTION)) {
@@ -81,4 +82,16 @@ public class H2PrescriptionDao implements PrescriptionDao {
         return prescriptionId;
     }
 
+    @Override
+    public void updatePrescription(long prescriptionId) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(UPDATE_PRESCRIPTION)) {
+            statement.setBoolean(1, true);
+            statement.setString(2, LocalDateTime.now().format(dateTimeFormatter));
+            statement.setLong(3, prescriptionId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

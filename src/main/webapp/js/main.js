@@ -1,9 +1,28 @@
 var currentDiagnosisRow = 1;
+var currentPrescriptionRow = 1;
 
+function prescriptionDoneListener() {
+    var prescriptionTable = document.getElementById("prescriptionsTable");
+    var diagnosisTable = document.getElementById("diagnosis");
+    $.post("doPrescription",
+        {prescriptionId : prescriptionTable.rows[currentPrescriptionRow].cells[0].innerHTML}, function () {
+        updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
+    });
+}
 
+function prescriptionClick() {
+    var rows = this.parentNode.rows;
+    for (i = 1; i < rows.length; i++) {
+        setDefaultStyle(rows[i]);
+    }
+    setSpecialStyle(this);
+    currentPrescriptionRow = $(this).index();
+
+    updatePrescriptionsElementsStyle();
+}
 function closeDiagnosisButtonListener() {
     var diagnosisTable = document.getElementById("diagnosis");
-    $.post("closeDiagnosis",{diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
+    $.post("closeDiagnosis", {diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML}, function () {
         getAndUpdateDiagnosis();
     });
 }
@@ -19,17 +38,17 @@ function prescriptionSubmitButtonListener() {
             description: prescriptionTextArea.value,
             diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML,
             type: prescriptionTypeSelect.value
-        },function (response) {
+        }, function (response) {
             updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
             prescriptionTextArea.value = "";
         });
     }
 }
 
-function updateElementsStyle() {
+function updateDiagnosisElementsStyle() {
     var diagnosisTable = document.getElementById("diagnosis");
-    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
     var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
+    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
 
     var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
     if (isDiagnosisOpened === 'false') {
@@ -38,6 +57,17 @@ function updateElementsStyle() {
     } else if (isDiagnosisOpened === 'true') {
         prescriptionFieldSet.style.display = "inline";
         closeDiagnosisButton.style.display = "inline";
+    }
+}
+function updatePrescriptionsElementsStyle() {
+    var doPrescriptionButton = document.getElementById("doPrescription");
+    var prescriptionTable = document.getElementById("prescriptionsTable");
+
+    var isPrescriptionDone = prescriptionTable.rows[currentPrescriptionRow].cells[4].innerHTML;
+    if (isPrescriptionDone === 'false') {
+        doPrescriptionButton.style.display = "inline";
+    } else if(isPrescriptionDone === 'true') {
+        doPrescriptionButton.style.display = "none";
     }
 }
 
@@ -66,12 +96,12 @@ function getAndUpdateDiagnosis() {
 
 function updateDiagnosisTable(diagnosis, table) {
     var diagnosisTable = document.getElementById("diagnosis");
-    for (var i = 1; i < table.rows.length; ++i) {
-        table.rows[i].innerHTML = "";
+    for (var i = diagnosisTable.rows.length - 1; i > 0; i--) {
+        diagnosisTable.deleteRow(i);
     }
     for (var i = 0; i < diagnosis.length; i++) {
         var newRow = table.insertRow(i + 1);
-        if ((i+1) === currentDiagnosisRow) {
+        if ((i + 1) === currentDiagnosisRow) {
             setSpecialStyle(newRow);
         } else {
             setDefaultStyle(newRow);
@@ -91,7 +121,6 @@ function updateDiagnosisTable(diagnosis, table) {
         }
     }
     updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
-    updateElementsStyle();
 }
 
 function diagnosisClick() {
@@ -101,10 +130,9 @@ function diagnosisClick() {
     }
     setSpecialStyle(this);
     currentDiagnosisRow = $(this).index();
-    var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
     var currentDiagnosisId = this.cells[0].innerHTML;
 
-    updateElementsStyle();
+    updateDiagnosisElementsStyle();
     var prescriptionSubmitButton = document.getElementById("prescriptionSubmit");
     prescriptionSubmitButton.value = currentDiagnosisId;
 
@@ -114,16 +142,17 @@ function diagnosisClick() {
 function setSpecialStyle(row) {
     row.style.color = "red";
 }
+
 function setDefaultStyle(row) {
     row.style.color = "black";
 }
 
 function updatePrescriptionsTable(diagnosis_id) {
     $.post("listOfPrescriptions", {diagnosisId: diagnosis_id}, function (response) {
-         prescriptions = JSON.parse(response);
+        prescriptions = JSON.parse(response);
         var table = document.getElementById('prescriptionsTable');
-        for (var i = 1; i < table.rows.length; ++i) {
-            table.rows[i].innerHTML = "";
+        for (var i = table.rows.length - 1; i > 0; i--) {
+            table.deleteRow(i);
         }
         if (prescriptions.length === 0) {
             table.style.display = "none";
@@ -132,6 +161,7 @@ function updatePrescriptionsTable(diagnosis_id) {
         }
         for (var i = 0; i < prescriptions.length; i++) {
             var newRow = table.insertRow(i + 1);
+            newRow.addEventListener("click",prescriptionClick);
             for (var j = 0; j < 5; j++) {
                 var newCell = newRow.insertCell(j);
                 if (j === 0) {
@@ -147,6 +177,7 @@ function updatePrescriptionsTable(diagnosis_id) {
                 }
             }
         }
+        updateDiagnosisElementsStyle();
     });
 
 }

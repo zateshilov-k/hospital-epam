@@ -18,7 +18,7 @@ public class TestCase {
 
         System.out.println("Page title is: " + driver.getTitle());
 
-        WebElement emailInput = driver.findElement(By.id("email_address"));
+        WebElement emailInput = driver.findElement(By.id("email_address")); 
         WebElement passwordInput = driver.findElement(By.id("password"));
 
         emailInput.sendKeys("login1@epam.com");
