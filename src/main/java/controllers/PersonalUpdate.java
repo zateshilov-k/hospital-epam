@@ -1,9 +1,10 @@
 package controllers;
 
 import dao.DaoFactory;
-import model.Patient;
-import services.PatientService;
-import utils.SignUpValidate;
+import dao.PersonalDao;
+import model.Personal;
+import model.Role;
+import utils.HashGenerator;
 import utils.StringFieldValidate;
 
 import javax.servlet.ServletContext;
@@ -18,19 +19,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@WebServlet("/addPersonal")
-public class PersonalServlet extends HttpServlet {
+/*
+сервлет для личного кабинета персонала (update)
+ */
+@WebServlet("/personalUpdate")
+public class PersonalUpdate extends HttpServlet {
     DaoFactory daoFactory;
+    HashGenerator hashGenerator;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
-        System.out.println("SignUp");
-//        super.doGet(request, response);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doGet(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-            IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
         if (locale == null) {
@@ -38,14 +41,17 @@ public class PersonalServlet extends HttpServlet {
         }
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
+        Personal currentUser = (Personal) session.getAttribute("user");
+        Long personalId = Long.parseLong(request.getParameter("personalId"));
         String firstName = request.getParameter("firstName").trim();
+        firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
         String lastName = request.getParameter("lastName").trim();
+        lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
         String login = request.getParameter("login").trim();
         String password = request.getParameter("password").trim();
         String role = request.getParameter("role");
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
-        //TODO сделать проверку на совпадение логина
         if (isValid) {
             isValid = stringFieldValidate.doValidation(lastName);
             if (isValid) {
@@ -59,14 +65,32 @@ public class PersonalServlet extends HttpServlet {
             }
         }
         if (isValid) {
-            //TODO add personal
-            //TODO write code here
-            List<Patient> patients = new PatientService().getAllPatients(daoFactory);
-            if (patients != null) {
-                session.setAttribute("patients", patients);
+            PersonalDao personalDao = daoFactory.getPersonalDao();
+            Personal updatedPersonal = new Personal();
+            updatedPersonal.setFirstName(firstName);
+            updatedPersonal.setLastName(lastName);
+            updatedPersonal.setLogin(login);
+            if (role.equals("doctor")) {
+                updatedPersonal.setRole(Role.DOCTOR);
+            } else if (role.equals("admin")) {
+                updatedPersonal.setRole(Role.ADMIN);
+            } else if (role.equals("nurse")) {
+                updatedPersonal.setRole(Role.NURSE);
             }
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
-            System.out.println("Personal is added \t" + firstName+" "+ lastName);
+            updatedPersonal.setPassword(hashGenerator.getHash(password));
+            updatedPersonal.setPersonalId(personalId);
+
+            personalDao.updatePersonal(updatedPersonal);
+
+            if (currentUser.getRole() == Role.ADMIN) {
+                List<Personal> personals = personalDao.getAllPersonals();
+                if (personals != null) {
+                    session.setAttribute("personals", personals);
+                }
+                request.getRequestDispatcher("/personals.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/main.jsp").forward(request, response);
+            }
         } else {
             String str = bundle.getString("personalError");
             str = new String(str.getBytes("ISO-8859-1"), "UTF-8");
@@ -74,12 +98,6 @@ public class PersonalServlet extends HttpServlet {
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
-
-    }
-
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
     }
 
     @Override
@@ -92,6 +110,6 @@ public class PersonalServlet extends HttpServlet {
         super.init();
         ServletContext context = getServletContext();
         daoFactory = (DaoFactory) context.getAttribute("daoFactory");
+        hashGenerator = (HashGenerator) context.getAttribute("hashGenerator");
     }
-
 }

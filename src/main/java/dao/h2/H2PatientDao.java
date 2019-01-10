@@ -3,6 +3,7 @@ package dao.h2;
 import dao.PatientDao;
 import model.Patient;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,15 +12,17 @@ import java.util.logging.Logger;
 
 public class H2PatientDao implements PatientDao {
 
-    // SQL queries
-    private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM " +
-            "patient";
-    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name, is_discharged) VALUES (?, ?, ?)";
-    private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ?, is_discharged = ? WHERE patient_id = ?";
-    private static final String GET_PATIENT = "SELECT * FROM patient WHERE patient.patient_id = ?";
+    private static final String CREATE_PATIENT_SQL = "INSERT INTO patient (first_name, last_name, is_discharged) " +
+            "VALUES (?, ?, ?)";
+    private static final String UPDATE_PATIENT_SQL = "UPDATE patient SET first_name = ?, last_name = ?, " +
+            "is_discharged" + " = ? WHERE patient_id = ?";
+    private static final String GET_ALL_PATIENTS_SQL = "SELECT patient_id, first_name, last_name, is_discharged FROM "
+            + "patient";
+    private static final String GET_PATIENT_SQL = "SELECT * FROM patient WHERE patient.patient_id = ?";
 
-    private static final Logger log = Logger.getLogger(String.valueOf(H2PatientDao.class));
+    private static final Logger log = Logger.getLogger(H2PatientDao.class.getName());
 
+    @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
 
     public H2PatientDao(DataSource dataSource) {
@@ -28,29 +31,31 @@ public class H2PatientDao implements PatientDao {
 
     @Override
     public void addPatient(Patient patient) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CREATE_PATIENT_SQL,
-                     Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(CREATE_PATIENT_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, patient.getFirstName());
             statement.setString(2, patient.getLastName());
             statement.setBoolean(3, patient.isDischarged());
             System.out.println(statement.execute());
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            log.info("Add patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() + "; " +
+                    "last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; status: " + "FAILED");
         }
     }
 
     @Override
     public void updatePatient(Patient patient) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_PATIENT_SQL)) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
+                connection.prepareStatement(UPDATE_PATIENT_SQL)) {
             statement.setString(1, patient.getFirstName());
             statement.setString(2, patient.getLastName());
             statement.setBoolean(3, patient.isDischarged());
             statement.setLong(4, patient.getPatientId());
             System.out.println(statement.execute());
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            log.info("Update patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() +
+                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; status: "
+                    + "FAILED");
         }
     }
 
@@ -65,29 +70,28 @@ public class H2PatientDao implements PatientDao {
                 }
             }
         } catch (SQLException e) {
-            log.warning(e.getMessage());
-            System.err.println(e.getMessage());
+            log.info("Get all patients, list size: " + patientList.size() + "; status: FAILED");
         }
         return patientList;
     }
 
     @Override
     public Patient getPatient(long patientId) {
+        Patient patient = new Patient();
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
-                connection.prepareStatement(GET_PATIENT)) {
+                connection.prepareStatement(GET_PATIENT_SQL)) {
             statement.setLong(1, patientId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return getPatientFromResultSet(resultSet);
+                patient = getPatientFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.info("Get patient, by ID: " + patientId + "; status: FAILED");
         }
-        return null;
+        return patient;
     }
 
     public Patient getPatientFromResultSet(ResultSet resultSet) throws SQLException {
-        System.out.println("getPatientFromResultSet");
         Patient patient = new Patient();
         patient.setPatientId(resultSet.getLong("patient_id"));
         patient.setFirstName(resultSet.getString("first_name"));

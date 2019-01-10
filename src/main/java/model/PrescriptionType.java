@@ -30,7 +30,7 @@ public enum PrescriptionType {
     };
 
     public static Locale locale;
-    String bundleName = "prescriptions";
+    String bundleName = "internationalization.resource";
 
     public static class PrescriptionTypeAdapter implements JsonSerializer<Prescription> {
         @Override

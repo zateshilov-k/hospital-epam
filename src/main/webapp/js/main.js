@@ -39,7 +39,6 @@ function prescriptionSubmitButtonListener() {
             diagnosisId: diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML,
             type: prescriptionTypeSelect.value
         }, function (response) {
-            alert(prescriptionTypeSelect.value);
             updatePrescriptionsTable(diagnosisTable.rows[currentDiagnosisRow].cells[0].innerHTML);
             prescriptionTextArea.value = "";
         });

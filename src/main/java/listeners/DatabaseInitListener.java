@@ -74,7 +74,9 @@ public class DatabaseInitListener implements ServletContextListener {
     private void addPersonal(Statement statement, Personal personal) throws SQLException {
         statement.addBatch("INSERT INTO medical_personal " + "(personal_id, first_name, last_name, role, login, password) VALUES"
                 + "(" + (personal.getPersonalId()) + "," + "\'" + personal.getFirstName() + "\'," + "\'" + personal.getLastName()
-                + "\'," + "\'" + personal.getRole().toString() + "\'," + "\'" + personal.getLogin() + "\'," + "\'"
+                + "\'," + "\'"
+                + personal.getRole() + "\'," + "\'"
+                + personal.getLogin() + "\'," + "\'"
                 + personal.getPassword() + "\'" + ");");
     }
 
@@ -132,9 +134,9 @@ public class DatabaseInitListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
         final int numberOfPersonal = 10;
-        final int numberOfPatients = 10;
-        final int numberOfDiagnosisPerPatient = 2;
-        final int numberOfPrescriptionsPerDiagnosis = 2;
+        final int numberOfPatients = 15;
+        final int numberOfDiagnosisPerPatient = 7;
+        final int numberOfPrescriptionsPerDiagnosis = 14;
 
         List<Personal> personals = getPersonals(numberOfPersonal);
         Personal admin = new Personal();
@@ -143,7 +145,25 @@ public class DatabaseInitListener implements ServletContextListener {
         admin.setLogin("admin@epam.com");
         admin.setRole(Role.ADMIN);
         admin.setPassword(hashGenerator.getHash("admin" ));
+        admin.setPersonalId(personals.size()+1);
         personals.add(admin);
+
+        Personal doctor = new Personal();
+        doctor.setFirstName("DoctorName");
+        doctor.setLastName("DoctorLastName");
+        doctor.setLogin("doctor@epam.com");
+        doctor.setRole(Role.DOCTOR);
+        doctor.setPassword(hashGenerator.getHash("password1"));
+        doctor.setPersonalId(personals.size()+1);
+        personals.add(doctor);
+
+        Personal nurse = new Personal();
+        nurse.setFirstName("NurseName");
+        nurse.setLogin("nurse@epam.com");
+        nurse.setRole(Role.NURSE);
+        nurse.setPassword(hashGenerator.getHash("nurse"));
+        nurse.setPersonalId(personals.size()+1);
+        personals.add(nurse);
 
         List<Patient> patients = getPatients(numberOfPatients);
         List<Diagnosis> diagnoses = getDiagnoses(numberOfDiagnosisPerPatient, personals, patients);
@@ -158,6 +178,7 @@ public class DatabaseInitListener implements ServletContextListener {
             Path realPath = Paths.get(path).toRealPath();
             statement.addBatch(Files.lines(realPath).collect(Collectors.joining()));
             for (Personal personal : personals) {
+                System.out.println("CHECK:\t" + personal);
                 addPersonal(statement, personal);
             }
             for (Patient patient : patients) {
@@ -191,7 +212,17 @@ public class DatabaseInitListener implements ServletContextListener {
             e.printStackTrace();
         }
         servletContextEvent.getServletContext().setAttribute("daoFactory",daoFactory);
+//        deletePatientTest();
     }
+
+//    private void deletePatientTest() {
+//        Patient patient = new H2PatientDao(dataSource).getAllPatients().get(5);
+//        System.out.println(patient.getPatientId());
+//        System.out.println(patient.getFirstName());
+//        System.out.println(patient.getLastName());
+//        System.out.println("PATIENT DELETE");
+//        new H2PatientDao(dataSource).deletePatient(5);
+//    }
 
     private List<PersonalPrescription> getPersonalPrescriptions(List<Personal> personals, List<Prescription> prescriptions) {
         List<PersonalPrescription> personalPrescriptions = new ArrayList<>();

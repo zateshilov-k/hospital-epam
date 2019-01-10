@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface PrescriptionDao {
     List<Prescription> getAllPrescriptionsByDiagnosisId(long diagnosisId);
+
     long addPrescription(long diagnosisId, long patientId, String description, PrescriptionType type) throws SQLException;
     void updatePrescription(long prescriptionId);
 }

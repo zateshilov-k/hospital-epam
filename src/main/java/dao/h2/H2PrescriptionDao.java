@@ -4,6 +4,7 @@ import dao.PrescriptionDao;
 import model.Prescription;
 import model.PrescriptionType;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,16 +14,22 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class H2PrescriptionDao implements PrescriptionDao {
+
+    final private String GET_ALL_PRESCRIPTIONS = "SELECT * FROM prescription " + " WHERE diagnosis_id = ?;";
+    final private String ADD_PRESCRIPTION =
+            "INSERT INTO prescription (description, patient_id, time, diagnosis_id, " + "type, is_done) VALUES (?, ?," +
+                    " ?, ?, ?, ?);";
+    final private String UPDATE_PRESCRIPTION = "UPDATE prescription SET is_done = ?, time = ? WHERE prescription_id = ?;";
+
+    private static final Logger log = Logger.getLogger(H2PrescriptionDao.class.getName());
+
+    @Resource(name = "jdbc/hospital-h2-db")
     final private DataSource dataSource;
     final private DateTimeFormatter dateTimeFormatter;
 
-    final private String GET_ALL_PRESCRIPTIONS = "SELECT * FROM prescription " +
-            " WHERE diagnosis_id = ?;";
-    final private String ADD_PRESCRIPTION = "INSERT INTO prescription (description, patient_id, time, diagnosis_id, " +
-            "type, is_done) VALUES (?, ?, ?, ?, ?, ?);";
-    final private String UPDATE_PRESCRIPTION = "UPDATE prescription SET is_done = ?, time = ? WHERE prescription_id = ?;";
 
     public H2PrescriptionDao(DataSource dataSource, DateTimeFormatter dateTimeFormatter) {
         this.dataSource = dataSource;
@@ -48,13 +55,14 @@ public class H2PrescriptionDao implements PrescriptionDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.info("Get all prescriptions by diagnosis id: " + diagnosisId + "; status: FAILED");
         }
         return prescriptions;
     }
 
     @Override
     public long addPrescription(long diagnosisId, long patientId, String description, PrescriptionType type) throws SQLException {
+        long prescriptionId = 0;
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(ADD_PRESCRIPTION)) {
             statement.setString(1, description);
@@ -66,12 +74,13 @@ public class H2PrescriptionDao implements PrescriptionDao {
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                return generatedKeys.getLong(1);
+                prescriptionId = generatedKeys.getLong(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.info("Add prescription, ID: " + diagnosisId + "; patientId: " + patientId + "; description: " +
+                    description + "; type: " + type + "; status: FAILED");
         }
-        throw new SQLException("There is no generated key");
+        return prescriptionId;
     }
 
     @Override

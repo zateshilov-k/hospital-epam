@@ -20,14 +20,15 @@ import java.util.logging.Logger;
 
 public class H2DiagnosisDao implements DiagnosisDao {
 
-    private static final Logger log = Logger.getLogger(String.valueOf(H2DiagnosisDao.class));
-    // SQL queries
-    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT * FROM diagnosis JOIN patient " +
-            "ON diagnosis.patient_id = patient.patient_id JOIN medical_personal " +
-            "ON diagnosis.personal_id = medical_personal.personal_id WHERE diagnosis.patient_id = ?;";
-    private static final String ADD_DIAGNOSIS = "INSERT INTO diagnosis (description, personal_Id, patient_id, time, " +
-            "is_opened) VALUES (?, ?, ?, ?,?);";
+    private static final String GET_ALL_DIAGNOSES_SQL = "SELECT * FROM diagnosis JOIN patient " + "ON diagnosis" +
+            ".patient_id = patient.patient_id JOIN medical_personal " + "ON diagnosis.personal_id = medical_personal" +
+            ".personal_id WHERE diagnosis.patient_id = ?;";
+    private static final String ADD_DIAGNOSIS =
+            "INSERT INTO diagnosis (description, personal_Id, patient_id, time, " + "is_opened) VALUES (?, ?, ?, ?,?);";
     private static final String CLOSE_DIAGNOSIS = "UPDATE diagnosis SET is_opened = ? WHERE diagnosis_id = ?;";
+
+    private static final Logger log = Logger.getLogger(H2DiagnosisDao.class.getName());
+
     @Resource(name = "jdbc/hospital-h2-db")
     private DataSource dataSource;
     private DateTimeFormatter dateTimeFormatter;
@@ -66,14 +67,13 @@ public class H2DiagnosisDao implements DiagnosisDao {
 
                     diagnosis.setDiagnosisId(resultSet.getLong("diagnosis.diagnosis_id"));
                     diagnosis.setDescription(resultSet.getString("diagnosis.description"));
-                    diagnosis.setTime(LocalDateTime.parse(
-                            resultSet.getString("diagnosis.time"), dateTimeFormatter));
+                    diagnosis.setTime(LocalDateTime.parse(resultSet.getString("diagnosis.time"), dateTimeFormatter));
                     diagnosis.setOpened(resultSet.getBoolean("diagnosis.is_opened"));
                     diagnosisList.add(diagnosis);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.info("Get all diagnoses by patient ID: " + patientId + "; status: FAILED");
         }
         return diagnosisList;
     }
@@ -89,7 +89,9 @@ public class H2DiagnosisDao implements DiagnosisDao {
             statement.setBoolean(5, true);
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.info("Add diagnosis, description: " + description + "; personalId: " + personalId +
+                    "; patientId: " + patientId + "; local time: " + LocalDateTime.now().format(dateTimeFormatter) +
+                    "; status: FAILED");
         }
     }
 
@@ -103,11 +105,11 @@ public class H2DiagnosisDao implements DiagnosisDao {
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement =
                 connection.prepareStatement(CLOSE_DIAGNOSIS)) {
             statement.setBoolean(1, false);
-            statement.setLong(2,diagnosisId);
+            statement.setLong(2, diagnosisId);
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.info("Close diagnosis: " + diagnosisId + "; status: FAILED");
         }
-
     }
+
 }
