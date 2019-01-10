@@ -55,8 +55,8 @@ public class H2PatientDao implements PatientDao {
             System.out.println(statement.execute());
         } catch (SQLException e) {
             log.info("Update patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() +
-                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; deleted: " + patient.isDeleted() + "; status: "
-                    + "FAILED");
+                    "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; deleted:" +
+                    " " + patient.isDeleted() + "; status: " + "FAILED");
         }
     }
 
