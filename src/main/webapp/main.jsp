@@ -95,6 +95,7 @@
         <th>${columnFirstName_msg}</th>
         <th>${columnLastName_msg}</th>
         <th>${columnAction_msg}</th>
+        <th>Update</th>
     </tr>
     </thead>
     <tbody>
@@ -109,23 +110,15 @@
                     <input type="submit" name="button" value="${buttonOpenCard_msg}"/>
                 </td>
             </form>
+            <form name="Button" action="/patientProfile" method="POST">
+                <td>
+                    <input type="hidden" name="patientId" value="${patient.patientId}"/>
+                    <input type="submit" name="button" value="Update Profile"/>
+                </td>
+            </form>
         </tr>
     </c:forEach>
 
-
-    <c:forEach items="${sessionScope.patients}" var="patient">
-            <tr>
-                <td>${patient.patientId}</td>
-                <td>${patient.firstName}</td>
-                <td>${patient.lastName}</td>
-                <form name="Button" action="/patientProfile" method="POST">
-                    <td>
-                    <input type="hidden" name="patientId" value="${patient.patientId}"/>
-                        <input type="submit" name="button" value="Update Profile"/>
-                    </td>
-                </form>
-            </tr>
-        </c:forEach>
 
 
     </tbody>
