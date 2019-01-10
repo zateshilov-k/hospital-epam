@@ -35,6 +35,7 @@
 <fmt:message bundle="${loc}" key="passwordField" var="enterPassword_msg"/>
 <fmt:message bundle="${loc}" key="titleIndexPage" var="title_msg"/>
 <fmt:message bundle="${loc}" key="buttonEnter" var="buttonEnter_msg"/>
+<fmt:message bundle="${loc}" key="loginErrorMsg" var="loginError_msg"/>
 
 <main class="login-form">
     <div class="cotainer">
@@ -63,7 +64,7 @@
                             <div class="form-group row" align="center">
 
                                 <c:if test="${!empty requestScope.loginError}">
-                                    <p><font color="red"><span class="error">${requestScope.loginError}</span></font>
+                                    <p><font color="red"><span class="error">${loginError_msg}</span></font>
                                     </p>
                                 </c:if>
                             </div>
