@@ -1,4 +1,5 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -62,7 +63,7 @@
 
                             <div class="form-group row" align="center">
 
-                                <c:if test="${!empty requestScope.loginError}">
+                                <c:if test="${!empty requestScope.patientError}">
                                     <p><font color="red"><span class="error">${patientError_msg}</span></font>
                                     </p>
                                 </c:if>
