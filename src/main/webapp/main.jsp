@@ -113,6 +113,8 @@
             <form name="Button" action="/patientProfile" method="POST">
                 <td>
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
+                    <input type="hidden" name="firstName" value="${patient.firstName}"/>
+                    <input type="hidden" name="lastName" value="${patient.lastName}"/>
                     <input type="submit" name="button" value="Update Profile"/>
                 </td>
             </form>

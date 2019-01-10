@@ -53,6 +53,7 @@ public class H2PatientDao implements PatientDao {
             statement.setBoolean(3, patient.isDischarged());
             statement.setBoolean(4, patient.isDeleted());
             statement.setLong(5, patient.getPatientId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             log.info("Update patient by ID: " + patient.getPatientId() + "; first name: " + patient.getFirstName() +
                     "; last name: " + patient.getLastName() + "; discharged: " + patient.isDischarged() + "; deleted:" +

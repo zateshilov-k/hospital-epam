@@ -38,37 +38,43 @@ public class PatientUpdate extends HttpServlet {
         }
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
-
         Personal currentUser = (Personal) session.getAttribute("user");
-
         Long patientId = Long.parseLong(request.getParameter("patientId"));
+        String firstName = request.getParameter("firstName").trim();
+        firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
+        String lastName = request.getParameter("lastName").trim();
+        lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
+
+
         PatientDao patientDao = daoFactory.getPatientDao();
         Patient patient = patientDao.getPatient(patientId);
         session.setAttribute("currentPatient", patient);
+        request.setAttribute("currentPatient", patient);
+        System.out.println(firstName);
+        System.out.println(lastName);
 
-        String firstName = patient.getFirstName();
-        String lastName = patient.getLastName();
-        boolean isDeleted = patient.isDeleted();
 
-        String first = request.getParameter("firstName");
-        System.out.println(first);
+
+
+
+//        String first = request.getParameter("firstName");
+//        System.out.println(first);
 
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
         if (isValid) {
-            isValid = stringFieldValidate.doValidation(lastName);
+//            isValid = stringFieldValidate.doValidation(lastName);
         }
 
+        Patient updatedPatient = new Patient();
+        updatedPatient.setFirstName(firstName);
+        updatedPatient.setLastName(lastName);
+        updatedPatient.setDeleted(false);
+        updatedPatient.setDeleted(false);
+        updatedPatient.setPatientId(patientId);
+        patientDao.updatePatient(updatedPatient);
+
         if (isValid) {
-            Patient updatePatient = new Patient();
-            updatePatient.setFirstName(first);
-            updatePatient.setLastName(lastName);
-            updatePatient.setDeleted(isDeleted);
-            updatePatient.setPatientId(patientId);
-//            System.out.println(firstName);
-//            System.out.println(lastName);
-//            System.out.println(isDeleted);
-            patientDao.updatePatient(updatePatient);
 
             if (currentUser.getRole() == Role.DOCTOR) {
                 List<Patient> patients = patientDao.getAllPatients();
@@ -86,7 +92,6 @@ public class PatientUpdate extends HttpServlet {
             request.getRequestDispatcher("/").forward(request, response);
             return;
         }
-
 
     }
 

@@ -41,7 +41,7 @@
                                 <label for="field1" class="col-md-4 col-form-label text-md-right">Введите имя</label>
                                 <div class="col-md-6">
                                     <input type="text" id="field1" class="form-control" name="firstName" required
-                                           autofocus value="${currentPatient.firstName}">
+                                           autofocus value="${sessionScope.currentPatient.firstName}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -49,7 +49,7 @@
                                     фамилию</label>
                                 <div class="col-md-6">
                                     <input type="text" id="field2" class="form-control" name="lastName" required
-                                           autofocus value="${currentPatient.lastName}">
+                                           autofocus value="${sessionScope.currentPatient.lastName}">
                                 </div>
                             </div>
 
@@ -71,15 +71,10 @@
                             <div class="col-md-6 offset-md-4">
 
 
-                                <button type="submit" name="patientId" value="${currentPatient.patientId}" class="btn btn-primary">
+                                <button type="submit" name="patientId" value="${sessionScope.currentPatient.patientId}" class="btn btn-primary">
                                     Сохранить
                                 </button>
                                 <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
-                                    <a href="/main.jsp" class="btn btn-link">
-                                        Отмена
-                                    </a>
-                                </c:if>
-                                <c:if test="${sessionScope.user.role eq 'NURSE'}">
                                     <a href="/main.jsp" class="btn btn-link">
                                         Отмена
                                     </a>
