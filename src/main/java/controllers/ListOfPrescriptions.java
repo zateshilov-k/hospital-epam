@@ -27,13 +27,15 @@ public class ListOfPrescriptions extends HttpServlet {
         Long diagnosisId = Long.parseLong(request.getParameter("diagnosisId"));
         response.setContentType("text/html;charset=utf-8");
         Locale locale = (Locale) request.getSession().getAttribute("locale");
-        System.out.println(locale);
         PrescriptionType.locale = locale;
+        Locale.setDefault(Locale.forLanguageTag("en"));
         List<Prescription> prescriptions = daoFactory.getPrescriptionDao().getAllPrescriptionsByDiagnosisId(diagnosisId);
         try {
             PrintWriter writer = response.getWriter();
             GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Prescription.class,new PrescriptionType.PrescriptionTypeAdapter());
+            PrescriptionType.PrescriptionTypeAdapter prescriptionTypeAdapter = new PrescriptionType.PrescriptionTypeAdapter();
+            prescriptionTypeAdapter.locale = locale;
+            gsonBuilder.registerTypeAdapter(Prescription.class,prescriptionTypeAdapter);
             writer.write(gsonBuilder.create().toJson(prescriptions).toString());
         } catch (IOException e) {
             e.printStackTrace();

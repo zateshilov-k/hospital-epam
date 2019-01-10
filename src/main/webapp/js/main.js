@@ -51,10 +51,10 @@ function updateDiagnosisElementsStyle() {
     var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
 
     var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
-    if (isDiagnosisOpened === 'false') {
+    if (isDiagnosisOpened === diagnosisIsNotOpened) {
         prescriptionFieldSet.style.display = "none";
         closeDiagnosisButton.style.display = "none";
-    } else if (isDiagnosisOpened === 'true') {
+    } else if (isDiagnosisOpened === diagnosisIsOpened) {
         prescriptionFieldSet.style.display = "inline";
         closeDiagnosisButton.style.display = "inline";
     }
@@ -64,9 +64,9 @@ function updatePrescriptionsElementsStyle() {
     var prescriptionTable = document.getElementById("prescriptionsTable");
 
     var isPrescriptionDone = prescriptionTable.rows[currentPrescriptionRow].cells[4].innerHTML;
-    if (isPrescriptionDone === 'false') {
+    if (isPrescriptionDone === prescriptionIsNotDone) {
         doPrescriptionButton.style.display = "inline";
-    } else if(isPrescriptionDone === 'true') {
+    } else if(isPrescriptionDone === prescriptionIsDone) {
         doPrescriptionButton.style.display = "none";
     }
 }
@@ -116,7 +116,7 @@ function updateDiagnosisTable(diagnosis, table) {
             } else if (j === 2) {
                 newCell.innerHTML = diagnosis[i]['time'];
             } else if (j === 3) {
-                newCell.innerHTML = diagnosis[i]['opened'];
+                newCell.innerHTML = diagnosis[i]['isOpened'];
             }
         }
     }

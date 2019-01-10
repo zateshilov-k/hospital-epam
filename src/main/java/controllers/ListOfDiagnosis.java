@@ -1,11 +1,15 @@
 package controllers;
 
+import com.google.gson.GsonBuilder;
 import dao.DaoFactory;
 import dao.h2.H2DiagnosisDao;
 import dao.h2.H2PatientDao;
 import model.Diagnosis;
 import model.Patient;
+import model.Prescription;
+import model.PrescriptionType;
 import org.json.JSONArray;
+import utils.DiagnosisTypeAdapter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @WebServlet("/listofdiagnosis")
 public class ListOfDiagnosis extends HttpServlet {
@@ -30,7 +35,12 @@ public class ListOfDiagnosis extends HttpServlet {
         Patient currentPatient = (Patient) request.getSession().getAttribute("currentPatient");
         List<Diagnosis> diagnosisListForOnePatient = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(currentPatient.getPatientId());
         response.setContentType("text/html;charset=utf-8");
-        response.getWriter().write(new JSONArray(diagnosisListForOnePatient).toString());
+        Locale locale = (Locale) request.getSession().getAttribute("locale");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        DiagnosisTypeAdapter.locale = locale;
+        gsonBuilder.registerTypeAdapter(Diagnosis.class,new DiagnosisTypeAdapter());
+
+        response.getWriter().write(gsonBuilder.create().toJson(diagnosisListForOnePatient));
     }
 
 

@@ -1,11 +1,13 @@
 package controllers;
 
+import com.google.gson.GsonBuilder;
 import dao.DaoFactory;
 import dao.PatientDao;
 import model.Diagnosis;
 import model.Patient;
 import model.Personal;
 import org.json.JSONArray;
+import utils.DiagnosisTypeAdapter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 /*
 Сервлет отрабатывает действия в личной карточке пациента
@@ -41,7 +44,15 @@ public class PatientCardServlet extends HttpServlet {
         List<Diagnosis> diagnosisList = daoFactory.getDiagnosisDao().getAllDiagnosesByPatientId(patientId);
         request.setAttribute("currentPatient", patient);
 
-        request.setAttribute("diagnosesList", new JSONArray(diagnosisList).toString());
+
+        Locale locale = (Locale) request.getSession().getAttribute("locale");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        DiagnosisTypeAdapter.locale = locale;
+        System.out.println(locale);
+        gsonBuilder.registerTypeAdapter(Diagnosis.class,new DiagnosisTypeAdapter());
+
+
+        request.setAttribute("diagnosesList", gsonBuilder.create().toJson(diagnosisList).toString());
         Personal currentUser = (Personal) session.getAttribute("user");
         session.setAttribute("user", currentUser);
         try {

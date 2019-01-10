@@ -56,9 +56,14 @@ public class resource_ru extends ListResourceBundle {
             {"columnAction", "Действие"},
             {"columnDescription", "Описание"},
             {"columnTime", "Время"},
-            {"columnOpen", "Открыт"},
-            {"columnDone", "Выполнен"},
+            {"columnOpen", "Статус"},
+            {"columnDone", "Статус"},
             {"columnTypeOfPerscription", "Тип"},
+            //
+            {"prescriptionIsDone", "Выполнено"},
+            {"prescriptionIsNotDone", "Не выполнено"},
+            {"diagnosisIsOpened", "Открыт"},
+            {"diagnosisIsNotOpened", "Закрыт"},
     };
 
     @Override

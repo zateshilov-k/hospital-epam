@@ -57,7 +57,12 @@
 <fmt:message bundle="${loc}" key="operation" var="operation_msg"/>
 <fmt:message bundle="${loc}" key="drug" var="drug_msg"/>
 <fmt:message bundle="${loc}" key="buttonParientsList" var="buttonParientsList_msg"/>
+<fmt:message bundle="${loc}" key="prescriptionIsDone" var="prescriptionIsDone_msg"/>
+<fmt:message bundle="${loc}" key="prescriptionIsNotDone" var="prescriptionIsNotDone_msg"/>
+<fmt:message bundle="${loc}" key="diagnosisIsOpened" var="diagnosisIsOpened_msg"/>
+<fmt:message bundle="${loc}" key="diagnosisIsNotOpened" var="diagnosisIsNotOpened_msg"/>
 
+prescriptionIsDone
 
 <h3 style="text-align:center;font-size:28px" >${currentPatientCard_msg} ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
 <br>
@@ -118,6 +123,11 @@
 </fieldset>
 <script>
     var diagnosisTable = document.getElementById("diagnosis");
+    var prescriptionIsDone = '${prescriptionIsDone_msg}';
+    var prescriptionIsNotDone = '${prescriptionIsNotDone_msg}';
+    var diagnosisIsOpened = '${diagnosisIsOpened_msg}';
+    var diagnosisIsNotOpened = '${diagnosisIsNotOpened_msg}';
+
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     if (diagnosis.length > 0) {
         updateDiagnosisTable(diagnosis, diagnosisTable);

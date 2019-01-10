@@ -1,10 +1,13 @@
 package model;
 
+import com.google.gson.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +20,7 @@ public class Diagnosis {
     private Patient patient;
     private boolean isOpened;
     private LocalDateTime time;
+
+
 
 }

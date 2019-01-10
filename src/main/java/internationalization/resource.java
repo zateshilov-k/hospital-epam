@@ -56,9 +56,14 @@ public class resource extends ListResourceBundle {
             {"columnAction", "Action"},
             {"columnDescription", "Description"},
             {"columnTime", "Time"},
-            {"columnOpen", "Open"},
-            {"columnDone", "Done"},
-            {"columnTypeOfPerscription", "Type"}
+            {"columnOpen", "Status"},
+            {"columnDone", "Status"},
+            {"columnTypeOfPerscription", "Type"},
+            //
+            {"prescriptionIsDone", "Done"},
+            {"prescriptionIsNotDone", "Not done"},
+            {"diagnosisIsOpened", "Opened"},
+            {"diagnosisIsNotOpened", "Closed"},
     };
 
     @Override
