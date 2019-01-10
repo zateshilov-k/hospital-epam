@@ -93,6 +93,9 @@ public class H2PersonalDao implements PersonalDao {
             statement.setLong(6, personal.getPersonalId());
             statement.executeUpdate();
             personalId = personal.getPersonalId();
+            log.info("Update personal by ID: " + personal.getPersonalId() + "; login: " + personal.getLogin() + "; "
+                    + "first name: " + personal.getFirstName() + "; last name: " + personal.getLastName() + "; role: " +
+                    personal.getRole().toString() + "; status: SUCCESS");
         } catch (SQLException e) {
             log.info("Update personal by ID: " + personal.getPersonalId() + "; login: " + personal.getLogin() + "; "
                     + "first name: " + personal.getFirstName() + "; last name: " + personal.getLastName() + "; role: " +
