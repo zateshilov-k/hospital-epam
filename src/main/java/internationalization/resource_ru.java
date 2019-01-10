@@ -8,6 +8,7 @@ public class resource_ru extends ListResourceBundle {
             {"titleIndexPage", "Войдите в систему EPAM Hospital"},
             {"titleAddPatientPage", "Создайте пациента в системе EPAM Hospital"},
             {"titleAddPersonalPage", "Создайте сотрудника в системе EPAM Hospital"},
+            {"titleUpdatePersonalPage", "Измените данные о сотруднике в системе EPAM Hospital"},
             //fields
             {"loginField", "Введите электронную почту"},
             {"passwordField", "Введите пароль"},
@@ -21,6 +22,9 @@ public class resource_ru extends ListResourceBundle {
             {"procedure","Процедура"},
             {"drug","Лекарство"},
             {"type","Тип"},
+            {"ADMIN", "Администратор"},
+            {"DOCTOR", "Доктор"},
+            {"NURSE", "Медсестра"},
             //buttons
             {"buttonEnter", "Войти"},
             {"buttonSave", "Сохранить"},
@@ -47,6 +51,9 @@ public class resource_ru extends ListResourceBundle {
             {"addPerscription","Добавить назначение"},
             {"perscriptionDescription","Описание назначения"},
             {"diagnosPerscription", "Назначение по выбранному диагнозу"},
+            {"loginErrorMsg", "Неверный логин или пароль!"},
+            {"patientErrorMsg", "Неверное имя или фамилия!"},
+            {"personalError","Неверное имя или фамилия"},
             //table columns
             {"columnId", "Код"},
             {"columnLogin", "Логин"},
