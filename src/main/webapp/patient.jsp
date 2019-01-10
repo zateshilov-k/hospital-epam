@@ -33,6 +33,7 @@
 <fmt:message bundle="${loc}" key="lastNameField" var="lastName_msg"/>
 <fmt:message bundle="${loc}" key="buttonSave" var="buttonSave_msg"/>
 <fmt:message bundle="${loc}" key="buttonCancel" var="buttonCancel_msg"/>
+<fmt:message bundle="${loc}" key="patientErrorMsg" var="patientError_msg"/>
 
 <main class="login-form">
     <div class="cotainer">
@@ -62,7 +63,7 @@
                             <div class="form-group row" align="center">
 
                                 <c:if test="${!empty requestScope.loginError}">
-                                    <p><font color="red"><span class="error">${requestScope.patientError}</span></font>
+                                    <p><font color="red"><span class="error">${patientError_msg}</span></font>
                                     </p>
                                 </c:if>
                             </div>
