@@ -1,4 +1,6 @@
 <%@ page import="model.Patient" %>
+<%@ page import="model.Personal" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -62,7 +64,6 @@
 <fmt:message bundle="${loc}" key="diagnosisIsOpened" var="diagnosisIsOpened_msg"/>
 <fmt:message bundle="${loc}" key="diagnosisIsNotOpened" var="diagnosisIsNotOpened_msg"/>
 
-prescriptionIsDone
 
 <h3 style="text-align:center;font-size:28px" >${currentPatientCard_msg} ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
 <br>
@@ -95,7 +96,7 @@ prescriptionIsDone
 </fieldset>
 
 <br>
-<fieldset style="float:left">
+<fieldset style="float:left" id = "diagnosisFieldSet">
 <legend>${addDiagnosis_msg}</legend>
  <br>
   <caption>${diagnosisDescription_msg}:</caption>
@@ -127,7 +128,9 @@ prescriptionIsDone
     var prescriptionIsNotDone = '${prescriptionIsNotDone_msg}';
     var diagnosisIsOpened = '${diagnosisIsOpened_msg}';
     var diagnosisIsNotOpened = '${diagnosisIsNotOpened_msg}';
-
+    var operation = '${operation_msg}';
+    var user= <%=  new Gson().toJson((Personal)request.getSession().getAttribute("user")) %>;
+    var userRole = user['role'];
     var diagnosis = <%=  request.getAttribute("diagnosesList") %>;
     if (diagnosis.length > 0) {
         updateDiagnosisTable(diagnosis, diagnosisTable);

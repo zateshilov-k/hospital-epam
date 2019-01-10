@@ -49,14 +49,20 @@ function updateDiagnosisElementsStyle() {
     var diagnosisTable = document.getElementById("diagnosis");
     var closeDiagnosisButton = document.getElementById("closeDiagnosisButton");
     var prescriptionFieldSet = document.getElementById("addPrescriptionFieldSet");
-
+    var diagnosisFieldSet = document.getElementById("diagnosisFieldSet");
     var isDiagnosisOpened = diagnosisTable.rows[currentDiagnosisRow].cells[3].innerHTML;
-    if (isDiagnosisOpened === diagnosisIsNotOpened) {
+    if(userRole === "DOCTOR" || userRole === "ADMIN") {
+        if (isDiagnosisOpened === diagnosisIsNotOpened) {
+            prescriptionFieldSet.style.display = "none";
+            closeDiagnosisButton.style.display = "none";
+        } else if (isDiagnosisOpened === diagnosisIsOpened) {
+            prescriptionFieldSet.style.display = "inline";
+            closeDiagnosisButton.style.display = "inline";
+        }
+    } else {
         prescriptionFieldSet.style.display = "none";
         closeDiagnosisButton.style.display = "none";
-    } else if (isDiagnosisOpened === diagnosisIsOpened) {
-        prescriptionFieldSet.style.display = "inline";
-        closeDiagnosisButton.style.display = "inline";
+        diagnosisFieldSet.style.display = "none";
     }
 }
 function updatePrescriptionsElementsStyle() {
@@ -68,6 +74,12 @@ function updatePrescriptionsElementsStyle() {
         doPrescriptionButton.style.display = "inline";
     } else if(isPrescriptionDone === prescriptionIsDone) {
         doPrescriptionButton.style.display = "none";
+    }
+
+    if (userRole === "NURSE") {
+        if(prescriptionTable.rows[currentPrescriptionRow].cells[2].innerHTML === operation) {
+            doPrescriptionButton.style.display = "none";
+        }
     }
 }
 
