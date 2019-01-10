@@ -133,10 +133,10 @@ public class DatabaseInitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         hashGenerator = (HashGenerator) servletContextEvent.getServletContext().getAttribute("hashGenerator");
-        final int numberOfPersonal = 10;
-        final int numberOfPatients = 10;
-        final int numberOfDiagnosisPerPatient = 2;
-        final int numberOfPrescriptionsPerDiagnosis = 2;
+        final int numberOfPersonal = 15;
+        final int numberOfPatients = 15;
+        final int numberOfDiagnosisPerPatient = 7;
+        final int numberOfPrescriptionsPerDiagnosis = 14;
 
         List<Personal> personals = getPersonals(numberOfPersonal);
         Personal admin = new Personal();
