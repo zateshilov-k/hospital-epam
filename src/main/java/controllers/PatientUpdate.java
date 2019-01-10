@@ -31,11 +31,14 @@ public class PatientUpdate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,
             ServletException {
+
         HttpSession session = request.getSession(true);
         Locale locale = (Locale) session.getAttribute("locale");
+
         if (locale == null) {
             locale = new Locale("ru");
         }
+
         ResourceBundle bundle = ResourceBundle.getBundle("message", locale);
         response.setContentType("text/html;charset=utf-8");
         Personal currentUser = (Personal) session.getAttribute("user");
@@ -44,7 +47,8 @@ public class PatientUpdate extends HttpServlet {
         firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
         String lastName = request.getParameter("lastName").trim();
         lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
-
+        String isDischarged = request.getParameter("isDischarged");
+        String isDeleted = request.getParameter("isDeleted");
 
         PatientDao patientDao = daoFactory.getPatientDao();
         Patient patient = patientDao.getPatient(patientId);
@@ -53,24 +57,17 @@ public class PatientUpdate extends HttpServlet {
         System.out.println(firstName);
         System.out.println(lastName);
 
-
-
-
-
-//        String first = request.getParameter("firstName");
-//        System.out.println(first);
-
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
         if (isValid) {
-//            isValid = stringFieldValidate.doValidation(lastName);
+            isValid = stringFieldValidate.doValidation(lastName);
         }
 
         Patient updatedPatient = new Patient();
         updatedPatient.setFirstName(firstName);
         updatedPatient.setLastName(lastName);
-        updatedPatient.setDeleted(false);
-        updatedPatient.setDeleted(false);
+//        updatedPatient.setDischarged(isDischarged);
+//        updatedPatient.setDeleted(isDeleted);
         updatedPatient.setPatientId(patientId);
         patientDao.updatePatient(updatedPatient);
 
@@ -91,6 +88,11 @@ public class PatientUpdate extends HttpServlet {
             request.setAttribute("personalError", str);
             request.getRequestDispatcher("/").forward(request, response);
             return;
+        }
+
+        List<Patient> patientList = daoFactory.getPatientDao().getAllPatients();
+        for (Patient patient1 :patientList) {
+            System.out.println(patient1);
         }
 
     }

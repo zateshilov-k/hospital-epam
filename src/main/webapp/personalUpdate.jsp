@@ -82,7 +82,7 @@
                             </c:if>
                             <div class="form-group row" align="center">
                                 <c:if test="${!empty requestScope.loginError}">
-                                    <p><font color="red"><span class="error">${requestScope.personalError}</span></font>
+                                    <p><font color="red"ей><span class="error">${requestScope.personalError}</span></font>
                                     </p>
                                 </c:if>
                             </div>
