@@ -7,8 +7,8 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="<c:url value="/js/main.js" />" type="text/javascript"></script>
-    <style>
 
+    <style>
     table, tbody,thead {
     display: block;
     }
