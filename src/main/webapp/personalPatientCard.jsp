@@ -34,87 +34,85 @@
 </head>
 <body style="background-color:powderblue;">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<%--<fmt:setLocale value="de-GR"/>--%>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
-<fmt:message bundle="${loc}" key="titleAddPatientPage" var="titleAddPage_msg"/>
+<fmt:message bundle="${loc}" key="currentPatientCard" var="currentPatientCard_msg"/>
+<fmt:message bundle="${loc}" key="buttonCloseDiagnosis" var="buttonCloseDiagnosis_msg"/>
+<fmt:message bundle="${loc}" key="buttonDoPerscription" var="buttonDoPerscription_msg"/>
+<fmt:message bundle="${loc}" key="diagnosis" var="diagnosis_msg"/>
+<fmt:message bundle="${loc}" key="perscriptions" var="perscriptons_msg"/>
+<fmt:message bundle="${loc}" key="columnId" var="columnId_msg"/>
+<fmt:message bundle="${loc}" key="columnDescription" var="columnDescription_msg"/>
+<fmt:message bundle="${loc}" key="columnTime" var="columnTime_msg"/>
+<fmt:message bundle="${loc}" key="columnOpen" var="columnOpen_msg"/>
+<fmt:message bundle="${loc}" key="columnTypeOfPerscription" var="columnTypeOfPerscription_msg"/>
+<fmt:message bundle="${loc}" key="columnDone" var="columnDone_msg"/>
+<fmt:message bundle="${loc}" key="addDiagnosis" var="addDiagnosis_msg"/>
+<fmt:message bundle="${loc}" key="diagnosisDescription" var="diagnosisDescription_msg"/>
+<fmt:message bundle="${loc}" key="buttonAdd" var="buttonAdd_msg"/>
+<fmt:message bundle="${loc}" key="addPerscription" var="addPerscription_msg"/>
+<fmt:message bundle="${loc}" key="type" var="type_msg"/>
+<fmt:message bundle="${loc}" key="perscriptionDescription" var="perscriptionDescription_msg"/>
+<fmt:message bundle="${loc}" key="procedure" var="procedure_msg"/>
+<fmt:message bundle="${loc}" key="operation" var="operation_msg"/>
+<fmt:message bundle="${loc}" key="drug" var="drug_msg"/>
+<fmt:message bundle="${loc}" key="buttonParientsList" var="buttonParientsList_msg"/>
 
-<h3 style="text-align:center;font-size:28px" >Личная карточка пациента ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
+
+<h3 style="text-align:center;font-size:28px" >${currentPatientCard_msg} ${sessionScope.currentPatient.lastName} ${sessionScope.currentPatient.firstName}</h3>
 <br>
-<button onclick="window.location.href='/main.jsp'">To Main</button>
+<button onclick="window.location.href='/main.jsp'">${buttonParientsList_msg}</button>
 <br><br>
 <fieldset >
-   <legend >History of disease</legend>
-    <button id="closeDiagnosisButton">Close diagnosis</button>
-    <button id="doPrescription"  style="display:inline; float:right">Do prescription</button>
+   <%--<legend >History of disease</legend>--%>
+    <button id="closeDiagnosisButton">${buttonCloseDiagnosis_msg}</button>
+    <button id="doPrescription"  style="display:inline; float:right">${buttonDoPerscription_msg}</button>
     <br><br>
     <table id = "diagnosis" style="display:inline; float:left">
-        <caption  style=" font-family: Arial, Helvetica, sans-serif;">Diagnoses:</caption>
+        <caption  style=" font-family: Arial, Helvetica, sans-serif;">${diagnosis_msg}:</caption>
             <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>Time</th>
-                <th>Open</th>
+                <th>${columnId_msg}</th>
+                <th>${columnDescription_msg}</th>
+                <th>${columnTime_msg}</th>
+                <th>${columnOpen_msg}</th>
             </tr>
     </table>
      <table id="prescriptionsTable" class="page" style="display:inline; float:right;" >
-        <caption style=" font-family: Arial, Helvetica, sans-serif;" >Appointments:</caption>
+        <caption style=" font-family: Arial, Helvetica, sans-serif;" >${perscriptons_msg}:</caption>
             <tr>
-                <th>Id</th>
-                 <th>Description</th>
-                 <th>Type</th>
-                 <th>Time</th>
-                 <th>Complited</th>
+                <th>${columnId_msg}</th>
+                <th>${columnDescription_msg}</th>
+                 <th>${columnTypeOfPerscription_msg}</th>
+                <th>${columnTime_msg}</th>
+                 <th>${columnDone_msg}</th>
             </tr>
     </table>
-<%--<legend >История болезней</legend>--%>
-<%--<button id="closeDiagnosisButton">Close diagnosis</button>--%>
-<%--<button id="doPrescription"  style="display:inline; float:right">Do prescription</button>--%>
-<%--<br><br>--%>
-<%--<table id = "diagnosis" style="display:inline; float:left">--%>
-  <%--<caption>Диагнозы:</caption>--%>
-  <%--<tr>--%>
-    <%--<th>Id</th>--%>
-    <%--<th>Описание</th>--%>
-    <%--<th>Время</th>--%>
-    <%--<th>Открыт</th>--%>
-  <%--</tr>--%>
-<%--</table>--%>
-
-<%--<table id="prescriptionsTable" class="page" style="display:inline; float:right;" >--%>
- <%--<caption>Назначение по выбранному диагнозу:</caption>--%>
-  <%--<tr>--%>
-    <%--<th>Id</th>--%>
-    <%--<th>Описание</th>--%>
-    <%--<th>Тип</th>--%>
-    <%--<th>Время</th>--%>
-      <%--<th>Выполнен</th>--%>
-  <%--</tr>--%>
-<%--</table>--%>
 </fieldset>
 
 <br>
 <fieldset style="float:left">
-<legend>Добавить диагноз</legend>
+<legend>${addDiagnosis_msg}</legend>
  <br>
-  <caption>Описание диагноза:</caption>
+  <caption>${diagnosisDescription_msg}:</caption>
   <p><textarea name="comment" id="diagnosisDescription"></textarea></p>
-  <button id="diagnosisSubmit" value="Добавить">Добавить</button>
+  <button id="diagnosisSubmit" value="Добавить">${buttonAdd_msg}</button>
 
 </fieldset>
 
 <fieldset id="addPrescriptionFieldSet" style="display:none;">
-<legend>Добавить назначение</legend>
+<legend>${addPerscription_msg}</legend>
  <form>
-  <caption>Тип:</caption>
+  <caption>${type_msg}:</caption>
 <form action="/action_page.php">
   <select name="prescriptionType" id="prescriptionType">
-    <option value="Procedure">Процедура</option>
-    <option value="Operation">Операция</option>
-    <option value="Drug">Лекарство</option>
+    <option value="Procedure">${procedure_msg}</option>
+    <option value="Operation">${operation_msg}</option>
+    <option value="Drug">${drug_msg}</option>
   </select>
 </form>
- <caption>Описание назначения:</caption>
+ <caption>${perscriptionDescription_msg}:</caption>
   <p><textarea id="prescriptionDescription" name="comment"></textarea></p>
-     <button id="prescriptionSubmit" value="Добавить">Добавить</button>
+     <button id="prescriptionSubmit" value="Добавить">${buttonAdd_msg}</button>
  </form>
 
 </fieldset>

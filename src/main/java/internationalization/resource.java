@@ -20,6 +20,8 @@ public class resource extends ListResourceBundle {
             {"operation","Operation"},
             {"procedure","Procedure"},
             {"drug","Drug"},
+            {"type","Type"},
+            {"buttonParientsList","Back to patient's list"},
             //buttons
             {"buttonEnter", "Login"},
             {"buttonSave", "Save"},
@@ -27,16 +29,19 @@ public class resource extends ListResourceBundle {
             {"buttonOpenProfile", "Open profile"},
             {"buttonOpenCard", "Open card"},
             {"buttonCloseDiagnosis","Close diagnosis"},
-
+            {"buttonDoPerscription","Do perscription"},
+            {"buttonAdd","Add"},
             //menus
             {"menuAddPersonal", "Add personal"},
             {"menuAddPatient", "Add patient"},
             {"menuLogout", "Logout"},
             //message
             {"currentUser", "Current user"},
+            {"currentPatientCard", "Card of patient"},
             {"openPatientCard", "Open patient card"},
             {"historyOfDiagnosis", "History of diagnosis"},
             {"diagnosis", "Diagnosises"},
+            {"perscriptions","Perscriptions"},
             {"addDiagnosis", "Add diagnosis"},
             {"diagnosisDescription", "Description of diagnosis"},
             {"addPerscription","Add perscription"},

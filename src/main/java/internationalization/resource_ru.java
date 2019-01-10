@@ -20,6 +20,7 @@ public class resource_ru extends ListResourceBundle {
             {"operation","Операция"},
             {"procedure","Процедура"},
             {"drug","Лекарство"},
+            {"type","Тип"},
             //buttons
             {"buttonEnter", "Войти"},
             {"buttonSave", "Сохранить"},
@@ -27,19 +28,24 @@ public class resource_ru extends ListResourceBundle {
             {"buttonOpenProfile", "Перейти в профиль"},
             {"buttonOpenCard", "Перейти в карточку"},
             {"buttonCloseDiagnosis","Закрыть диагноз"},
+            {"buttonDoPerscription","Выполнить назначение"},
+            {"buttonAdd","Добавить"},
+            {"buttonParientsList","К списку пациентов"},
             //menus
             {"menuAddPersonal", "Добавить сотрудника"},
             {"menuAddPatient", "Добавить пациента"},
             {"menuLogout", "Выйти из программы"},
             //message
             {"currentUser", "Текущий пользователь"},
+            {"currentPatientCard", "Личная карточка пациента"},
             {"openPatientCard", "Перейти в карточку выбранного пациента"},
             {"historyOfDiagnosis", "История болезней"},
             {"diagnosis", "Диагнозы"},
+            {"perscriptions","Назначения"},
             {"addDiagnosis", "Добавить диагноз"},
             {"diagnosisDescription", "Описание диагноза"},
             {"addPerscription","Добавить назначение"},
-            {"perscriptionDescription","Описание Назначения"},
+            {"perscriptionDescription","Описание назначения"},
             {"diagnosPerscription", "Назначение по выбранному диагнозу"},
             //table columns
             {"columnId", "Код"},
