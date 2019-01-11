@@ -43,7 +43,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">${titleUpdatePatientPage}</div>
+                    <div class="card-header">${titleUpdatePatientPage_msg}</div>
                     <div class="card-body">
                         <form action="/patientProfile" method="post">
                             <div class="form-group row">
