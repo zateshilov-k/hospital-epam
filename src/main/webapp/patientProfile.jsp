@@ -78,10 +78,10 @@
 
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit"  name="patientId" value="${currentPatient.patientId}" class="btn btn-primary">
-                                    ${buttonSave}
+                                    ${buttonSave_msg}
                                 </button>
                                     <a href="/main.jsp" class="btn btn-link">
-                                        ${buttonCancel}
+                                        ${buttonCancel_msg}
                                     </a>
                             </div>
                         </form>
