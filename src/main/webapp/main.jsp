@@ -57,6 +57,7 @@
 </head>
 <body style="background-color:powderblue">
 <fmt:setLocale value="${sessionScope.locale}"/>
+<%--<fmt:setLocale value="en-EN"/>--%>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
 <fmt:message bundle="${loc}" key="currentUser" var="currentUser_msg"/>
 <fmt:message bundle="${loc}" key="menuAddPatient" var="menuAddPatient_msg"/>
@@ -67,6 +68,7 @@
 <fmt:message bundle="${loc}" key="columnAction" var="columnAction_msg"/>
 <fmt:message bundle="${loc}" key="buttonOpenCard" var="buttonOpenCard_msg"/>
 <fmt:message bundle="${loc}" key="openPatientCard" var="openPatientCard_msg"/>
+<fmt:message bundle="${loc}" key="buttonPatientsList" var="buttonPatientsList_msg"/>
 
 <div class="wrapper">
     <nav class="navigation">
@@ -105,15 +107,14 @@
             <td>${patient.firstName}</td>
             <td>${patient.lastName}</td>
             <td>
-                <form name="Button" action="/patientCard" method="POST" style="display:inline">
+                <form name="Button" action="/patientProfile" method="POST" style="display:inline">
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
                     <input type="submit" name="button" value="${buttonOpenCard_msg}"/>
                 </form>
-                <form name="Button" action="/patientProfile" method="POST" style="display:inline">
+
+                <form name="Button" action="/patientDataForUpdate" method="POST" style="display:inline">
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
-                    <input type="hidden" name="firstName" value="${patient.firstName}"/>
-                    <input type="hidden" name="lastName" value="${patient.lastName}"/>
-                    <input type="submit" name="button" value="Update Profile"/>
+                    <input type="submit" name="button" value="${buttonPatientsList_msg}"/>
                 </form>
             </td>
         </tr>

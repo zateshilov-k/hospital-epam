@@ -9,6 +9,7 @@ public class resource_ru extends ListResourceBundle {
             {"titleAddPatientPage", "Создайте пациента в системе EPAM Hospital"},
             {"titleAddPersonalPage", "Создайте сотрудника в системе EPAM Hospital"},
             {"titleUpdatePersonalPage", "Измените данные о сотруднике в системе EPAM Hospital"},
+            {"titleUpdatePatientPage", "Измените данные о пациенте в системе EPAM Hospital"},
             //fields
             {"loginField", "Введите электронную почту"},
             {"passwordField", "Введите пароль"},
@@ -35,6 +36,7 @@ public class resource_ru extends ListResourceBundle {
             {"buttonDoPerscription","Выполнить назначение"},
             {"buttonAdd","Добавить"},
             {"buttonParientsList","К списку пациентов"},
+            {"buttonPatientsList","Изменить данные пациента"},
             //menus
             {"menuAddPersonal", "Добавить сотрудника"},
             {"menuAddPatient", "Добавить пациента"},

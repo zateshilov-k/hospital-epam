@@ -47,42 +47,27 @@ public class PatientUpdate extends HttpServlet {
         firstName = new String(firstName.getBytes("ISO-8859-1"), "UTF-8");
         String lastName = request.getParameter("lastName").trim();
         lastName = new String(lastName.getBytes("ISO-8859-1"), "UTF-8");
-        boolean isDischarged = Boolean.parseBoolean(request.getParameter("isDischarged"));
-        boolean isDeleted = Boolean.parseBoolean(request.getParameter("isDeleted"));
+//        boolean isDischarged = Boolean.parseBoolean(request.getParameter("isDischarged"));
+//        boolean isDeleted = Boolean.parseBoolean(request.getParameter("isDeleted"));
 
         PatientDao patientDao = daoFactory.getPatientDao();
-        Patient patient = patientDao.getPatient(patientId);
-        session.setAttribute("currentPatient", patient);
-        request.setAttribute("currentPatient", patient);
-
-        System.out.println(patientId);
-        System.out.println(firstName);
-        System.out.println(lastName);
-        System.out.println(isDischarged);
-        System.out.println(isDeleted);
 
         StringFieldValidate stringFieldValidate = new StringFieldValidate();
         boolean isValid = stringFieldValidate.doValidation(firstName);
         if (isValid) {
             isValid = stringFieldValidate.doValidation(lastName);
         }
-
-        Patient updatedPatient = new Patient();
-        updatedPatient.setFirstName(firstName);
-        updatedPatient.setLastName(lastName);
-        updatedPatient.setDischarged(isDischarged);
-        updatedPatient.setDeleted(isDeleted);
-        updatedPatient.setPatientId(patientId);
-        patientDao.updatePatient(updatedPatient);
-
         if (isValid) {
-            if (currentUser.getRole() == Role.DOCTOR) {
-                List<Patient> patients = patientDao.getAllPatients();
-                if (patients != null) {
-                    session.setAttribute("patients", patients);
-                }
-                request.getRequestDispatcher("/patientProfile.jsp").forward(request, response);
-            } else {
+            Patient updatedPatient = new Patient();
+            updatedPatient.setFirstName(firstName);
+            updatedPatient.setLastName(lastName);
+//        updatedPatient.setDischarged(isDischarged);
+//        updatedPatient.setDeleted(isDeleted);
+            updatedPatient.setPatientId(patientId);
+            patientDao.updatePatient(updatedPatient);
+            List<Patient> patients = patientDao.getAllPatients();
+            if (patients != null) {
+                session.setAttribute("patients", patients);
                 request.getRequestDispatcher("/main.jsp").forward(request, response);
             }
         } else {
@@ -94,7 +79,7 @@ public class PatientUpdate extends HttpServlet {
         }
 
         List<Patient> patientList = daoFactory.getPatientDao().getAllPatients();
-        for (Patient patient1 :patientList) {
+        for (Patient patient1 : patientList) {
             System.out.println(patient1);
         }
 

@@ -9,6 +9,7 @@ public class resource extends ListResourceBundle {
             {"titleAddPatientPage", "Add patient to EPAM Hospital System"},
             {"titleAddPersonalPage", "Add personal to EPAM Hospital System"},
             {"titleUpdatePersonalPage", "Change personal's data to EPAM Hospital System"},
+            {"titleUpdatePatientPage", "Change patient's data to EPAM Hospital System"},
             //fields
             {"loginField", "Enter your e-mail"},
             {"passwordField", "Enter your password"},
@@ -35,6 +36,7 @@ public class resource extends ListResourceBundle {
             {"buttonDoPerscription", "Do perscription"},
             {"buttonAdd", "Add"},
             {"buttonParientsList", "Back to patient's list"},
+            {"buttonPatientsList","Update profile"},
             //menus
             {"menuAddPersonal", "Add personal"},
             {"menuAddPatient", "Add patient"},
