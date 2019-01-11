@@ -29,8 +29,8 @@
     <title>Add personal</title>
 </head>
 <body style="background-color:powderblue;overflow:hidden">
-<fmt:setLocale value="${sessionScope.locale}"/>
-<%--<fmt:setLocale value="de-GR"/>--%>
+<%--<fmt:setLocale value="${sessionScope.locale}"/>--%>
+<fmt:setLocale value="de-GR"/>
 <fmt:setBundle basename="internationalization.resource" var="loc"/>
 <fmt:message bundle="${loc}" key="titleAddPersonalPage" var="titleAddPersonalPage_msg"/>
 <fmt:message bundle="${loc}" key="firstNameField" var="firstNameField_msg"/>
@@ -42,7 +42,9 @@
 <fmt:message bundle="${loc}" key="buttonCancel" var="buttonCancel_msg"/>
 <fmt:message bundle="${loc}" key="titleUpdatePersonalPage" var="titleUpdatePersonalPage_msg"/>
 <fmt:message bundle="${loc}" key="updatePersonalError" var="updatePersonalError_msg"/>
-
+<fmt:message bundle="${loc}" key="ADMIN" var="ADMIN_msg"/>
+<fmt:message bundle="${loc}" key="DOCTOR" var="DOCTOR_msg"/>
+<fmt:message bundle="${loc}" key="NURSE" var="NURSE_msg"/>
 
 <main class="login-form">
     <div class="cotainer">
@@ -89,9 +91,9 @@
                                     <div class="col-md-6">
                                         <br>
                                         <select name="role">
-                                            <option value="doctor">Doctor/Доктор</option>
-                                            <option value="nurse">Nurse/Медсестра</option>
-                                            <option value="admin">Administrator/Администратор</option>
+                                            <option value="doctor">${DOCTOR_msg}</option>
+                                            <option value="nurse">${NURSE_msg}</option>
+                                            <option value="admin">${ADMIN_msg}</option>
                                         </select>
                                     </div>
                                 </div>

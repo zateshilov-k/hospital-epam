@@ -41,6 +41,9 @@
 <fmt:message bundle="${loc}" key="buttonCancel" var="buttonCancel_msg"/>
 <fmt:message bundle="${loc}" key="personalErrorMsg" var="personalErrorMsg_msg"/>
 <fmt:message bundle="${loc}" key="createPersonalError" var="createPersonalError_msg"/>
+<fmt:message bundle="${loc}" key="ADMIN" var="ADMIN_msg"/>
+<fmt:message bundle="${loc}" key="DOCTOR" var="DOCTOR_msg"/>
+<fmt:message bundle="${loc}" key="NURSE" var="NURSE_msg"/>
 
 
 <main class="login-form">
@@ -88,9 +91,9 @@
                                 <div class="col-md-6">
                                     <br>
                                     <select name="role">
-                                        <option value="doctor">Doctor/Доктор</option>
-                                        <option value="nurse">Nurse/Медсестра</option>
-                                        <option value="admin">Administrator/Администратор</option>
+                                        <option value="doctor">${DOCTOR_msg}</option>
+                                        <option value="nurse">${NURSE_msg}</option>
+                                        <option value="admin">${ADMIN_msg}</option>
                                     </select>
                                 </div>
                             </div>

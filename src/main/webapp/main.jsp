@@ -107,15 +107,16 @@
             <td>${patient.firstName}</td>
             <td>${patient.lastName}</td>
             <td>
-                <form name="Button" action="/patientProfile" method="POST" style="display:inline">
+                <form name="Button" action="/patientCard" method="POST" style="display:inline">
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
                     <input type="submit" name="button" value="${buttonOpenCard_msg}"/>
                 </form>
-
+                <c:if test="${sessionScope.user.role eq 'DOCTOR'}">
                 <form name="Button" action="/patientDataForUpdate" method="POST" style="display:inline">
                     <input type="hidden" name="patientId" value="${patient.patientId}"/>
                     <input type="submit" name="button" value="${buttonPatientsList_msg}"/>
                 </form>
+                </c:if>
             </td>
         </tr>
     </c:forEach>
